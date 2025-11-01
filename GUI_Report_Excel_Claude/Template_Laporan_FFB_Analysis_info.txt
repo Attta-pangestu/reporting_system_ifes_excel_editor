@@ -1,0 +1,30 @@
+
+TEMPLATE INFORMATION
+===================
+
+File: Template_Laporan_FFB_Analysis.xlsx
+Description: Template Excel untuk Laporan Analisis FFB Multi-Estate
+
+Sheets:
+1. Dashboard - Ringkasan kinerja dan metrik utama
+2. Harian - Data performa harian
+3. Karyawan - Performa karyawan (kerani, mandor, asisten)
+4. Field - Performa per field/blok
+5. Kualitas - Analisis kualitas FFB
+
+Placeholders:
+- {{variable_name}} - Akan diganti dengan data aktual
+- {{QUERY_FIELD}} - Data dari query database
+- {{calculation}} - Hasil perhitungan
+
+Repeating Sections:
+- Sheet "Harian": Baris 8 dan seterusnya untuk data harian
+- Sheet "Karyawan": Baris 8 dan seterusnya untuk data karyawan
+- Sheet "Field": Baris 8 dan seterusnya untuk data field
+- Sheet "Kualitas": Baris 8 dan seterusnya untuk data kualitas
+
+Usage:
+1. Template ini digunakan oleh report generator
+2. Jangan mengubah format placeholder
+3. Template dapat dimodifikasi untuk layout yang berbeda
+4. Formula Excel dapat ditambahkan sesuai kebutuhan

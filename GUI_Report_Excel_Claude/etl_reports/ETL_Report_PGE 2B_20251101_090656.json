@@ -1,0 +1,324 @@
+{
+  "timestamp": "2025-11-01T09:06:56.125300",
+  "parameters": {
+    "start_date": "2025-10-02",
+    "end_date": "2025-11-01",
+    "month": "10",
+    "estate_name": "PGE 2B",
+    "estate_code": "PGE_2B"
+  },
+  "etl_stats": {
+    "extract": {
+      "start_time": "2025-11-01 09:06:55.614252",
+      "queries": 7,
+      "rows_extracted": 4,
+      "success": true
+    },
+    "transform": {
+      "start_time": "2025-11-01 09:06:56.094047",
+      "variables_processed": 20,
+      "calculations": 4,
+      "success": true
+    },
+    "load": {
+      "start_time": "2025-11-01 09:06:56.111782",
+      "data_types": 4,
+      "rows_processed": 1,
+      "success": true
+    }
+  },
+  "query_results": {
+    "estate_info": [
+      {
+        "headers": [
+          "ESTATE_NAME",
+          "ESTATE_CODE"
+        ],
+        "rows": [
+          {
+            "ESTATE_NAME": "PGE 2B",
+            "ESTATE_CODE": "PGE_2B"
+          }
+        ]
+      }
+    ],
+    "daily_performance": [
+      {
+        "headers": [
+          "TRANSDATE J",
+          "MLAH_TRANSAKSI",
+          "RIPE_BUNCHES",
+          "UNRIPE_BUNCHES",
+          "BLACK_BUNCHES",
+          "ROTTEN_BUNCHES",
+          "LONGSTALK_BUNCHES",
+          "RAT_DAMAGE_BUNCHES",
+          "LOOSE_FRUIT_KG"
+        ],
+        "rows": [
+          {
+            "TRANSDATE J": "2025-10-02",
+            "MLAH_TRANSAKSI": "149",
+            "RIPE_BUNCHES": "2333",
+            "UNRIPE_BUNCHES": "60",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-03",
+            "MLAH_TRANSAKSI": "176",
+            "RIPE_BUNCHES": "2849",
+            "UNRIPE_BUNCHES": "61",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-04",
+            "MLAH_TRANSAKSI": "214",
+            "RIPE_BUNCHES": "3375",
+            "UNRIPE_BUNCHES": "40",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "4",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-06",
+            "MLAH_TRANSAKSI": "183",
+            "RIPE_BUNCHES": "3227",
+            "UNRIPE_BUNCHES": "51",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-07",
+            "MLAH_TRANSAKSI": "192",
+            "RIPE_BUNCHES": "2780",
+            "UNRIPE_BUNCHES": "39",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-08",
+            "MLAH_TRANSAKSI": "178",
+            "RIPE_BUNCHES": "2904",
+            "UNRIPE_BUNCHES": "17",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-09",
+            "MLAH_TRANSAKSI": "162",
+            "RIPE_BUNCHES": "3241",
+            "UNRIPE_BUNCHES": "34",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-10",
+            "MLAH_TRANSAKSI": "154",
+            "RIPE_BUNCHES": "2911",
+            "UNRIPE_BUNCHES": "51",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-11",
+            "MLAH_TRANSAKSI": "181",
+            "RIPE_BUNCHES": "3034",
+            "UNRIPE_BUNCHES": "38",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "1",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-13",
+            "MLAH_TRANSAKSI": "240",
+            "RIPE_BUNCHES": "4194",
+            "UNRIPE_BUNCHES": "35",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "1",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-14",
+            "MLAH_TRANSAKSI": "220",
+            "RIPE_BUNCHES": "4409",
+            "UNRIPE_BUNCHES": "48",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "4",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-15",
+            "MLAH_TRANSAKSI": "178",
+            "RIPE_BUNCHES": "3946",
+            "UNRIPE_BUNCHES": "23",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-16",
+            "MLAH_TRANSAKSI": "197",
+            "RIPE_BUNCHES": "3420",
+            "UNRIPE_BUNCHES": "147",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "9",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-17",
+            "MLAH_TRANSAKSI": "196",
+            "RIPE_BUNCHES": "3274",
+            "UNRIPE_BUNCHES": "45",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-18",
+            "MLAH_TRANSAKSI": "197",
+            "RIPE_BUNCHES": "3252",
+            "UNRIPE_BUNCHES": "53",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "1",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-20",
+            "MLAH_TRANSAKSI": "214",
+            "RIPE_BUNCHES": "3533",
+            "UNRIPE_BUNCHES": "58",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-21",
+            "MLAH_TRANSAKSI": "202",
+            "RIPE_BUNCHES": "3466",
+            "UNRIPE_BUNCHES": "25",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "0",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-22",
+            "MLAH_TRANSAKSI": "185",
+            "RIPE_BUNCHES": "3365",
+            "UNRIPE_BUNCHES": "62",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "1",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          },
+          {
+            "TRANSDATE J": "2025-10-23",
+            "MLAH_TRANSAKSI": "224",
+            "RIPE_BUNCHES": "3877",
+            "UNRIPE_BUNCHES": "65",
+            "BLACK_BUNCHES": "0",
+            "ROTTEN_BUNCHES": "1",
+            "LONGSTALK_BUNCHES": "0",
+            "RAT_DAMAGE_BUNCHES": "0",
+            "LOOSE_FRUIT_KG": "0"
+          }
+        ]
+      }
+    ],
+    "employee_performance": [],
+    "field_performance": [],
+    "quality_analysis": [],
+    "summary_totals": [
+      {
+        "headers": [
+          "TOTAL_TRANSAKSI",
+          "TOTAL_RIPE_BUNCHES",
+          "TOTAL_UNRIPE_BUNCHES",
+          "TOTAL_BLACK",
+          "TOTAL_ROTTEN",
+          "TOTAL_LONGSTALK",
+          "TOTAL_RATDAMAGE",
+          "TOTAL_LOOSE_FRUIT"
+        ],
+        "rows": [
+          {
+            "TOTAL_TRANSAKSI": "3642",
+            "TOTAL_RIPE_BUNCHES": "63390",
+            "TOTAL_UNRIPE_BUNCHES": "952",
+            "TOTAL_BLACK": "0",
+            "TOTAL_ROTTEN": "22",
+            "TOTAL_LONGSTALK": "0",
+            "TOTAL_RATDAMAGE": "0",
+            "TOTAL_LOOSE_FRUIT": "0"
+          }
+        ]
+      }
+    ],
+    "verification_data": [
+      {
+        "headers": [
+          "TOTAL_TRANSAKSI",
+          "VERIFIED_TRANSAKSI"
+        ],
+        "rows": [
+          {
+            "TOTAL_TRANSAKSI": "2993",
+            "VERIFIED_TRANSAKSI": "673"
+          }
+        ]
+      }
+    ]
+  },
+  "summary": {
+    "total_queries": 7,
+    "total_rows_extracted": 4,
+    "total_rows_processed": 1,
+    "extract_duration": 0.479795,
+    "transform_duration": 0,
+    "load_duration": 0,
+    "total_duration": 0
+  }
+}

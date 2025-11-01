@@ -1,0 +1,25 @@
+FFB PERFORMANCE REPORT RESULTS
+============================================================
+Generated: 2025-10-31 09:02:14
+
+DATE RANGE INFORMATION:
+------------------------------
+Start Date: N/A
+End Date: N/A
+Unique Days: N/A
+
+SUMMARY BY ESTATE:
+------------------------------
+Estate: N/A - N/A
+  Total Workers: 0
+  Total Transactions: 0
+
+TRANSACTION STATUS BREAKDOWN:
+------------------------------
+Status N/A: 0
+
+MAIN DATA (First 20 records):
+------------------------------
+DIVCODE | DIVNAME | EMPCODE | NAME | MANDORE | LABOUR_NAME | JUMLAH_TRANSAKSI
+------------------------------------------------------------------------------------------------------------------------
+N/A | N/A | N/A | N/A | N/A | N/A | 0

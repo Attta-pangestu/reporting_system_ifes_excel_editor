@@ -1,0 +1,58 @@
+{
+  "total_tests": 10,
+  "passed_tests": 10,
+  "failed_tests": 0,
+  "total_time": 4.700004577636719,
+  "test_details": [
+    {
+      "test_name": "test_01_database_connection",
+      "duration": 0.12466168403625488,
+      "status": "PASSED"
+    },
+    {
+      "test_name": "test_02_template_loading",
+      "duration": 0.001998424530029297,
+      "status": "PASSED"
+    },
+    {
+      "test_name": "test_03_excel_template_structure",
+      "duration": 0.010898351669311523,
+      "status": "PASSED"
+    },
+    {
+      "test_name": "test_04_query_execution",
+      "duration": 1.0441887378692627,
+      "status": "PASSED"
+    },
+    {
+      "test_name": "test_05_data_validation",
+      "duration": 0.5017805099487305,
+      "status": "PASSED"
+    },
+    {
+      "test_name": "test_06_report_generation_basic",
+      "duration": 0.8585953712463379,
+      "status": "PASSED"
+    },
+    {
+      "test_name": "test_07_error_handling",
+      "duration": 0.9114952087402344,
+      "status": "PASSED"
+    },
+    {
+      "test_name": "test_08_performance_basic",
+      "duration": 0.25527167320251465,
+      "status": "PASSED"
+    },
+    {
+      "test_name": "test_09_integration_workflow",
+      "duration": 0.9579651355743408,
+      "status": "PASSED"
+    },
+    {
+      "test_name": "test_10_excel_compatibility",
+      "duration": 0.010176420211791992,
+      "status": "PASSED"
+    }
+  ]
+}

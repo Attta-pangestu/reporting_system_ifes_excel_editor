@@ -1,0 +1,144 @@
+{
+  "template_info": {
+    "name": "Laporan_Kinerja_FFB",
+    "description": "Laporan Kinerja Fresh Fruit Bunch (FFB) Scanner Data",
+    "version": "1.0",
+    "author": "System Administrator",
+    "created_date": "2025-10-31",
+    "excel_file": "sample_template.xlsx"
+  },
+  "database_requirements": {
+    "required_tables": [
+      "FFBSCANNERDATA10",
+      "WORKERINFO", 
+      "EMP",
+      "CRDIVISION"
+    ],
+    "required_columns": {
+      "FFBSCANNERDATA10": ["WORKERID", "TRANSSTATUS", "JUMLAH_TRANSAKSI", "TANGGAL", "ESTATE"],
+      "WORKERINFO": ["WORKERID", "WORKERNAME"],
+      "EMP": ["EMPID", "EMPNAME", "DIVISIONID"],
+      "CRDIVISION": ["DIVISIONID", "DIVISIONNAME"]
+    }
+  },
+  "queries": [
+    {
+      "name": "date_range",
+      "description": "Get date range of data",
+      "sql": "SELECT MIN(TANGGAL) as START_DATE, MAX(TANGGAL) as END_DATE FROM FFBSCANNERDATA10",
+      "parameters": [],
+      "output_format": "single_value",
+      "transformations": [
+        {
+          "type": "date_format",
+          "format": "%d/%m/%Y",
+          "columns": ["START_DATE", "END_DATE"]
+        }
+      ]
+    },
+    {
+      "name": "main_data",
+      "description": "Main FFB scanner data with worker information",
+      "sql": "SELECT f.WORKERID, w.WORKERNAME, f.TRANSSTATUS, f.JUMLAH_TRANSAKSI, f.TANGGAL, f.ESTATE FROM FFBSCANNERDATA10 f LEFT JOIN WORKERINFO w ON f.WORKERID = w.WORKERID ORDER BY f.TANGGAL DESC, f.WORKERID",
+      "parameters": [],
+      "output_format": "table",
+      "transformations": [
+        {
+          "type": "date_format",
+          "format": "%d/%m/%Y",
+          "columns": ["TANGGAL"]
+        },
+        {
+          "type": "number_format",
+          "format": "#,##0",
+          "columns": ["JUMLAH_TRANSAKSI"]
+        }
+      ]
+    },
+    {
+      "name": "summary_by_estate",
+      "description": "Summary statistics by estate",
+      "sql": "SELECT f.ESTATE, COUNT(*) as TOTAL_RECORDS, COUNT(DISTINCT f.WORKERID) as UNIQUE_WORKERS, SUM(CASE WHEN f.TRANSSTATUS = 1 THEN 1 ELSE 0 END) as VERIFIED_COUNT FROM FFBSCANNERDATA10 f GROUP BY f.ESTATE ORDER BY f.ESTATE",
+      "parameters": [],
+      "output_format": "table",
+      "transformations": [
+        {
+          "type": "number_format",
+          "format": "#,##0",
+          "columns": ["TOTAL_RECORDS", "UNIQUE_WORKERS", "VERIFIED_COUNT"]
+        }
+      ]
+    },
+    {
+      "name": "status_breakdown",
+      "description": "Breakdown by transaction status",
+      "sql": "SELECT f.TRANSSTATUS, COUNT(*) as COUNT_STATUS FROM FFBSCANNERDATA10 f GROUP BY f.TRANSSTATUS ORDER BY f.TRANSSTATUS",
+      "parameters": [],
+      "output_format": "table",
+      "transformations": [
+        {
+          "type": "number_format",
+          "format": "#,##0",
+          "columns": ["COUNT_STATUS"]
+        }
+      ]
+    },
+    {
+      "name": "total_summary",
+      "description": "Overall summary statistics",
+      "sql": "SELECT COUNT(*) as TOTAL_TRANSACTIONS, COUNT(DISTINCT WORKERID) as TOTAL_WORKERS, COUNT(DISTINCT ESTATE) as TOTAL_ESTATES, COUNT(DISTINCT TANGGAL) as UNIQUE_DAYS FROM FFBSCANNERDATA10",
+      "parameters": [],
+      "output_format": "single_value",
+      "transformations": [
+        {
+          "type": "number_format",
+          "format": "#,##0",
+          "columns": ["TOTAL_TRANSACTIONS", "TOTAL_WORKERS", "TOTAL_ESTATES", "UNIQUE_DAYS"]
+        }
+      ]
+    }
+  ],
+  "mappings": {
+    "REPORT_DATE": "current_date",
+    "REPORT_TIME": "current_time",
+    "GENERATED_TIMESTAMP": "current_timestamp",
+    "DATE_RANGE": "date_range",
+    "MAIN_DATA_TABLE": "main_data",
+    "ESTATE_SUMMARY": "summary_by_estate",
+    "STATUS_BREAKDOWN": "status_breakdown",
+    "TOTAL_TRANSACTIONS": "total_summary",
+    "TOTAL_WORKERS": "total_summary",
+    "TOTAL_ESTATES": "total_summary",
+    "UNIQUE_DAYS": "total_summary"
+  },
+  "transformations": [
+    {
+      "type": "string_format",
+      "format_type": "upper",
+      "columns": ["ESTATE", "WORKERNAME"]
+    }
+  ],
+  "formatting": {
+    "auto_width": true,
+    "borders": true,
+    "header_style": {
+      "font": {
+        "bold": true,
+        "size": 12
+      },
+      "fill": {
+        "color": "CCCCCC"
+      }
+    }
+  },
+  "validation_rules": [
+    {
+      "type": "required_placeholders",
+      "placeholders": ["{{REPORT_DATE}}", "{{MAIN_DATA_TABLE}}"]
+    },
+    {
+      "type": "data_consistency",
+      "checks": ["non_empty_results", "valid_date_range"]
+    }
+  ]
+}

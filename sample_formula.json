@@ -1,0 +1,402 @@
+{
+  "description": "Formula definitions untuk FFB Analysis Report",
+  "version": "1.0",
+  
+  "queries": {
+    "ffb_data": {
+      "type": "sql",
+      "description": "Data FFB per estate dan tanggal",
+      "sql": "SELECT ESTATE, TANGGAL, JENIS_BUAH, BERAT_BRUTO, BERAT_NETTO, POTONGAN, HARGA_SATUAN, TOTAL_HARGA FROM FFB_TRANSACTIONS WHERE TANGGAL BETWEEN '{start_date}' AND '{end_date}' AND ESTATE = '{estate}' ORDER BY TANGGAL, JENIS_BUAH",
+      "return_format": "dict"
+    },
+    
+    "estate_summary": {
+      "type": "aggregation",
+      "description": "Summary data per estate",
+      "source_query": "ffb_data",
+      "aggregations": {
+        "total_berat_bruto": {
+          "type": "sum",
+          "field": "BERAT_BRUTO"
+        },
+        "total_berat_netto": {
+          "type": "sum", 
+          "field": "BERAT_NETTO"
+        },
+        "total_potongan": {
+          "type": "sum",
+          "field": "POTONGAN"
+        },
+        "total_nilai": {
+          "type": "sum",
+          "field": "TOTAL_HARGA"
+        },
+        "jumlah_transaksi": {
+          "type": "count",
+          "field": "TANGGAL"
+        }
+      }
+    },
+    
+    "daily_summary": {
+      "type": "sql",
+      "description": "Summary harian FFB",
+      "sql": "SELECT TANGGAL, SUM(BERAT_BRUTO) as TOTAL_BRUTO, SUM(BERAT_NETTO) as TOTAL_NETTO, SUM(TOTAL_HARGA) as TOTAL_NILAI, COUNT(*) as JUMLAH_TRIP FROM FFB_TRANSACTIONS WHERE TANGGAL BETWEEN '{start_date}' AND '{end_date}' AND ESTATE = '{estate}' GROUP BY TANGGAL ORDER BY TANGGAL",
+      "return_format": "dict"
+    },
+    
+    "jenis_buah_summary": {
+      "type": "sql",
+      "description": "Summary per jenis buah",
+      "sql": "SELECT JENIS_BUAH, SUM(BERAT_BRUTO) as TOTAL_BRUTO, SUM(BERAT_NETTO) as TOTAL_NETTO, SUM(TOTAL_HARGA) as TOTAL_NILAI, AVG(HARGA_SATUAN) as RATA_HARGA FROM FFB_TRANSACTIONS WHERE TANGGAL BETWEEN '{start_date}' AND '{end_date}' AND ESTATE = '{estate}' GROUP BY JENIS_BUAH ORDER BY TOTAL_NILAI DESC",
+      "return_format": "dict"
+    },
+    
+    "estate_info": {
+      "type": "sql",
+      "description": "Informasi estate",
+      "sql": "SELECT ESTATE_NAME, ALAMAT, MANAGER, LUAS_AREA FROM ESTATE_INFO WHERE ESTATE_CODE = '{estate}'",
+      "return_format": "dict"
+    }
+  },
+  
+  "variables": {
+    "report_title": {
+      "type": "direct",
+      "source": "Laporan Analisis FFB",
+      "default": "Laporan Analisis FFB"
+    },
+    
+    "estate_name": {
+      "type": "direct",
+      "source": "estate_info.ESTATE_NAME",
+      "default": "Estate Tidak Diketahui"
+    },
+    
+    "report_period": {
+      "type": "formatting",
+      "source": "start_date",
+      "format": "Periode: {value} s/d {end_date}",
+      "format_type": "date"
+    },
+    
+    "generated_date": {
+      "type": "formatting",
+      "source": "current_date",
+      "format": "%d %B %Y",
+      "format_type": "date"
+    },
+    
+    "total_berat_bruto": {
+      "type": "direct",
+      "source": "estate_summary.total_berat_bruto",
+      "default": 0
+    },
+    
+    "total_berat_netto": {
+      "type": "direct", 
+      "source": "estate_summary.total_berat_netto",
+      "default": 0
+    },
+    
+    "total_potongan": {
+      "type": "direct",
+      "source": "estate_summary.total_potongan", 
+      "default": 0
+    },
+    
+    "total_nilai": {
+      "type": "direct",
+      "source": "estate_summary.total_nilai",
+      "default": 0
+    },
+    
+    "jumlah_transaksi": {
+      "type": "direct",
+      "source": "estate_summary.jumlah_transaksi",
+      "default": 0
+    },
+    
+    "rata_harga": {
+      "type": "calculation",
+      "expression": "{total_nilai} / {total_berat_netto}",
+      "default": 0
+    },
+    
+    "persentase_potongan": {
+      "type": "calculation", 
+      "expression": "({total_potongan} / {total_berat_bruto}) * 100",
+      "default": 0
+    },
+    
+    "efisiensi_berat": {
+      "type": "calculation",
+      "expression": "({total_berat_netto} / {total_berat_bruto}) * 100", 
+      "default": 0
+    },
+    
+    "status_laporan": {
+      "type": "conditional",
+      "conditions": [
+        {
+          "field": "jumlah_transaksi",
+          "operator": ">",
+          "compare_value": 0,
+          "value": "Data Tersedia"
+        }
+      ],
+      "default": "Tidak Ada Data"
+    }
+  },
+  
+  "repeating_sections": {
+    "Summary": {
+      "daily_data": {
+        "data_source": "daily_summary",
+        "start_row": 10,
+        "template_rows": 1,
+        "columns": {
+          "tanggal": {
+            "column": "A",
+            "field": "TANGGAL",
+            "format": "date",
+            "cell_format": {
+              "alignment": {"horizontal": "center"},
+              "number_format": "dd/mm/yyyy"
+            }
+          },
+          "total_bruto": {
+            "column": "B", 
+            "field": "TOTAL_BRUTO",
+            "format": "number",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0.00"
+            }
+          },
+          "total_netto": {
+            "column": "C",
+            "field": "TOTAL_NETTO", 
+            "format": "number",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0.00"
+            }
+          },
+          "total_nilai": {
+            "column": "D",
+            "field": "TOTAL_NILAI",
+            "format": "currency",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0"
+            }
+          },
+          "jumlah_trip": {
+            "column": "E",
+            "field": "JUMLAH_TRIP",
+            "format": "integer",
+            "cell_format": {
+              "alignment": {"horizontal": "center"}
+            }
+          }
+        }
+      }
+    },
+    
+    "Detail": {
+      "ffb_transactions": {
+        "data_source": "ffb_data",
+        "start_row": 8,
+        "template_rows": 1,
+        "columns": {
+          "no": {
+            "column": "A",
+            "field": "ROW_NUMBER",
+            "format": "integer",
+            "cell_format": {
+              "alignment": {"horizontal": "center"}
+            }
+          },
+          "tanggal": {
+            "column": "B",
+            "field": "TANGGAL", 
+            "format": "date",
+            "cell_format": {
+              "alignment": {"horizontal": "center"},
+              "number_format": "dd/mm/yyyy"
+            }
+          },
+          "jenis_buah": {
+            "column": "C",
+            "field": "JENIS_BUAH",
+            "format": "text",
+            "cell_format": {
+              "alignment": {"horizontal": "left"}
+            }
+          },
+          "berat_bruto": {
+            "column": "D",
+            "field": "BERAT_BRUTO",
+            "format": "number",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0.00"
+            }
+          },
+          "berat_netto": {
+            "column": "E", 
+            "field": "BERAT_NETTO",
+            "format": "number",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0.00"
+            }
+          },
+          "potongan": {
+            "column": "F",
+            "field": "POTONGAN",
+            "format": "number", 
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0.00"
+            }
+          },
+          "harga_satuan": {
+            "column": "G",
+            "field": "HARGA_SATUAN",
+            "format": "currency",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0"
+            }
+          },
+          "total_harga": {
+            "column": "H",
+            "field": "TOTAL_HARGA",
+            "format": "currency",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0"
+            }
+          }
+        }
+      },
+      
+      "jenis_buah_summary": {
+        "data_source": "jenis_buah_summary",
+        "start_row": 25,
+        "template_rows": 1,
+        "columns": {
+          "jenis_buah": {
+            "column": "A",
+            "field": "JENIS_BUAH",
+            "format": "text",
+            "cell_format": {
+              "alignment": {"horizontal": "left"},
+              "font": {"bold": true}
+            }
+          },
+          "total_bruto": {
+            "column": "B",
+            "field": "TOTAL_BRUTO",
+            "format": "number",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0.00"
+            }
+          },
+          "total_netto": {
+            "column": "C",
+            "field": "TOTAL_NETTO",
+            "format": "number",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0.00"
+            }
+          },
+          "total_nilai": {
+            "column": "D",
+            "field": "TOTAL_NILAI",
+            "format": "currency",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0"
+            }
+          },
+          "rata_harga": {
+            "column": "E",
+            "field": "RATA_HARGA",
+            "format": "currency",
+            "cell_format": {
+              "alignment": {"horizontal": "right"},
+              "number_format": "#,##0"
+            }
+          }
+        }
+      }
+    }
+  },
+  
+  "sheet_formatting": {
+    "Summary": {
+      "column_widths": {
+        "A": 12,
+        "B": 15,
+        "C": 15,
+        "D": 18,
+        "E": 12
+      },
+      "print_settings": {
+        "orientation": "portrait",
+        "paper_size": 9,
+        "margins": {
+          "left": 0.7,
+          "right": 0.7,
+          "top": 0.75,
+          "bottom": 0.75
+        }
+      }
+    },
+    
+    "Detail": {
+      "column_widths": {
+        "A": 5,
+        "B": 12,
+        "C": 15,
+        "D": 12,
+        "E": 12,
+        "F": 12,
+        "G": 12,
+        "H": 15
+      },
+      "print_settings": {
+        "orientation": "landscape",
+        "paper_size": 9,
+        "margins": {
+          "left": 0.5,
+          "right": 0.5,
+          "top": 0.75,
+          "bottom": 0.75
+        }
+      }
+    }
+  },
+  
+  "formatting": {
+    "header_style": {
+      "font": {"bold": true, "size": 12},
+      "fill": {"color": "CCCCCC"},
+      "border": {"style": "thin"}
+    },
+    "data_style": {
+      "font": {"size": 10},
+      "border": {"style": "thin"}
+    },
+    "number_format": {
+      "weight": "#,##0.00",
+      "percentage": "0.00%",
+      "currency": "#,##0"
+    }
+  }
+}

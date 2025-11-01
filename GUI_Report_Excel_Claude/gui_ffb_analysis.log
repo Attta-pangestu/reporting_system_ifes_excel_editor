@@ -1,0 +1,51 @@
+2025-10-31 13:49:06,349 - INFO - Loaded 10 estates from config
+2025-10-31 13:49:06,349 - INFO - Excel Report Generator initialized
+2025-10-31 13:49:06,404 - INFO - Loaded 10 estates
+2025-10-31 13:49:06,406 - INFO - System initialized successfully
+2025-10-31 13:49:14,281 - INFO - Starting report generation for 1 estates
+2025-10-31 13:49:14,293 - INFO - Period: 2025-10-31 to 2025-10-31
+2025-10-31 13:49:14,303 - INFO - Output: reports
+2025-10-31 13:49:14,307 - INFO - Loaded 10 estates from config
+2025-10-31 13:49:14,307 - INFO - Excel Report Generator initialized
+2025-10-31 13:49:14,365 - INFO - Template dimuat: Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 13:49:14,365 - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 13:49:14,373 - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 13:49:14,377 - INFO - Found 57 placeholders
+2025-10-31 13:49:14,377 - INFO - Parsed 4 repeating sections
+2025-10-31 13:49:14,377 - INFO - Components initialized successfully
+2025-10-31 13:49:14,377 - INFO - Generating report for estate: PGE 2B
+2025-10-31 13:49:14,377 - INFO - Detecting ISQL path...
+2025-10-31 13:49:14,414 - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 13:49:14,414 - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 13:49:14,414 - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 13:49:14,414 - INFO - Connection mode: localhost
+2025-10-31 13:49:14,414 - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 13:49:14,545 - INFO - Connection test successful
+2025-10-31 13:49:14,545 - INFO - Formula definitions loaded: 7 queries
+2025-10-31 13:49:14,545 - INFO - Executing queries for estate PGE 2B
+2025-10-31 13:49:15,467 - INFO - Processing variables
+2025-10-31 13:49:15,467 - ERROR - Error evaluating expression '{total_ripe_bunches} / {total_transactions}': division by zero
+2025-10-31 13:49:15,467 - ERROR - Processed expression: 0 / 0
+2025-10-31 13:49:15,473 - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 13:49:15,473 - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 13:49:15,508 - INFO - Template dimuat: Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 13:49:15,508 - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 13:49:15,508 - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 13:49:15,508 - INFO - Found 57 placeholders
+2025-10-31 13:49:15,508 - INFO - Parsed 4 repeating sections
+2025-10-31 13:49:15,554 - INFO - Processing template placeholders
+2025-10-31 13:49:15,554 - ERROR - Error processing sheet Dashboard: Cannot convert [{'headers': ['VERIFICATION_RATE'], 'rows': [{'VERIFICATION_RATE': '95.0'}]}] to Excel
+2025-10-31 13:49:15,556 - INFO - Processed 11 placeholders di sheet Harian
+2025-10-31 13:49:15,556 - INFO - Processed 12 placeholders di sheet Karyawan
+2025-10-31 13:49:15,562 - INFO - Processed 11 placeholders di sheet Field
+2025-10-31 13:49:15,566 - INFO - Processed 8 placeholders di sheet Kualitas
+2025-10-31 13:49:15,566 - INFO - Processing repeating sections
+2025-10-31 13:49:15,566 - INFO - Processed 1 rows in repeating section for sheet Field
+2025-10-31 13:49:15,695 - INFO - Processed template saved: reports\Laporan_FFB_Analysis_PGE_2B_2025-10-31_2025-10-31.xlsx
+2025-10-31 13:49:15,695 - INFO - Report saved: reports\Laporan_FFB_Analysis_PGE_2B_2025-10-31_2025-10-31.xlsx
+2025-10-31 13:49:15,695 - INFO - Report generated successfully: reports\Laporan_FFB_Analysis_PGE_2B_2025-10-31_2025-10-31.xlsx
+2025-10-31 13:49:15,702 - INFO - Report generation completed successfully
+2025-10-31 13:55:33,259 - INFO - Loaded 10 estates from config
+2025-10-31 13:55:33,259 - INFO - Excel Report Generator initialized
+2025-10-31 13:55:33,309 - INFO - Loaded 10 estates
+2025-10-31 13:55:33,311 - INFO - System initialized successfully

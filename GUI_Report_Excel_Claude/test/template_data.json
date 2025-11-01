@@ -1,0 +1,362 @@
+{
+  "report_title": "LAPORAN ANALISIS FRESH FRUIT BUNCH (FFB)",
+  "report_period": "Periode: 2024-10-01 s/d 2024-10-31",
+  "generated_date": "31 October 2025",
+  "generated_time": "15:04:02",
+  "estate_name": "PGE 2B",
+  "total_transactions": "6119",
+  "total_ripe_bunches": [],
+  "total_unripe_bunches": [],
+  "avg_ripe_per_transaction": 0,
+  "quality_percentage": 0,
+  "verification_rate": "95.0",
+  "daily_average_transactions": 0,
+  "daily_average_ripe": 0,
+  "peak_performance_day": null,
+  "low_performance_day": null,
+  "start_date": "2024-10-01",
+  "end_date": "2024-10-31",
+  "estate_code": "PGE_2B",
+  "daily_performance_rows": [
+    {
+      "TRANSDATE J": "2024-10-01",
+      "MLAH_TRANSAKSI": "209"
+    },
+    {
+      "TRANSDATE J": "2024-10-02",
+      "MLAH_TRANSAKSI": "209"
+    },
+    {
+      "TRANSDATE J": "2024-10-03",
+      "MLAH_TRANSAKSI": "218"
+    },
+    {
+      "TRANSDATE J": "2024-10-04",
+      "MLAH_TRANSAKSI": "186"
+    },
+    {
+      "TRANSDATE J": "2024-10-05",
+      "MLAH_TRANSAKSI": "207"
+    },
+    {
+      "TRANSDATE J": "2024-10-07",
+      "MLAH_TRANSAKSI": "263"
+    },
+    {
+      "TRANSDATE J": "2024-10-08",
+      "MLAH_TRANSAKSI": "162"
+    },
+    {
+      "TRANSDATE J": "2024-10-09",
+      "MLAH_TRANSAKSI": "178"
+    },
+    {
+      "TRANSDATE J": "2024-10-10",
+      "MLAH_TRANSAKSI": "218"
+    },
+    {
+      "TRANSDATE J": "2024-10-11",
+      "MLAH_TRANSAKSI": "166"
+    },
+    {
+      "TRANSDATE J": "2024-10-12",
+      "MLAH_TRANSAKSI": "259"
+    },
+    {
+      "TRANSDATE J": "2024-10-14",
+      "MLAH_TRANSAKSI": "184"
+    },
+    {
+      "TRANSDATE J": "2024-10-15",
+      "MLAH_TRANSAKSI": "272"
+    },
+    {
+      "TRANSDATE J": "2024-10-16",
+      "MLAH_TRANSAKSI": "207"
+    },
+    {
+      "TRANSDATE J": "2024-10-17",
+      "MLAH_TRANSAKSI": "213"
+    },
+    {
+      "TRANSDATE J": "2024-10-18",
+      "MLAH_TRANSAKSI": "197"
+    },
+    {
+      "TRANSDATE J": "2024-10-19",
+      "MLAH_TRANSAKSI": "218"
+    },
+    {
+      "TRANSDATE J": "2024-10-21",
+      "MLAH_TRANSAKSI": "244"
+    },
+    {
+      "TRANSDATE J": "2024-10-22",
+      "MLAH_TRANSAKSI": "216"
+    },
+    {
+      "TRANSDATE J": "2024-10-23",
+      "MLAH_TRANSAKSI": "295"
+    },
+    {
+      "TRANSDATE J": "TRANSDATE",
+      "MLAH_TRANSAKSI": "JUMLAH_TRANSAKSI"
+    },
+    {
+      "TRANSDATE J": "2024-10-24",
+      "MLAH_TRANSAKSI": "292"
+    },
+    {
+      "TRANSDATE J": "2024-10-25",
+      "MLAH_TRANSAKSI": "223"
+    },
+    {
+      "TRANSDATE J": "2024-10-26",
+      "MLAH_TRANSAKSI": "302"
+    },
+    {
+      "TRANSDATE J": "2024-10-28",
+      "MLAH_TRANSAKSI": "253"
+    },
+    {
+      "TRANSDATE J": "2024-10-29",
+      "MLAH_TRANSAKSI": "267"
+    },
+    {
+      "TRANSDATE J": "2024-10-30",
+      "MLAH_TRANSAKSI": "218"
+    },
+    {
+      "TRANSDATE J": "2024-10-31",
+      "MLAH_TRANSAKSI": "243"
+    }
+  ],
+  "daily_performance_headers": [
+    "TRANSDATE J",
+    "MLAH_TRANSAKSI"
+  ],
+  "employee_performance_rows": [
+    {
+      "EMPLOYEE_NAME": "MARTONO ( ASNIDA )",
+      "RECORDTAG": "A0001",
+      "JUMLAH_TRANSAKSI": "520",
+      "TOTAL_RIPE": "450",
+      "TOTAL_UNRIPE": "35",
+      "TOTAL_BLACK": "15",
+      "TOTAL_ROTTEN": "10",
+      "TOTAL_LONGSTALK": "5",
+      "TOTAL_RATDAMAGE": "2",
+      "TOTAL_LOOSEFRUIT": "25"
+    }
+  ],
+  "employee_performance_headers": [
+    "EMPLOYEE_NAME",
+    "RECORDTAG",
+    "JUMLAH_TRANSAKSI",
+    "TOTAL_RIPE",
+    "TOTAL_UNRIPE",
+    "TOTAL_BLACK",
+    "TOTAL_ROTTEN",
+    "TOTAL_LONGSTALK",
+    "TOTAL_RATDAMAGE",
+    "TOTAL_LOOSEFRUIT"
+  ],
+  "field_performance_rows": [
+    {
+      "FIELDNAME": "BLOCK A",
+      "JUMLAH_TRANSAKSI": "850",
+      "TOTAL_RIPE": "650",
+      "TOTAL_UNRIPE": "80",
+      "TOTAL_BLACK": "40",
+      "TOTAL_ROTTEN": "25",
+      "TOTAL_LONGSTALK": "8",
+      "TOTAL_RATDAMAGE": "3",
+      "TOTAL_LOOSEFRUIT": "35"
+    },
+    {
+      "FIELDNAME": "BLOCK B",
+      "JUMLAH_TRANSAKSI": "750",
+      "TOTAL_RIPE": "600",
+      "TOTAL_UNRIPE": "75",
+      "TOTAL_BLACK": "38",
+      "TOTAL_ROTTEN": "22",
+      "TOTAL_LONGSTALK": "7",
+      "TOTAL_RATDAMAGE": "2",
+      "TOTAL_LOOSEFRUIT": "30"
+    },
+    {
+      "FIELDNAME": "BLOCK C",
+      "JUMLAH_TRANSAKSI": "650",
+      "TOTAL_RIPE": "550",
+      "TOTAL_UNRIPE": "65",
+      "TOTAL_BLACK": "32",
+      "TOTAL_ROTTEN": "18",
+      "TOTAL_LONGSTALK": "6",
+      "TOTAL_RATDAMAGE": "2",
+      "TOTAL_LOOSEFRUIT": "28"
+    }
+  ],
+  "field_performance_headers": [
+    "FIELDNAME",
+    "JUMLAH_TRANSAKSI",
+    "TOTAL_RIPE",
+    "TOTAL_UNRIPE",
+    "TOTAL_BLACK",
+    "TOTAL_ROTTEN",
+    "TOTAL_LONGSTALK",
+    "TOTAL_RATDAMAGE",
+    "TOTAL_LOOSEFRUIT"
+  ],
+  "quality_analysis_rows": [
+    {
+      "TRANSDATE T": "2024-10-01",
+      "TAL_TRANSAKSI": "209"
+    },
+    {
+      "TRANSDATE T": "2024-10-02",
+      "TAL_TRANSAKSI": "209"
+    },
+    {
+      "TRANSDATE T": "2024-10-03",
+      "TAL_TRANSAKSI": "218"
+    },
+    {
+      "TRANSDATE T": "2024-10-04",
+      "TAL_TRANSAKSI": "186"
+    },
+    {
+      "TRANSDATE T": "2024-10-05",
+      "TAL_TRANSAKSI": "207"
+    },
+    {
+      "TRANSDATE T": "2024-10-07",
+      "TAL_TRANSAKSI": "263"
+    },
+    {
+      "TRANSDATE T": "2024-10-08",
+      "TAL_TRANSAKSI": "162"
+    },
+    {
+      "TRANSDATE T": "2024-10-09",
+      "TAL_TRANSAKSI": "178"
+    },
+    {
+      "TRANSDATE T": "2024-10-10",
+      "TAL_TRANSAKSI": "218"
+    },
+    {
+      "TRANSDATE T": "2024-10-11",
+      "TAL_TRANSAKSI": "166"
+    },
+    {
+      "TRANSDATE T": "2024-10-12",
+      "TAL_TRANSAKSI": "259"
+    },
+    {
+      "TRANSDATE T": "2024-10-14",
+      "TAL_TRANSAKSI": "184"
+    },
+    {
+      "TRANSDATE T": "2024-10-15",
+      "TAL_TRANSAKSI": "272"
+    },
+    {
+      "TRANSDATE T": "2024-10-16",
+      "TAL_TRANSAKSI": "207"
+    },
+    {
+      "TRANSDATE T": "2024-10-17",
+      "TAL_TRANSAKSI": "213"
+    },
+    {
+      "TRANSDATE T": "2024-10-18",
+      "TAL_TRANSAKSI": "197"
+    },
+    {
+      "TRANSDATE T": "2024-10-19",
+      "TAL_TRANSAKSI": "218"
+    },
+    {
+      "TRANSDATE T": "2024-10-21",
+      "TAL_TRANSAKSI": "244"
+    },
+    {
+      "TRANSDATE T": "2024-10-22",
+      "TAL_TRANSAKSI": "216"
+    },
+    {
+      "TRANSDATE T": "2024-10-23",
+      "TAL_TRANSAKSI": "295"
+    },
+    {
+      "TRANSDATE T": "TRANSDATE",
+      "TAL_TRANSAKSI": "TOTAL_TRANSAKSI"
+    },
+    {
+      "TRANSDATE T": "2024-10-24",
+      "TAL_TRANSAKSI": "292"
+    },
+    {
+      "TRANSDATE T": "2024-10-25",
+      "TAL_TRANSAKSI": "223"
+    },
+    {
+      "TRANSDATE T": "2024-10-26",
+      "TAL_TRANSAKSI": "302"
+    },
+    {
+      "TRANSDATE T": "2024-10-28",
+      "TAL_TRANSAKSI": "253"
+    },
+    {
+      "TRANSDATE T": "2024-10-29",
+      "TAL_TRANSAKSI": "267"
+    },
+    {
+      "TRANSDATE T": "2024-10-30",
+      "TAL_TRANSAKSI": "218"
+    },
+    {
+      "TRANSDATE T": "2024-10-31",
+      "TAL_TRANSAKSI": "243"
+    }
+  ],
+  "quality_analysis_headers": [
+    "TRANSDATE T",
+    "TAL_TRANSAKSI"
+  ],
+  "TOTAL_TRANSAKSI": "6119",
+  "total_transactions_raw": "6119",
+  "verification_rate_raw": "95.0",
+  "VERIFICATION_RATE": "95.0",
+  "SYNTHETIC_RIPE": 4500,
+  "SYNTHETIC_UNRIPE": 350,
+  "SYNTHETIC_BLACK": 150,
+  "SYNTHETIC_ROTTEN": 75,
+  "SYNTHETIC_LOOSE": 25,
+  "_field_mappings": {
+    "total_ripe_bunches": 4500,
+    "total_unripe_bunches": 350,
+    "verification_rate": "95.0",
+    "TRANSDATE": "daily_performance_rows",
+    "JUMLAH_TRANSAKSI": "field_performance_rows",
+    "RIPE_BUNCHES": "daily_performance_rows",
+    "UNRIPE_BUNCHES": "daily_performance_rows",
+    "BLACK_BUNCHES": "daily_performance_rows",
+    "ROTTEN_BUNCHES": "daily_performance_rows",
+    "LONGSTALK_BUNCHES": "daily_performance_rows",
+    "RAT_DAMAGE_BUNCHES": "daily_performance_rows",
+    "LOOSE_FRUIT_KG": "daily_performance_rows",
+    "EMPLOYEE_NAME": "employee_performance_rows",
+    "RECORDTAG": "employee_performance_rows",
+    "TOTAL_RIPE": "quality_analysis_rows",
+    "TOTAL_UNRIPE": "field_performance_rows",
+    "TOTAL_BLACK": "quality_analysis_rows",
+    "TOTAL_ROTTEN": "quality_analysis_rows",
+    "TOTAL_LONGSTALK": "field_performance_rows",
+    "TOTAL_RATDAMAGE": "quality_analysis_rows",
+    "TOTAL_LOOSEFRUIT": "field_performance_rows",
+    "FIELDNAME": "field_performance_rows",
+    "PERCENTAGE_DEFECT": "quality_analysis_rows"
+  }
+}

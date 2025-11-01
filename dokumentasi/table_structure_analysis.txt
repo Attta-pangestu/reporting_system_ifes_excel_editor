@@ -1,0 +1,29 @@
+=== TABLE STRUCTURE ANALYSIS ===\nDatabase: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB\nAnalysis Time: 2025-10-31 08:32:28.630744\n\nTABLE: FFBSCANNERDATA10\n==================================================\nERROR: Error executing query: Statement failed, SQLCODE = -206
+
+Dynamic SQL Error
+-SQL error code = -206
+-Column unknown
+-RDB$FIELD_TYPE
+-At line 3, column 25.
+\n\nTABLE: WORKERINFO\n==================================================\nERROR: Error executing query: Statement failed, SQLCODE = -206
+
+Dynamic SQL Error
+-SQL error code = -206
+-Column unknown
+-RDB$FIELD_TYPE
+-At line 3, column 25.
+\n\nTABLE: WORKERWDRS\n==================================================\nERROR: Error executing query: Statement failed, SQLCODE = -206
+
+Dynamic SQL Error
+-SQL error code = -206
+-Column unknown
+-RDB$FIELD_TYPE
+-At line 3, column 25.
+\n\nTABLE: VWFFBSCANNERDATA10\n==================================================\nERROR: Error executing query: Statement failed, SQLCODE = -206
+
+Dynamic SQL Error
+-SQL error code = -206
+-Column unknown
+-RDB$FIELD_TYPE
+-At line 3, column 25.
+\n\n

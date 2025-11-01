@@ -1,0 +1,25 @@
+2025-10-31 08:04:19,427 - INFO - context_portal_mcp.main - File logging configured to: D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method\context_portal\./logs/conport.log
+2025-10-31 08:04:19,429 - INFO - context_portal_mcp.core.config - Database filename set to: context.db
+2025-10-31 08:04:19,429 - INFO - context_portal_mcp.main - Using database filename: context.db
+2025-10-31 08:04:19,429 - INFO - context_portal_mcp.main - Parsed CLI args: Namespace(host='127.0.0.1', port=8000, workspace_id='D:\\Gawean Rebinmas\\Monitoring Database\\Ifes Auto report\\excel_method', auto_detect_workspace=True, workspace_search_start=None, no_auto_detect=False, mode='stdio', log_file='./logs/conport.log', db_path=None, base_path=None, db_filename='context.db', log_level='INFO')
+2025-10-31 08:04:19,431 - INFO - context_portal_mcp.main - Starting ConPort in STDIO mode with workspace detection enabled
+2025-10-31 08:04:19,433 - WARNING - context_portal_mcp.core.workspace_detector - No workspace indicators found, using start path: C:\Users\nbgmf
+2025-10-31 08:04:19,433 - INFO - context_portal_mcp.main - Workspace detection details: {'start_path': 'C:\\Users\\nbgmf', 'detected_workspace': 'C:\\Users\\nbgmf', 'context_portal_path': 'C:\\Users\\nbgmf\\context_portal', 'detection_method': 'fallback', 'indicators_found': [], 'environment_variables': {'VSCODE_WORKSPACE_FOLDER': None, 'CONPORT_WORKSPACE': None, 'PWD': None, 'CWD': 'C:\\Users\\nbgmf'}}
+2025-10-31 08:04:19,433 - INFO - context_portal_mcp.main - Effective workspace ID: D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method
+2025-10-31 08:04:19,433 - INFO - context_portal_mcp.main - Pre-warming database connection for workspace: D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method
+2025-10-31 08:04:19,433 - INFO - context_portal_mcp.db.database - Alembic.ini not found. Creating at D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method\context_portal\alembic.ini
+2025-10-31 08:04:19,433 - INFO - context_portal_mcp.db.database - Alembic env.py not found. Creating at D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method\context_portal\alembic\env.py
+2025-10-31 08:04:19,437 - INFO - context_portal_mcp.db.database - Initial schema not found. Creating at D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method\context_portal\alembic\versions\2025_06_17_initial_schema.py
+2025-10-31 08:04:19,453 - INFO - context_portal_mcp.db.database - Alembic: Script directory D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method\context_portal\alembic confirmed to exist by Python.
+2025-10-31 08:04:19,453 - INFO - context_portal_mcp.db.database - Running Alembic migrations for database: D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method\context_portal\context.db
+2025-10-31 21:26:44,020 - INFO - context_portal_mcp.main - File logging configured to: D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method\context_portal\./logs/conport.log
+2025-10-31 21:26:44,029 - INFO - context_portal_mcp.core.config - Database filename set to: context.db
+2025-10-31 21:26:44,029 - INFO - context_portal_mcp.main - Using database filename: context.db
+2025-10-31 21:26:44,029 - INFO - context_portal_mcp.main - Parsed CLI args: Namespace(host='127.0.0.1', port=8000, workspace_id='D:\\Gawean Rebinmas\\Monitoring Database\\Ifes Auto report\\excel_method', auto_detect_workspace=True, workspace_search_start=None, no_auto_detect=False, mode='stdio', log_file='./logs/conport.log', db_path=None, base_path=None, db_filename='context.db', log_level='INFO')
+2025-10-31 21:26:44,029 - INFO - context_portal_mcp.main - Starting ConPort in STDIO mode with workspace detection enabled
+2025-10-31 21:26:44,029 - WARNING - context_portal_mcp.core.workspace_detector - No workspace indicators found, using start path: C:\Users\nbgmf
+2025-10-31 21:26:44,032 - INFO - context_portal_mcp.main - Workspace detection details: {'start_path': 'C:\\Users\\nbgmf', 'detected_workspace': 'C:\\Users\\nbgmf', 'context_portal_path': 'C:\\Users\\nbgmf\\context_portal', 'detection_method': 'fallback', 'indicators_found': [], 'environment_variables': {'VSCODE_WORKSPACE_FOLDER': None, 'CONPORT_WORKSPACE': None, 'PWD': None, 'CWD': 'C:\\Users\\nbgmf'}}
+2025-10-31 21:26:44,032 - INFO - context_portal_mcp.main - Effective workspace ID: D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method
+2025-10-31 21:26:44,032 - INFO - context_portal_mcp.main - Pre-warming database connection for workspace: D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method
+2025-10-31 21:26:44,034 - INFO - context_portal_mcp.db.database - Alembic: Script directory D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method\context_portal\alembic confirmed to exist by Python.
+2025-10-31 21:26:44,034 - INFO - context_portal_mcp.db.database - Running Alembic migrations for database: D:\Gawean Rebinmas\Monitoring Database\Ifes Auto report\excel_method\context_portal\context.db

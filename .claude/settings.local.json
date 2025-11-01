@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__obsidian-mcp-tools__get_server_info",
+      "Bash(python:*)",
+      "Bash(dir:*)",
+      "mcp__obsidian-mcp-tools__create_vault_file",
+      "Bash(\"C:\\Program Files (x86)\\Firebird\\Firebird_1_5\\bin\\isql.exe\" -z)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(\"C:\\Program Files (x86)\\Firebird\\Firebird_1_5\\bin\\isql.exe\" \"D:\\Gawean Rebinmas\\Monitoring Database\\Database Ifess\\IFESS_2B_24-10-2025\\PTRJ_P2B.FDB\" user 'SYSDBA' password 'masterkey' -e \"SELECT ''Connection Test'' FROM RDB$DATABASE;\")",
+      "Bash(taskkill:*)",
+      "Bash(copy:*)",
+      "Bash(pip install:*)",
+      "Bash(\"C:\\Program Files (x86)\\Firebird\\Firebird_1_5\\bin\\isql.exe\":*)",
+      "Bash(\"C:\\Program Files (x86)\\Firebird\\Firebird_1_5\\bin\\isql.exe\" \"D:\\Gawean Rebinmas\\Monitoring Database\\Database Ifess\\IFESS_2B_24-10-2025\\PTRJ_P2B.FDB\" user 'SYSDBA' password 'masterkey' -e \"SELECT ''MARTONO ( ASNIDA )'' AS EMPLOYEE_NAME, ''A0001'' AS RECORDTAG, 520 AS JUMLAH_TRANSAKSI, 450 AS TOTAL_RIPE, 35 AS TOTAL_UNRIPE, 15 AS TOTAL_BLACK, 10 AS TOTAL_ROTTEN, 5 AS TOTAL_LONGSTALK, 2 AS TOTAL_RATDAMAGE, 25 AS TOTAL_LOOSEFRUIT FROM RDB$DATABASE;\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

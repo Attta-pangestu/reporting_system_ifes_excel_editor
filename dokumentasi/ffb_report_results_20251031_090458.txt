@@ -1,0 +1,61 @@
+FFB PERFORMANCE REPORT RESULTS
+============================================================
+Generated: 2025-10-31 09:04:58
+
+DATE RANGE INFORMATION:
+------------------------------
+Start Date: 2025-10-01
+End Date: 2025-10-23
+Unique Days: 20
+
+SUMMARY BY ESTATE:
+------------------------------
+Estate: C1 - Air Jangkat
+  Total Workers: 16
+  Total Transactions: 36
+
+Estate: D1 - Air Kunyal
+  Total Workers: 24
+  Total Transactions: 1604
+
+Estate: D2 - Air Limpas
+  Total Workers: 33
+  Total Transactions: 2131
+
+Estate: K2 - PLASMA CENDIL
+  Total Workers: 5
+  Total Transactions: 60
+
+TRANSACTION STATUS BREAKDOWN:
+------------------------------
+Status 704: 3126
+Status 705: 24
+Status 731: 387
+Status 732: 294
+
+MAIN DATA (First 20 records):
+------------------------------
+DIVCODE | DIVNAME | EMPCODE | NAME | MANDORE | LABOUR_NAME | JUMLAH_TRANSAKSI
+------------------------------------------------------------------------------------------------------------------------
+C1 | Air Jangkat | C0050 | SUIP ( SELAMA ) | KERANI | N/A | 1
+C1 | Air Jangkat | C0051 | ROBIN DINATA ( DASNIAR ) | KERANI | N/A | 2
+C1 | Air Jangkat | C0054 | SAPARUDIN ( HAMSUNA ) | KERANI | N/A | 2
+C1 | Air Jangkat | C0374 | SONJA PRIYOGA ( SURNA ) | KERANI | N/A | 4
+C1 | Air Jangkat | C0496 | AHAP ( Inaq Kayyin ) | KERANI | N/A | 2
+C1 | Air Jangkat | C0595 | IHSAN (Inaq Mustawan) | KERANI | N/A | 2
+C1 | Air Jangkat | C0603 | QISTAHAM (Inaq Kiaman) | KERANI | N/A | 4
+C1 | Air Jangkat | C0612 | JAYADI ( Rukiyah ) | KERANI | N/A | 2
+C1 | Air Jangkat | C0630 | DEKY FRANZA ( SUSIANA ) | KERANI | N/A | 2
+C1 | Air Jangkat | C0645 | MUHAMAD AMIN (Inaq Nursamin) | KERANI | N/A | 3
+C1 | Air Jangkat | C0680 | SAMSUL HADI (TEMAH) | KERANI | N/A | 2
+C1 | Air Jangkat | C0683 | SAPARUDIN (MILAH) | KERANI | N/A | 2
+C1 | Air Jangkat | C0718 | FAHRUDIN (SEMAH) | KERANI | N/A | 2
+C1 | Air Jangkat | C0720 | HERIANTO ARBI (NURTINI) | KERANI | N/A | 2
+C1 | Air Jangkat | C0728 | M. IDRIS PRATAMA ( SIAMAH ) | KERANI | N/A | 2
+C1 | Air Jangkat | C0738 | SUTRA PRAYOGI ( SURNA ) | KERANI | N/A | 2
+D1 | Air Kunyal | D0043 | JANUAR ( MARYATI ) | KERANI | N/A | 63
+D1 | Air Kunyal | D0044 | FERBI HANJAYA ( SENATI ) | KERANI | N/A | 63
+D1 | Air Kunyal | D0050 | PURGANDI ( SURYANI ) | KERANI | N/A | 60
+D1 | Air Kunyal | D0051 | SAHDAN ( SAKNAH ) | KERANI | N/A | 53
+
+... and 58 more records

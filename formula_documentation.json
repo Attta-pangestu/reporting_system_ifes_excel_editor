@@ -1,0 +1,50 @@
+{
+    "title": "Formula Documentation - Laporan Kinerja Kerani, Mandor, Asisten",
+    "description": "Dokumentasi lengkap untuk mengisi template Excel menggunakan formula JSON",
+    "version": "1.0",
+    "last_updated": "2025-10-31T08:20:54.030659",
+    "sections": {
+        "data_preparation": {
+            "title": "1. Persiapan Data",
+            "steps": [
+                "Siapkan koneksi ke database Firebird untuk setiap estate",
+                "Load konfigurasi dari config.json",
+                "Tentukan rentang tanggal yang akan dianalisis",
+                "Ambil data employee mapping dari tabel EMP",
+                "Ambil data divisi dari tabel OCFIELD dan CRDIVISION"
+            ]
+        },
+        "calculation_logic": {
+            "title": "2. Logika Perhitungan",
+            "formulas": {
+                "kerani_total": "COUNT transaksi dengan RECORDTAG = 'PM' per employee",
+                "kerani_verified": "COUNT transaksi kerani yang memiliki duplikat TRANSNO",
+                "kerani_differences": "COUNT transaksi dengan perbedaan field antara kerani dan mandor/asisten",
+                "mandor_total": "COUNT transaksi dengan RECORDTAG = 'P1' per employee",
+                "asisten_total": "COUNT transaksi dengan RECORDTAG = 'P5' per employee",
+                "verification_rate": "(kerani_verified / kerani_total) * 100",
+                "difference_percentage": "(kerani_differences / kerani_verified) * 100"
+            }
+        },
+        "field_comparison": {
+            "title": "3. Perbandingan Field",
+            "fields": [
+                "RIPEBCH",
+                "UNRIPEBCH",
+                "BLACKBCH",
+                "ROTTENBCH",
+                "LONGSTALKBCH",
+                "RATDMGBCH",
+                "LOOSEFRUIT"
+            ],
+            "logic": "Hitung sebagai 1 transaksi berbeda jika ADA SATU PUN field yang berbeda"
+        },
+        "special_filters": {
+            "title": "4. Filter Khusus",
+            "status_704": {
+                "condition": "Bulan Mei 2025",
+                "logic": "Gunakan TRANSSTATUS = '704' untuk transaksi Mandor/Asisten saat menghitung perbedaan"
+            }
+        }
+    }
+}

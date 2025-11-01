@@ -1,0 +1,19 @@
+2025-11-01 08:43:45,934 - __main__ - INFO - Starting comprehensive query tests for PGE 2B
+2025-11-01 08:43:45,948 - __main__ - INFO - Testing database connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-11-01 08:43:46,013 - __main__ - INFO - Testing formula engine with: pge2b_real_formula.json
+2025-11-01 08:43:46,013 - __main__ - INFO - Testing all queries...
+2025-11-01 08:43:46,013 - __main__ - INFO - Testing query: estate_info
+2025-11-01 08:43:46,067 - __main__ - INFO - Testing query: daily_performance
+2025-11-01 08:43:46,208 - __main__ - INFO - Testing query: employee_performance
+2025-11-01 08:43:46,285 - __main__ - INFO - Testing query: field_performance
+2025-11-01 08:43:46,365 - __main__ - INFO - Testing query: quality_analysis
+2025-11-01 08:43:46,490 - __main__ - INFO - Testing query: summary_totals
+2025-11-01 08:43:46,590 - __main__ - INFO - Testing query: verification_data
+2025-11-01 08:43:46,708 - __main__ - INFO - Testing batch query execution...
+2025-11-01 08:43:47,180 - __main__ - INFO - Analyzing test results...
+2025-11-01 08:43:47,180 - __main__ - INFO -    Total Queries: 7
+2025-11-01 08:43:47,181 - __main__ - INFO -    Successful: 8
+2025-11-01 08:43:47,181 - __main__ - INFO -    Failed: -1
+2025-11-01 08:43:47,181 - __main__ - INFO -    Total Rows: 4
+2025-11-01 08:43:47,181 - __main__ - INFO -    Total Time: 0.69s
+2025-11-01 08:43:47,181 - __main__ - INFO - Saving test results...

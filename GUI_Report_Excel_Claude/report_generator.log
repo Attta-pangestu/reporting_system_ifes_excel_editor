@@ -1,0 +1,332 @@
+2025-10-31 10:46:11,455 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 10:46:11,455 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 10:55:40,661 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 10:55:40,661 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 10:55:40,662 - excel_report_generator - ERROR - Error in generate_report: stat: path should be string, bytes, os.PathLike or integer, not TemplateProcessor
+2025-10-31 10:57:32,443 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 10:57:32,443 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 10:57:32,472 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 10:57:32,472 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 10:57:32,478 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 10:57:32,479 - template_processor - INFO - Found 57 placeholders
+2025-10-31 10:57:32,479 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 11:29:05,893 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 11:29:05,893 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 11:29:05,893 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 11:29:05,916 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:29:05,916 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:29:05,916 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:29:05,916 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 11:29:05,916 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:29:05,986 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 11:29:05,986 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 11:29:06,730 - formula_engine - ERROR - Error evaluating expression '{total_ripe_bunches} / {total_transactions}': division by zero
+2025-10-31 11:29:06,730 - formula_engine - ERROR - Processed expression: 0 / 0
+2025-10-31 11:29:06,731 - formula_engine - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 11:29:06,731 - formula_engine - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 11:30:53,713 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 11:30:53,713 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 11:30:53,713 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 11:30:53,741 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:30:53,741 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:30:53,743 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:30:53,743 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 11:30:53,743 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:30:53,819 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 11:30:53,819 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 11:31:17,248 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 11:31:17,248 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 11:31:17,248 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 11:31:17,265 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:31:17,265 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:31:17,265 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:31:17,266 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 11:31:17,266 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:31:17,327 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 11:31:17,328 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 11:31:17,776 - formula_engine - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 11:31:17,776 - formula_engine - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 11:35:07,452 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 11:35:07,460 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 11:35:07,460 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 11:35:07,484 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:35:07,484 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:35:07,484 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:35:07,484 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 11:35:07,484 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:35:07,561 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 11:35:07,561 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 11:35:44,001 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 11:35:44,001 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 11:35:44,001 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 11:35:44,010 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:35:44,010 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:35:44,010 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:35:44,010 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 11:35:44,010 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:35:44,089 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 11:35:44,089 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 11:36:48,945 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 11:36:48,948 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 11:36:48,948 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 11:36:48,966 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:36:48,966 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:36:48,966 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:36:48,966 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 11:36:48,967 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:36:49,056 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 11:36:49,056 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 11:37:16,369 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 11:37:16,369 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 11:37:16,395 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 11:37:16,395 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 11:37:16,396 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 11:37:16,396 - template_processor - INFO - Found 57 placeholders
+2025-10-31 11:37:16,396 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 11:37:16,396 - excel_report_generator - INFO - Components initialized successfully
+2025-10-31 11:37:16,396 - excel_report_generator - INFO - Generating report for estate: PGE 2B
+2025-10-31 11:37:16,396 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 11:37:16,414 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:37:16,414 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:37:16,414 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 11:37:16,414 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 11:37:16,414 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 11:37:16,501 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 11:37:16,501 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 11:37:16,501 - excel_report_generator - INFO - Executing queries for estate PGE 2B
+2025-10-31 11:37:17,113 - excel_report_generator - INFO - Processing variables
+2025-10-31 11:37:17,113 - formula_engine - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 11:37:17,113 - formula_engine - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 11:37:17,140 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 11:37:17,141 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 11:37:17,141 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 11:37:17,141 - template_processor - INFO - Found 57 placeholders
+2025-10-31 11:37:17,141 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 11:37:17,173 - excel_report_generator - INFO - Processing template placeholders
+2025-10-31 11:37:17,174 - template_processor - ERROR - Error processing sheet Dashboard: Cannot convert [] to Excel
+2025-10-31 11:37:17,176 - template_processor - INFO - Processed 11 placeholders di sheet Harian
+2025-10-31 11:37:17,177 - template_processor - INFO - Processed 12 placeholders di sheet Karyawan
+2025-10-31 11:37:17,179 - template_processor - INFO - Processed 11 placeholders di sheet Field
+2025-10-31 11:37:17,180 - template_processor - INFO - Processed 8 placeholders di sheet Kualitas
+2025-10-31 11:37:17,180 - excel_report_generator - INFO - Processing repeating sections
+2025-10-31 11:37:17,180 - template_processor - INFO - Processed 1 rows in repeating section for sheet Harian
+2025-10-31 11:37:17,181 - template_processor - INFO - Processed 1 rows in repeating section for sheet Field
+2025-10-31 11:37:17,181 - template_processor - INFO - Processed 1 rows in repeating section for sheet Kualitas
+2025-10-31 11:37:17,305 - template_processor - INFO - Processed template saved: C:\Users\nbgmf\AppData\Local\Temp\tmp7_m2l1ah\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 11:37:17,305 - excel_report_generator - INFO - Report saved: C:\Users\nbgmf\AppData\Local\Temp\tmp7_m2l1ah\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 11:37:17,305 - excel_report_generator - INFO - Report generated successfully: C:\Users\nbgmf\AppData\Local\Temp\tmp7_m2l1ah\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:21:18,956 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 13:21:18,966 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 13:21:19,791 - formula_engine - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 13:21:19,791 - formula_engine - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 13:21:19,791 - excel_report_generator - ERROR - Error in generate_report: stat: path should be string, bytes, os.PathLike or integer, not FirebirdConnectorEnhanced
+2025-10-31 13:32:06,922 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 13:32:06,922 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 13:32:06,922 - excel_report_generator - ERROR - Error in generate_report: stat: path should be string, bytes, os.PathLike or integer, not FirebirdConnectorEnhanced
+2025-10-31 13:32:20,239 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 13:32:20,239 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 13:32:43,750 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 13:32:43,750 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 13:32:43,750 - excel_report_generator - ERROR - Error in generate_report: stat: path should be string, bytes, os.PathLike or integer, not FirebirdConnectorEnhanced
+2025-10-31 13:33:04,003 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 13:33:04,003 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 13:33:17,718 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 13:33:17,718 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 13:33:17,753 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 13:33:17,753 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 13:33:17,753 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 13:33:17,757 - template_processor - INFO - Found 57 placeholders
+2025-10-31 13:33:17,757 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 13:33:17,757 - excel_report_generator - INFO - Components initialized successfully
+2025-10-31 13:33:17,757 - excel_report_generator - INFO - Generating report for estate: PGE 2B
+2025-10-31 13:33:17,757 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 13:33:17,798 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 13:33:17,798 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 13:33:17,798 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 13:33:17,798 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 13:33:17,798 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 13:33:17,974 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 13:33:17,974 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 13:33:17,974 - excel_report_generator - INFO - Executing queries for estate PGE 2B
+2025-10-31 13:33:18,731 - excel_report_generator - INFO - Processing variables
+2025-10-31 13:33:18,731 - formula_engine - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 13:33:18,731 - formula_engine - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 13:33:18,767 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 13:33:18,767 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 13:33:18,767 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 13:33:18,767 - template_processor - INFO - Found 57 placeholders
+2025-10-31 13:33:18,767 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 13:33:18,800 - excel_report_generator - INFO - Processing template placeholders
+2025-10-31 13:33:18,800 - template_processor - ERROR - Error processing sheet Dashboard: Cannot convert [] to Excel
+2025-10-31 13:33:18,800 - template_processor - INFO - Processed 11 placeholders di sheet Harian
+2025-10-31 13:33:18,807 - template_processor - INFO - Processed 12 placeholders di sheet Karyawan
+2025-10-31 13:33:18,809 - template_processor - INFO - Processed 11 placeholders di sheet Field
+2025-10-31 13:33:18,810 - template_processor - INFO - Processed 8 placeholders di sheet Kualitas
+2025-10-31 13:33:18,810 - excel_report_generator - INFO - Processing repeating sections
+2025-10-31 13:33:18,810 - template_processor - INFO - Processed 1 rows in repeating section for sheet Harian
+2025-10-31 13:33:18,810 - template_processor - INFO - Processed 1 rows in repeating section for sheet Kualitas
+2025-10-31 13:33:18,947 - template_processor - INFO - Processed template saved: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:33:18,947 - excel_report_generator - INFO - Report saved: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:33:18,954 - excel_report_generator - INFO - Report generated successfully: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:34:13,644 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 13:34:13,644 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 13:34:13,678 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 13:34:13,678 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 13:34:13,678 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 13:34:13,678 - template_processor - INFO - Found 57 placeholders
+2025-10-31 13:34:13,678 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 13:34:13,678 - excel_report_generator - INFO - Components initialized successfully
+2025-10-31 13:34:13,678 - excel_report_generator - INFO - Generating report for estate: PGE 2B
+2025-10-31 13:34:13,678 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 13:34:13,704 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 13:34:13,704 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 13:34:13,704 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 13:34:13,704 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 13:34:13,704 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 13:34:13,823 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 13:34:13,823 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 13:34:13,823 - excel_report_generator - INFO - Executing queries for estate PGE 2B
+2025-10-31 13:34:14,598 - excel_report_generator - INFO - Processing variables
+2025-10-31 13:34:14,598 - formula_engine - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 13:34:14,598 - formula_engine - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 13:34:14,643 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 13:34:14,643 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 13:34:14,643 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 13:34:14,648 - template_processor - INFO - Found 57 placeholders
+2025-10-31 13:34:14,648 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 13:34:14,687 - excel_report_generator - INFO - Processing template placeholders
+2025-10-31 13:34:14,689 - template_processor - ERROR - Error processing sheet Dashboard: Cannot convert [{'headers': ['VERIFICATION_RATE'], 'rows': [{'VERIFICATION_RATE': '95.0'}]}] to Excel
+2025-10-31 13:34:14,689 - template_processor - INFO - Processed 11 placeholders di sheet Harian
+2025-10-31 13:34:14,691 - template_processor - INFO - Processed 12 placeholders di sheet Karyawan
+2025-10-31 13:34:14,693 - template_processor - INFO - Processed 11 placeholders di sheet Field
+2025-10-31 13:34:14,696 - template_processor - INFO - Processed 8 placeholders di sheet Kualitas
+2025-10-31 13:34:14,696 - excel_report_generator - INFO - Processing repeating sections
+2025-10-31 13:34:14,696 - template_processor - INFO - Processed 1 rows in repeating section for sheet Harian
+2025-10-31 13:34:14,696 - template_processor - INFO - Processed 1 rows in repeating section for sheet Kualitas
+2025-10-31 13:34:14,761 - template_processor - INFO - Processed template saved: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:34:14,761 - excel_report_generator - INFO - Report saved: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:34:14,761 - excel_report_generator - INFO - Report generated successfully: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:49:48,143 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 13:49:48,143 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 13:49:48,847 - formula_engine - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 13:49:48,847 - formula_engine - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 13:49:48,847 - excel_report_generator - ERROR - Error in generate_report: stat: path should be string, bytes, os.PathLike or integer, not FirebirdConnectorEnhanced
+2025-10-31 13:49:53,698 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 13:49:53,705 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 13:49:53,722 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 13:49:53,722 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 13:49:53,738 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 13:49:53,739 - template_processor - INFO - Found 57 placeholders
+2025-10-31 13:49:53,739 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 13:49:53,739 - excel_report_generator - INFO - Components initialized successfully
+2025-10-31 13:49:53,739 - excel_report_generator - INFO - Generating report for estate: PGE 2B
+2025-10-31 13:49:53,739 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 13:49:53,761 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 13:49:53,761 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 13:49:53,761 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 13:49:53,761 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 13:49:53,761 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 13:49:53,895 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 13:49:53,895 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 13:49:53,895 - excel_report_generator - INFO - Executing queries for estate PGE 2B
+2025-10-31 13:49:54,601 - excel_report_generator - INFO - Processing variables
+2025-10-31 13:49:54,601 - formula_engine - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 13:49:54,601 - formula_engine - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 13:49:54,629 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 13:49:54,629 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 13:49:54,629 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 13:49:54,629 - template_processor - INFO - Found 57 placeholders
+2025-10-31 13:49:54,629 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 13:49:54,667 - excel_report_generator - INFO - Processing template placeholders
+2025-10-31 13:49:54,669 - template_processor - ERROR - Error processing sheet Dashboard: Cannot convert [{'headers': ['VERIFICATION_RATE'], 'rows': [{'VERIFICATION_RATE': '95.0'}]}] to Excel
+2025-10-31 13:49:54,671 - template_processor - INFO - Processed 11 placeholders di sheet Harian
+2025-10-31 13:49:54,671 - template_processor - INFO - Processed 12 placeholders di sheet Karyawan
+2025-10-31 13:49:54,671 - template_processor - INFO - Processed 11 placeholders di sheet Field
+2025-10-31 13:49:54,676 - template_processor - INFO - Processed 8 placeholders di sheet Kualitas
+2025-10-31 13:49:54,676 - excel_report_generator - INFO - Processing repeating sections
+2025-10-31 13:49:54,676 - template_processor - INFO - Processed 1 rows in repeating section for sheet Harian
+2025-10-31 13:49:54,676 - template_processor - INFO - Processed 1 rows in repeating section for sheet Field
+2025-10-31 13:49:54,676 - template_processor - INFO - Processed 1 rows in repeating section for sheet Kualitas
+2025-10-31 13:49:54,753 - template_processor - INFO - Processed template saved: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:49:54,753 - excel_report_generator - INFO - Report saved: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:49:54,753 - excel_report_generator - INFO - Report generated successfully: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:54:03,273 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 13:54:03,273 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 13:54:03,308 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 13:54:03,308 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 13:54:03,308 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 13:54:03,308 - template_processor - INFO - Found 57 placeholders
+2025-10-31 13:54:03,308 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 13:54:03,308 - excel_report_generator - INFO - Components initialized successfully
+2025-10-31 13:54:03,308 - excel_report_generator - INFO - Generating report for estate: PGE 2B
+2025-10-31 13:54:03,308 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 13:54:03,334 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 13:54:03,334 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 13:54:03,334 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 13:54:03,339 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 13:54:03,339 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 13:54:03,427 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 13:54:03,427 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 13:54:03,427 - excel_report_generator - INFO - Executing queries for estate PGE 2B
+2025-10-31 13:54:04,039 - excel_report_generator - INFO - Processing variables
+2025-10-31 13:54:04,039 - formula_engine - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 13:54:04,039 - formula_engine - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 13:54:04,085 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 13:54:04,085 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 13:54:04,086 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 13:54:04,086 - template_processor - INFO - Found 57 placeholders
+2025-10-31 13:54:04,086 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 13:54:04,120 - excel_report_generator - INFO - Processing template placeholders
+2025-10-31 13:54:04,122 - template_processor - ERROR - Error processing sheet Dashboard: Cannot convert [{'headers': ['VERIFICATION_RATE'], 'rows': [{'VERIFICATION_RATE': '95.0'}]}] to Excel
+2025-10-31 13:54:04,124 - template_processor - INFO - Processed 11 placeholders di sheet Harian
+2025-10-31 13:54:04,124 - template_processor - INFO - Processed 12 placeholders di sheet Karyawan
+2025-10-31 13:54:04,124 - template_processor - INFO - Processed 11 placeholders di sheet Field
+2025-10-31 13:54:04,124 - template_processor - INFO - Processed 8 placeholders di sheet Kualitas
+2025-10-31 13:54:04,124 - excel_report_generator - INFO - Processing repeating sections
+2025-10-31 13:54:04,124 - template_processor - INFO - Processed 1 rows in repeating section for sheet Harian
+2025-10-31 13:54:04,124 - template_processor - INFO - Processed 1 rows in repeating section for sheet Karyawan
+2025-10-31 13:54:04,124 - template_processor - INFO - Processed 1 rows in repeating section for sheet Field
+2025-10-31 13:54:04,124 - template_processor - INFO - Processed 1 rows in repeating section for sheet Kualitas
+2025-10-31 13:54:04,176 - template_processor - INFO - Processed template saved: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:54:04,176 - excel_report_generator - INFO - Report saved: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 13:54:04,176 - excel_report_generator - INFO - Report generated successfully: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 14:00:04,873 - excel_report_generator - INFO - Loaded 10 estates from config
+2025-10-31 14:00:04,874 - excel_report_generator - INFO - Excel Report Generator initialized
+2025-10-31 14:00:04,909 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 14:00:04,909 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 14:00:04,910 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 14:00:04,910 - template_processor - INFO - Found 57 placeholders
+2025-10-31 14:00:04,910 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 14:00:04,910 - excel_report_generator - INFO - Components initialized successfully
+2025-10-31 14:00:04,910 - excel_report_generator - INFO - Generating report for estate: PGE 2B
+2025-10-31 14:00:04,910 - firebird_connector_enhanced - INFO - Detecting ISQL path...
+2025-10-31 14:00:04,945 - firebird_connector_enhanced - INFO - Found working ISQL at: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 14:00:04,953 - firebird_connector_enhanced - INFO - Firebird connector initialized - Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 14:00:04,954 - firebird_connector_enhanced - INFO - ISQL Path: C:\Program Files (x86)\Firebird\Firebird_1_5\bin\isql.exe
+2025-10-31 14:00:04,954 - firebird_connector_enhanced - INFO - Connection mode: localhost
+2025-10-31 14:00:04,954 - firebird_connector_enhanced - INFO - Testing connection to: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+2025-10-31 14:00:05,035 - firebird_connector_enhanced - INFO - Connection test successful
+2025-10-31 14:00:05,035 - formula_engine - INFO - Formula definitions loaded: 7 queries
+2025-10-31 14:00:05,035 - excel_report_generator - INFO - Executing queries for estate PGE 2B
+2025-10-31 14:00:05,505 - excel_report_generator - INFO - Processing variables
+2025-10-31 14:00:05,505 - formula_engine - ERROR - Error evaluating expression '(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe}) * 100': division by zero
+2025-10-31 14:00:05,505 - formula_engine - ERROR - Processed expression: ((0 + 0 + 0) / 0) * 100
+2025-10-31 14:00:05,524 - template_processor - INFO - Template dimuat: templates/Template_Laporan_FFB_Analysis.xlsx
+2025-10-31 14:00:05,528 - template_processor - INFO - Sheets tersedia: ['Dashboard', 'Harian', 'Karyawan', 'Field', 'Kualitas']
+2025-10-31 14:00:05,528 - template_processor - INFO - Formula definitions loaded dari: laporan_ffb_analysis_formula.json
+2025-10-31 14:00:05,529 - template_processor - INFO - Found 57 placeholders
+2025-10-31 14:00:05,529 - template_processor - INFO - Parsed 4 repeating sections
+2025-10-31 14:00:05,552 - excel_report_generator - INFO - Processing template placeholders
+2025-10-31 14:00:05,552 - template_processor - ERROR - Error processing sheet Dashboard: Cannot convert [{'headers': ['VERIFICATION_RATE'], 'rows': [{'VERIFICATION_RATE': '95.0'}]}] to Excel
+2025-10-31 14:00:05,554 - template_processor - INFO - Processed 11 placeholders di sheet Harian
+2025-10-31 14:00:05,555 - template_processor - INFO - Processed 12 placeholders di sheet Karyawan
+2025-10-31 14:00:05,556 - template_processor - INFO - Processed 11 placeholders di sheet Field
+2025-10-31 14:00:05,557 - template_processor - INFO - Processed 8 placeholders di sheet Kualitas
+2025-10-31 14:00:05,557 - excel_report_generator - INFO - Processing repeating sections
+2025-10-31 14:00:05,557 - template_processor - INFO - Processed 1 rows in repeating section for sheet Harian
+2025-10-31 14:00:05,557 - template_processor - INFO - Processed 1 rows in repeating section for sheet Karyawan
+2025-10-31 14:00:05,557 - template_processor - INFO - Processed 1 rows in repeating section for sheet Field
+2025-10-31 14:00:05,557 - template_processor - INFO - Processed 1 rows in repeating section for sheet Kualitas
+2025-10-31 14:00:05,596 - template_processor - INFO - Processed template saved: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 14:00:05,596 - excel_report_generator - INFO - Report saved: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx
+2025-10-31 14:00:05,596 - excel_report_generator - INFO - Report generated successfully: .\Laporan_FFB_Analysis_PGE_2B_2020-10-01_2020-10-10.xlsx

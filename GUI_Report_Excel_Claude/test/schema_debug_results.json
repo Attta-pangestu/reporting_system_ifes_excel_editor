@@ -1,0 +1,114 @@
+[
+  {
+    "description": "Check EMPLOYEE table structure",
+    "sql": "SELECT * FROM EMPLOYEE ROWS 5",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Check EMP table structure (backup)",
+    "sql": "SELECT * FROM EMP ROWS 5",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Find all employee-related tables",
+    "sql": "SELECT RDB$RELATION_NAME FROM RDB$RELATIONS WHERE RDB$RELATION_NAME LIKE '%EMP%'",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Check SCANUSERID values in FFB data",
+    "sql": "SELECT DISTINCT SCANUSERID FROM FFBSCANNERDATA02 WHERE SCANUSERID IS NOT NULL ROWS 10",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Test join with EMPLOYEE table",
+    "sql": "SELECT COUNT(*) AS join_count FROM FFBSCANNERDATA02 a LEFT JOIN EMPLOYEE e ON a.SCANUSERID = e.EMPID WHERE a.TRANSDATE >= '2025-02-01' AND a.TRANSDATE <= '2025-02-28'",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Test join with EMP table",
+    "sql": "SELECT COUNT(*) AS join_count FROM FFBSCANNERDATA02 a LEFT JOIN EMP e ON a.SCANUSERID = e.ID WHERE a.TRANSDATE >= '2025-02-01' AND a.TRANSDATE <= '2025-02-28'",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Check CRDIVISION table structure",
+    "sql": "SELECT * FROM CRDIVISION ROWS 5",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Check OCFIELD table structure (backup)",
+    "sql": "SELECT * FROM OCFIELD ROWS 5",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Find all division/field-related tables",
+    "sql": "SELECT RDB$RELATION_NAME FROM RDB$RELATIONS WHERE RDB$RELATION_NAME LIKE '%DIV%' OR RDB$RELATION_NAME LIKE '%FIELD%'",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Check DIVID values in FFB data",
+    "sql": "SELECT DISTINCT DIVID FROM FFBSCANNERDATA02 WHERE DIVID IS NOT NULL ROWS 10",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Test join with CRDIVISION table",
+    "sql": "SELECT COUNT(*) AS join_count FROM FFBSCANNERDATA02 a LEFT JOIN CRDIVISION c ON a.DIVID = c.ID WHERE a.DIVID IS NOT NULL",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Test basic quality data aggregation",
+    "sql": "SELECT TRANSDATE, SUM(RIPEBCH) AS ripe, SUM(BLACKBCH) AS black, SUM(ROTTENBCH) AS rotten FROM FFBSCANNERDATA02 WHERE TRANSDATE >= '2025-02-01' AND TRANSDATE <= '2025-02-28' AND RIPEBCH > 0 GROUP BY TRANSDATE ORDER BY TRANSDATE ROWS 5",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Test defect percentage calculation",
+    "sql": "SELECT TRANSDATE, SUM(RIPEBCH) AS ripe, SUM(BLACKBCH) AS black, SUM(ROTTENBCH) AS rotten, CAST(((SUM(BLACKBCH) + SUM(ROTTENBCH)) * 100.0 / NULLIF(SUM(RIPEBCH), 0)) AS NUMERIC(10,2)) AS defect_pct FROM FFBSCANNERDATA02 WHERE TRANSDATE >= '2025-02-01' AND TRANSDATE <= '2025-02-28' AND RIPEBCH > 0 GROUP BY TRANSDATE ORDER BY TRANSDATE ROWS 5",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Check for NULL or zero RIPEBCH values",
+    "sql": "SELECT COUNT(*) AS total_rows, COUNT(CASE WHEN RIPEBCH IS NULL OR RIPEBCH = 0 THEN 1 END) AS problematic_rows FROM FFBSCANNERDATA02 WHERE TRANSDATE >= '2025-02-01' AND TRANSDATE <= '2025-02-28'",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Check all RECORDTAG values",
+    "sql": "SELECT RECORDTAG, COUNT(*) AS row_count FROM FFBSCANNERDATA02 WHERE TRANSDATE >= '2025-02-01' AND TRANSDATE <= '2025-02-28' GROUP BY RECORDTAG ORDER BY row_count DESC",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  },
+  {
+    "description": "Check specific employee role queries",
+    "sql": "SELECT RECORDTAG, COUNT(*) AS row_count, SUM(RIPEBCH) AS total_ripe FROM FFBSCANNERDATA02 WHERE TRANSDATE >= '2025-02-01' AND TRANSDATE <= '2025-02-28' AND RECORDTAG IN ('PM', 'P1', 'P5') GROUP BY RECORDTAG",
+    "success": false,
+    "output": null,
+    "error": "Use CONNECT or CREATE DATABASE to specify a database\nStatement failed, SQLCODE = -904\n\nunavailable database\nUse CONNECT or CREATE DATABASE to specify a database\n"
+  }
+]

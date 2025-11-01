@@ -1,0 +1,138 @@
+FFB Performance Report - Complete Field Mapping Analysis
+============================================================
+Analysis Date: 2025-10-31 08:48:21
+
+FIELD MAPPING:
+--------------------
+
+ESTATE:
+  source: LOOKUP_TABLE or CONFIGURATION
+  field: OCID
+  table: FFBSCANNERDATA10
+  note: Need to find estate master table or use OCID mapping
+
+DIVISI:
+  source: FIELDDIVID
+  table: WORKERINFO
+  join_field: EMPID
+  note: May need division master table for division names
+
+KARYAWAN:
+  source: EMPLOYEE_MASTER_TABLE
+  field: NAME_FIELD
+  join_field: ID
+  note: Need to find employee master table with names
+
+ROLE:
+  source: LABOURCATID
+  table: WORKERINFO
+  join_field: EMPID
+  note: Need labour category master for role names (KERANI/MANDOR/ASISTEN)
+
+JUMLAH_TRANSAKSI:
+  source: COUNT(*)
+  table: FFBSCANNERDATA10
+  group_by: ['WORKERID', 'TRANSDATE']
+  note: Calculated field
+
+PERSENTASE_TERVERIFIKASI:
+  source: TRANSSTATUS
+  table: FFBSCANNERDATA10
+  calculation: COUNT(verified) / COUNT(total) * 100
+  note: Need to identify verified status codes
+
+KETERANGAN_PERBEDAAN:
+  source: CALCULATED
+  logic: IF percentage >= 95% THEN "Sesuai" ELSE "Ada perbedaan"
+  note: Business logic based on verification percentage
+
+PERIODE_LAPORAN:
+  source: TRANSDATE
+  table: FFBSCANNERDATA10
+  format: YYYY-MM or date range
+  note: Extract from transaction date range
+
+
+MAIN QUERY:
+---------------
+
+-- Main FFB Performance Report Query
+SELECT 
+    f.OCID as estate_code,
+    w.FIELDDIVID as division_id,
+    f.WORKERID as worker_id,
+    w.LABOURCATID as role_id,
+    w.JOBSTATUSID as job_status_id,
+    f.TRANSDATE as transaction_date,
+    COUNT(*) as total_transactions,
+    COUNT(CASE WHEN f.TRANSSTATUS = '704' THEN 1 END) as verified_transactions,
+    CAST(COUNT(CASE WHEN f.TRANSSTATUS = '704' THEN 1 END) * 100.0 / COUNT(*) AS DECIMAL(5,2)) as verification_percentage
+FROM FFBSCANNERDATA10 f
+LEFT JOIN WORKERINFO w ON w.EMPID = f.WORKERID
+WHERE f.TRANSDATE BETWEEN ? AND ?  -- Date range parameters
+GROUP BY f.OCID, w.FIELDDIVID, f.WORKERID, w.LABOURCATID, w.JOBSTATUSID, f.TRANSDATE
+ORDER BY f.OCID, w.FIELDDIVID, f.WORKERID, f.TRANSDATE
+
+
+LOOKUP QUERIES:
+--------------------
+
+estate_lookup:
+
+-- Estate/OCID Lookup (need to find estate master table)
+SELECT DISTINCT OCID FROM FFBSCANNERDATA10 ORDER BY OCID
+
+
+division_lookup:
+
+-- Division Lookup (need to find division master table)
+SELECT DISTINCT FIELDDIVID FROM WORKERINFO WHERE FIELDDIVID IS NOT NULL ORDER BY FIELDDIVID
+
+
+role_lookup:
+
+-- Role/Labour Category Lookup (need to find labour category master table)
+SELECT DISTINCT LABOURCATID FROM WORKERINFO WHERE LABOURCATID IS NOT NULL ORDER BY LABOURCATID
+
+
+status_lookup:
+
+-- Transaction Status Lookup
+SELECT DISTINCT TRANSSTATUS FROM FFBSCANNERDATA10 ORDER BY TRANSSTATUS
+
+
+
+IMPLEMENTATION STEPS:
+-------------------------
+
+Step 1: Identify Master Tables
+Description: Find estate, division, employee, and role master tables
+Queries:
+  - SELECT * FROM RDB$RELATIONS WHERE RDB$RELATION_NAME LIKE '%ESTATE%'
+  - SELECT * FROM RDB$RELATIONS WHERE RDB$RELATION_NAME LIKE '%DIVISION%'
+  - SELECT * FROM RDB$RELATIONS WHERE RDB$RELATION_NAME LIKE '%EMPLOYEE%'
+  - SELECT * FROM RDB$RELATIONS WHERE RDB$RELATION_NAME LIKE '%LABOUR%'
+
+Step 2: Analyze Transaction Status Codes
+Description: Understand what TRANSSTATUS values mean for verification
+Queries:
+  - SELECT TRANSSTATUS, COUNT(*) FROM FFBSCANNERDATA10 GROUP BY TRANSSTATUS
+
+Step 3: Test Date Range Filtering
+Description: Verify date filtering works correctly
+Queries:
+  - SELECT MIN(TRANSDATE), MAX(TRANSDATE) FROM FFBSCANNERDATA10
+  - SELECT COUNT(*) FROM FFBSCANNERDATA10 WHERE TRANSDATE >= '2024-01-01'
+
+Step 4: Create Sample Report Query
+Description: Build and test the main report query with sample data
+Queries:
+  - -- Use the main query from above with actual date range
+
+Step 5: Implement Excel Generation
+Description: Create Python script to generate Excel report
+Tasks:
+  - Extract data using main query
+  - Apply business logic for KETERANGAN_PERBEDAAN
+  - Format data according to Excel template
+  - Generate Excel file with proper formatting

@@ -1,0 +1,467 @@
+{
+  "template_info": {
+    "name": "Laporan Analisis FFB PGE 2B - Real Database",
+    "file": "Template_Laporan_FFB_Analysis.xlsx",
+    "description": "Template untuk laporan analisis FFB (Fresh Fruit Bunch) dengan query database PGE 2B yang sebenarnya",
+    "version": "2.0",
+    "last_updated": "2025-11-01"
+  },
+
+  "data_sources": {
+    "database": {
+      "type": "firebird",
+      "tables": {
+        "ffb_scanner": "FFBSCANNERDATA{month}",
+        "employee": "EMP",
+        "field": "OCFIELD",
+        "division": "CRDIVISION"
+      }
+    },
+    "config_file": "config.json",
+    "output_folder": "reports"
+  },
+
+  "parameters": {
+    "start_date": {
+      "type": "date",
+      "required": true,
+      "description": "Tanggal mulai periode laporan",
+      "format": "YYYY-MM-DD"
+    },
+    "end_date": {
+      "type": "date",
+      "required": true,
+      "description": "Tanggal akhir periode laporan",
+      "format": "YYYY-MM-DD"
+    },
+    "estate_name": {
+      "type": "string",
+      "required": true,
+      "description": "Nama estate",
+      "default": "PGE 2B"
+    },
+    "estate_code": {
+      "type": "string",
+      "required": true,
+      "description": "Kode estate",
+      "default": "PGE_2B"
+    },
+    "month": {
+      "type": "string",
+      "required": true,
+      "description": "Month number for table selection",
+      "default": "10"
+    }
+  },
+
+  "queries": {
+    "estate_info": {
+      "type": "sql",
+      "description": "Informasi dasar estate",
+      "sql": "SELECT '{estate_name}' as ESTATE_NAME, '{estate_code}' as ESTATE_CODE FROM RDB$DATABASE",
+      "return_format": "dict"
+    },
+
+    "daily_performance": {
+      "type": "sql",
+      "description": "Performance harian - query real data dari FFBSCANNERDATA",
+      "sql": "SELECT a.TRANSDATE, COUNT(*) as JUMLAH_TRANSAKSI, SUM(a.RIPEBCH) as RIPE_BUNCHES, SUM(a.UNRIPEBCH) as UNRIPE_BUNCHES, SUM(a.BLACKBCH) as BLACK_BUNCHES, SUM(a.ROTTENBCH) as ROTTEN_BUNCHES, SUM(a.LONGSTALKBCH) as LONGSTALK_BUNCHES, SUM(a.RATDMGBCH) as RAT_DAMAGE_BUNCHES, SUM(a.LOOSEFRUIT) as LOOSE_FRUIT_KG FROM FFBSCANNERDATA{month} a WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' GROUP BY a.TRANSDATE ORDER BY a.TRANSDATE",
+      "return_format": "dict"
+    },
+
+    "employee_performance": {
+      "type": "sql",
+      "description": "Performance karyawan per role dengan nama employee dari EMPLOYEE table",
+      "sql": "SELECT e.EMPNAME as EMPLOYEE_NAME, a.RECORDTAG, COUNT(*) as JUMLAH_TRANSAKSI, SUM(a.RIPEBCH) as TOTAL_RIPE, SUM(a.UNRIPEBCH) as TOTAL_UNRIPE, SUM(a.BLACKBCH) as TOTAL_BLACK, SUM(a.ROTTENBCH) as TOTAL_ROTTEN, SUM(a.LONGSTALKBCH) as TOTAL_LONGSTALK, SUM(a.RATDMGBCH) as TOTAL_RATDAMAGE, SUM(a.LOOSEFRUIT) as TOTAL_LOOSEFRUIT FROM FFBSCANNERDATA{month} a LEFT JOIN EMPLOYEE e ON a.SCANUSERID = e.EMPID WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' AND a.RECORDTAG IN ('PM', 'P1', 'P5') GROUP BY e.EMPNAME, a.RECORDTAG ORDER BY a.RECORDTAG, e.EMPNAME",
+      "return_format": "dict"
+    },
+
+    "field_performance": {
+      "type": "sql",
+      "description": "Performance per field/blok dengan nama field dari CRDIVISION",
+      "sql": "SELECT c.DIVNAME as FIELDNAME, COUNT(*) as JUMLAH_TRANSAKSI, SUM(a.RIPEBCH) as TOTAL_RIPE, SUM(a.UNRIPEBCH) as TOTAL_UNRIPE, SUM(a.BLACKBCH) as TOTAL_BLACK, SUM(a.ROTTENBCH) as TOTAL_ROTTEN, SUM(a.LONGSTALKBCH) as TOTAL_LONGSTALK, SUM(a.RATDMGBCH) as TOTAL_RATDAMAGE, SUM(a.LOOSEFRUIT) as TOTAL_LOOSEFRUIT FROM FFBSCANNERDATA{month} a LEFT JOIN CRDIVISION c ON a.DIVID = c.ID WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' AND a.DIVID IS NOT NULL GROUP BY c.DIVNAME ORDER BY c.DIVNAME",
+      "return_format": "dict"
+    },
+
+    "quality_analysis": {
+      "type": "sql",
+      "description": "Analisis kualitas FFB per hari",
+      "sql": "SELECT a.TRANSDATE, SUM(a.RIPEBCH) as TOTAL_RIPE, SUM(a.BLACKBCH) as TOTAL_BLACK, SUM(a.ROTTENBCH) as TOTAL_ROTTEN, SUM(a.RATDMGBCH) as TOTAL_RATDAMAGE, ROUND((SUM(a.BLACKBCH) + SUM(a.ROTTENBCH) + SUM(a.RATDMGBCH)) * 100.0 / NULLIF(SUM(a.RIPEBCH), 0), 2) as PERCENTAGE_DEFECT FROM FFBSCANNERDATA{month} a WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' GROUP BY a.TRANSDATE ORDER BY a.TRANSDATE",
+      "return_format": "dict"
+    },
+
+    "summary_totals": {
+      "type": "sql",
+      "description": "Total summary untuk keseluruhan periode",
+      "sql": "SELECT COUNT(*) as TOTAL_TRANSAKSI, SUM(a.RIPEBCH) as TOTAL_RIPE_BUNCHES, SUM(a.UNRIPEBCH) as TOTAL_UNRIPE_BUNCHES, SUM(a.BLACKBCH) as TOTAL_BLACK, SUM(a.ROTTENBCH) as TOTAL_ROTTEN, SUM(a.LONGSTALKBCH) as TOTAL_LONGSTALK, SUM(a.RATDMGBCH) as TOTAL_RATDAMAGE, SUM(a.LOOSEFRUIT) as TOTAL_LOOSE_FRUIT FROM FFBSCANNERDATA{month} a WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}'",
+      "return_format": "dict"
+    },
+
+    "verification_data": {
+      "type": "sql",
+      "description": "Data untuk menghitung verification rate",
+      "sql": "SELECT COUNT(DISTINCT a.TRANSNO) as TOTAL_TRANSAKSI, COUNT(DISTINCT CASE WHEN a.RECORDTAG != 'PM' THEN a.TRANSNO END) as VERIFIED_TRANSAKSI FROM FFBSCANNERDATA{month} a WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}'",
+      "return_format": "dict"
+    }
+  },
+
+  "variables": {
+    "report_info": {
+      "report_title": {
+        "type": "static",
+        "value": "LAPORAN ANALISIS FRESH FRUIT BUNCH (FFB) - PGE 2B"
+      },
+      "estate_name": {
+        "type": "parameter",
+        "value": "estate_name"
+      },
+      "estate_code": {
+        "type": "parameter",
+        "value": "estate_code"
+      },
+      "report_period": {
+        "type": "formatting",
+        "template": "{start_date} - {end_date}",
+        "parameters": ["start_date", "end_date"]
+      },
+      "generated_date": {
+        "type": "dynamic",
+        "value": "current_date",
+        "format": "%d %B %Y"
+      },
+      "generated_time": {
+        "type": "dynamic",
+        "value": "current_time",
+        "format": "%H:%M:%S"
+      }
+    },
+
+    "summary_variables": {
+      "total_transactions": {
+        "type": "query_result",
+        "query": "summary_totals",
+        "field": "TOTAL_TRANSAKSI",
+        "extract_single": true
+      },
+      "total_ripe_bunches": {
+        "type": "query_result",
+        "query": "summary_totals",
+        "field": "TOTAL_RIPE_BUNCHES",
+        "extract_single": true
+      },
+      "total_unripe_bunches": {
+        "type": "query_result",
+        "query": "summary_totals",
+        "field": "TOTAL_UNRIPE_BUNCHES",
+        "extract_single": true
+      },
+      "avg_ripe_per_transaction": {
+        "type": "calculation",
+        "expression": "{total_ripe_bunches} / {total_transactions}"
+      },
+      "verification_rate": {
+        "type": "calculation",
+        "expression": "({verified_transactions} / {total_transactions}) * 100 if {total_transactions} > 0 else 0"
+      },
+      "verified_transactions": {
+        "type": "query_result",
+        "query": "verification_data",
+        "field": "VERIFIED_TRANSAKSI",
+        "extract_single": true
+      },
+      "daily_average_transactions": {
+        "type": "calculation",
+        "expression": "{total_transactions} / {total_days}"
+      },
+      "daily_average_ripe": {
+        "type": "calculation",
+        "expression": "{total_ripe_bunches} / {total_days}"
+      },
+      "quality_percentage": {
+        "type": "calculation",
+        "expression": "(({total_black} + {total_rotten} + {total_ratdamage}) / {total_ripe_bunches}) * 100 if {total_ripe_bunches} > 0 else 0"
+      },
+      "total_black": {
+        "type": "query_result",
+        "query": "summary_totals",
+        "field": "TOTAL_BLACK",
+        "extract_single": true
+      },
+      "total_rotten": {
+        "type": "query_result",
+        "query": "summary_totals",
+        "field": "TOTAL_ROTTEN",
+        "extract_single": true
+      },
+      "total_ratdamage": {
+        "type": "query_result",
+        "query": "summary_totals",
+        "field": "TOTAL_RATDAMAGE",
+        "extract_single": true
+      },
+      "peak_performance_day": {
+        "type": "query_aggregation",
+        "query": "daily_performance",
+        "aggregation": "max_by",
+        "field": "TRANSDATE",
+        "by_field": "JUMLAH_TRANSAKSI"
+      },
+      "low_performance_day": {
+        "type": "query_aggregation",
+        "query": "daily_performance",
+        "aggregation": "min_by",
+        "field": "TRANSDATE",
+        "by_field": "JUMLAH_TRANSAKSI"
+      }
+    }
+  },
+
+  "repeating_sections": {
+    "Daily_Performance": {
+      "sheet_name": "Harian",
+      "data_source": "daily_performance",
+      "start_row": 8,
+      "template_rows": 1,
+      "columns": {
+        "A": {
+          "field": "TRANSDATE",
+          "format": "date",
+          "format_string": "yyyy-mm-dd",
+          "header": "Tanggal"
+        },
+        "B": {
+          "field": "JUMLAH_TRANSAKSI",
+          "format": "integer",
+          "header": "Jumlah Transaksi"
+        },
+        "C": {
+          "field": "RIPE_BUNCHES",
+          "format": "integer",
+          "header": "Ripe Bunches"
+        },
+        "D": {
+          "field": "UNRIPE_BUNCHES",
+          "format": "integer",
+          "header": "Unripe Bunches"
+        },
+        "E": {
+          "field": "BLACK_BUNCHES",
+          "format": "integer",
+          "header": "Black Bunches"
+        },
+        "F": {
+          "field": "ROTTEN_BUNCHES",
+          "format": "integer",
+          "header": "Rotten Bunches"
+        },
+        "G": {
+          "field": "LONGSTALK_BUNCHES",
+          "format": "integer",
+          "header": "Longstalk Bunches"
+        },
+        "H": {
+          "field": "RAT_DAMAGE_BUNCHES",
+          "format": "integer",
+          "header": "Rat Damage"
+        },
+        "I": {
+          "field": "LOOSE_FRUIT_KG",
+          "format": "number",
+          "decimal_places": 2,
+          "header": "Loose Fruit (kg)"
+        }
+      }
+    },
+
+    "Employee_Performance": {
+      "sheet_name": "Karyawan",
+      "data_source": "employee_performance",
+      "start_row": 8,
+      "template_rows": 1,
+      "columns": {
+        "A": {
+          "field": "EMPLOYEE_NAME",
+          "format": "text",
+          "header": "Nama Karyawan"
+        },
+        "B": {
+          "field": "RECORDTAG",
+          "format": "text",
+          "mapping": {
+            "PM": "KERANI",
+            "P1": "MANDOR",
+            "P5": "ASISTEN"
+          },
+          "header": "Jabatan"
+        },
+        "C": {
+          "field": "JUMLAH_TRANSAKSI",
+          "format": "integer",
+          "header": "Jumlah Transaksi"
+        },
+        "D": {
+          "field": "TOTAL_RIPE",
+          "format": "integer",
+          "header": "Total Ripe"
+        },
+        "E": {
+          "field": "TOTAL_UNRIPE",
+          "format": "integer",
+          "header": "Total Unripe"
+        },
+        "F": {
+          "field": "TOTAL_BLACK",
+          "format": "integer",
+          "header": "Total Black"
+        },
+        "G": {
+          "field": "TOTAL_ROTTEN",
+          "format": "integer",
+          "header": "Total Rotten"
+        },
+        "H": {
+          "field": "TOTAL_LONGSTALK",
+          "format": "integer",
+          "header": "Total Longstalk"
+        },
+        "I": {
+          "field": "TOTAL_RATDAMAGE",
+          "format": "integer",
+          "header": "Total Rat Damage"
+        },
+        "J": {
+          "field": "TOTAL_LOOSEFRUIT",
+          "format": "number",
+          "decimal_places": 2,
+          "header": "Total Loose Fruit"
+        }
+      }
+    },
+
+    "Field_Performance": {
+      "sheet_name": "Field",
+      "data_source": "field_performance",
+      "start_row": 8,
+      "template_rows": 1,
+      "columns": {
+        "A": {
+          "field": "FIELDNAME",
+          "format": "text",
+          "header": "Nama Field"
+        },
+        "B": {
+          "field": "JUMLAH_TRANSAKSI",
+          "format": "integer",
+          "header": "Jumlah Transaksi"
+        },
+        "C": {
+          "field": "TOTAL_RIPE",
+          "format": "integer",
+          "header": "Total Ripe"
+        },
+        "D": {
+          "field": "TOTAL_UNRIPE",
+          "format": "integer",
+          "header": "Total Unripe"
+        },
+        "E": {
+          "field": "TOTAL_BLACK",
+          "format": "integer",
+          "header": "Total Black"
+        },
+        "F": {
+          "field": "TOTAL_ROTTEN",
+          "format": "integer",
+          "header": "Total Rotten"
+        },
+        "G": {
+          "field": "TOTAL_LONGSTALK",
+          "format": "integer",
+          "header": "Total Longstalk"
+        },
+        "H": {
+          "field": "TOTAL_RATDAMAGE",
+          "format": "integer",
+          "header": "Total Rat Damage"
+        },
+        "I": {
+          "field": "TOTAL_LOOSEFRUIT",
+          "format": "number",
+          "decimal_places": 2,
+          "header": "Total Loose Fruit"
+        }
+      }
+    },
+
+    "Quality_Analysis": {
+      "sheet_name": "Kualitas",
+      "data_source": "quality_analysis",
+      "start_row": 8,
+      "template_rows": 1,
+      "columns": {
+        "A": {
+          "field": "TRANSDATE",
+          "format": "date",
+          "format_string": "yyyy-mm-dd",
+          "header": "Tanggal"
+        },
+        "B": {
+          "field": "TOTAL_RIPE",
+          "format": "integer",
+          "header": "Total Ripe"
+        },
+        "C": {
+          "field": "TOTAL_BLACK",
+          "format": "integer",
+          "header": "Total Black"
+        },
+        "D": {
+          "field": "TOTAL_ROTTEN",
+          "format": "integer",
+          "header": "Total Rotten"
+        },
+        "E": {
+          "field": "TOTAL_RATDAMAGE",
+          "format": "integer",
+          "header": "Total Rat Damage"
+        },
+        "F": {
+          "field": "PERCENTAGE_DEFECT",
+          "format": "percentage",
+          "decimal_places": 2,
+          "header": "% Cacat"
+        }
+      }
+    }
+  },
+
+  "validation_rules": {
+    "date_validation": {
+      "start_date": {
+        "type": "date",
+        "min_date": "2020-01-01",
+        "max_date": "today"
+      },
+      "end_date": {
+        "type": "date",
+        "min_date": "{start_date}",
+        "max_date": "today"
+      }
+    },
+    "data_validation": {
+      "required_fields": ["TRANSDATE", "RIPEBCH"],
+      "numeric_fields": ["RIPEBCH", "UNRIPEBCH", "BLACKBCH", "ROTTENBCH", "LONGSTALKBCH", "RATDMGBCH", "LOOSEFRUIT"]
+    }
+  },
+
+  "output_settings": {
+    "file_naming": {
+      "template": "Laporan_FFB_Analysis_{estate_code}_{start_date}_{end_date}.xlsx",
+      "date_format": "YYYYMMDD"
+    },
+    "excel_settings": {
+      "auto_fit_columns": true,
+      "freeze_header_row": true
+    }
+  }
+}

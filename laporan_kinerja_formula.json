@@ -1,0 +1,219 @@
+{
+  "template_info": {
+    "name": "Laporan Kinerja Kerani, Mandor, dan Asisten Multi-Estate",
+    "file": "Laporan_Kinerja_Kerani_Mandor_Asisten_Template.xlsx",
+    "worksheet": "Laporan Kinerja",
+    "description": "Template untuk laporan kinerja karyawan berdasarkan transaksi FFB Scanner"
+  },
+  "data_sources": {
+    "database": {
+      "type": "firebird",
+      "tables": ["FFBSCANNERDATA01", "FFBSCANNERDATA02", "FFBSCANNERDATA03", "FFBSCANNERDATA04", "FFBSCANNERDATA05", "FFBSCANNERDATA06", "FFBSCANNERDATA07", "FFBSCANNERDATA08", "FFBSCANNERDATA09", "FFBSCANNERDATA10", "FFBSCANNERDATA11", "FFBSCANNERDATA12"],
+      "related_tables": ["EMP", "OCFIELD", "CRDIVISION"]
+    },
+    "config_file": "config.json",
+    "output_folder": "reports"
+  },
+  "variables": {
+    "period": {
+      "start_date": {
+        "source": "user_input",
+        "type": "date",
+        "required": true,
+        "description": "Tanggal mulai periode laporan"
+      },
+      "end_date": {
+        "source": "user_input",
+        "type": "date",
+        "required": true,
+        "description": "Tanggal akhir periode laporan"
+      }
+    },
+    "estates": {
+      "source": "config_file",
+      "type": "array",
+      "required": true,
+      "description": "Daftar estate yang akan dianalisis",
+      "structure": {
+        "estate_name": "string",
+        "database_path": "string"
+      }
+    },
+    "employee_mapping": {
+      "source": "database_query",
+      "query": "SELECT ID, NAME FROM EMP",
+      "type": "object",
+      "description": "Mapping ID employee ke nama",
+      "structure": {
+        "employee_id": "employee_name"
+      }
+    },
+    "divisions": {
+      "source": "database_query",
+      "query": "SELECT DISTINCT b.DIVID, c.DIVNAME FROM FFBSCANNERDATA{month} a JOIN OCFIELD b ON a.FIELDID = b.ID LEFT JOIN CRDIVISION c ON b.DIVID = c.ID WHERE b.DIVID IS NOT NULL AND c.DIVNAME IS NOT NULL",
+      "type": "object",
+      "description": "Mapping ID divisi ke nama",
+      "structure": {
+        "division_id": "division_name"
+      }
+    },
+    "transaction_data": {
+      "source": "database_query",
+      "query": "SELECT a.ID, a.SCANUSERID, a.OCID, a.WORKERID, a.CARRIERID, a.FIELDID, a.TASKNO, a.RIPEBCH, a.UNRIPEBCH, a.BLACKBCH, a.ROTTENBCH, a.LONGSTALKBCH, a.RATDMGBCH, a.LOOSEFRUIT, a.TRANSNO, a.TRANSDATE, a.TRANSTIME, a.UPLOADDATETIME, a.RECORDTAG, a.TRANSSTATUS, a.TRANSTYPE, a.LASTUSER, a.LASTUPDATED, a.OVERRIPEBCH, a.UNDERRIPEBCH, a.ABNORMALBCH, a.LOOSEFRUIT2 FROM FFBSCANNERDATA{month} a JOIN OCFIELD b ON a.FIELDID = b.ID WHERE b.DIVID = '{division_id}' AND a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}'",
+      "type": "array",
+      "description": "Data transaksi FFB Scanner per divisi",
+      "structure": {
+        "ID": "string",
+        "SCANUSERID": "string",
+        "FIELDID": "string",
+        "TRANSNO": "string",
+        "TRANSDATE": "date",
+        "RECORDTAG": "string",
+        "TRANSSTATUS": "string",
+        "RIPEBCH": "number",
+        "UNRIPEBCH": "number",
+        "BLACKBCH": "number",
+        "ROTTENBCH": "number",
+        "LONGSTALKBCH": "number",
+        "RATDMGBCH": "number",
+        "LOOSEFRUIT": "number"
+      }
+    }
+  },
+  "calculations": {
+    "employee_totals": {
+      "description": "Akumulasi data per karyawan",
+      "formula": {
+        "kerani_total": "COUNT(*) WHERE RECORDTAG = 'PM' GROUP BY SCANUSERID",
+        "kerani_verified": "COUNT(*) WHERE RECORDTAG = 'PM' AND TRANSNO IN (SELECT TRANSNO FROM transaction_data GROUP BY TRANSNO HAVING COUNT(*) > 1) GROUP BY SCANUSERID",
+        "kerani_differences": "COUNT(*) WHERE RECORDTAG = 'PM' AND TRANSNO IN (SELECT TRANSNO FROM transaction_data GROUP BY TRANSNO HAVING COUNT(*) > 1) AND has_field_differences = true GROUP BY SCANUSERID",
+        "mandor_total": "COUNT(*) WHERE RECORDTAG = 'P1' GROUP BY SCANUSERID",
+        "asisten_total": "COUNT(*) WHERE RECORDTAG = 'P5' GROUP BY SCANUSERID"
+      }
+    },
+    "division_totals": {
+      "description": "Total per divisi",
+      "formula": {
+        "kerani_total": "SUM(kerani_total) WHERE division = '{division_id}'",
+        "mandor_total": "SUM(mandor_total) WHERE division = '{division_id}'",
+        "asisten_total": "SUM(asisten_total) WHERE division = '{division_id}'",
+        "verifikasi_total": "SUM(kerani_verified) WHERE division = '{division_id}'",
+        "verification_rate": "(verifikasi_total / kerani_total) * 100"
+      }
+    },
+    "grand_totals": {
+      "description": "Total keseluruhan",
+      "formula": {
+        "grand_kerani": "SUM(kerani_total)",
+        "grand_mandor": "SUM(mandor_total)",
+        "grand_asisten": "SUM(asisten_total)",
+        "grand_kerani_verified": "SUM(kerani_verified)",
+        "grand_verification_rate": "(grand_kerani_verified / grand_kerani) * 100"
+      }
+    },
+    "field_differences": {
+      "description": "Mendeteksi perbedaan input antara kerani dan mandor/asisten",
+      "formula": {
+        "has_difference": "kerani_ripebch != mandor_ripebch OR kerani_unripebch != mandor_unripebch OR kerani_blackbch != mandor_blackbch OR kerani_rottenbch != mandor_rottenbch OR kerani_longstalkbch != mandor_longstalkbch OR kerani_ratdmgbch != mandor_ratdmgbch OR kerani_loosefruit != mandor_loosefruit",
+        "difference_count": "COUNT(*) WHERE has_difference = true AND TRANSNO IN (SELECT TRANSNO FROM transaction_data GROUP BY TRANSNO HAVING COUNT(*) > 1)",
+        "difference_percentage": "(difference_count / verified_count) * 100"
+      }
+    }
+  },
+  "filters": {
+    "status_704_filter": {
+      "description": "Filter khusus untuk bulan Mei 2025",
+      "condition": "start_date.month == 5 OR end_date.month == 5",
+      "filter_logic": "WHERE TRANSSTATUS = '704' FOR MANDOR/ASISTEN RECORDS WHEN CALCULATING DIFFERENCES"
+    },
+    "date_filter": {
+      "description": "Filter berdasarkan rentang tanggal",
+      "condition": "TRANSDATE >= start_date AND TRANSDATE <= end_date"
+    },
+    "division_filter": {
+      "description": "Filter berdasarkan divisi",
+      "condition": "FIELDID IN (SELECT ID FROM OCFIELD WHERE DIVID = '{division_id}')"
+    }
+  },
+  "output_structure": {
+    "excel_layout": {
+      "headers": {
+        "A1": "ESTATE",
+        "B1": "DIVISI",
+        "C1": "KARYAWAN",
+        "D1": "ROLE",
+        "E1": "JUMLAH TRANSAKSI",
+        "F1": "PERSENTASE TERVERIFIKASI",
+        "G1": "KETERANGAN PERBEDAAN",
+        "H1": "PERIODE LAPORAN"
+      },
+      "data_rows": {
+        "start_row": 2,
+        "columns": {
+          "A": "estate_name",
+          "B": "division_name",
+          "C": "employee_name",
+          "D": "role_type",
+          "E": "transaction_count",
+          "F": "verification_percentage",
+          "G": "difference_description",
+          "H": "period_text"
+        }
+      },
+      "summary_rows": {
+        "type": "division_summary",
+        "format": "== {division_name} TOTAL =="
+      },
+      "grand_total_row": {
+        "type": "grand_total",
+        "format": "=== GRAND TOTAL ==="
+      }
+    },
+    "styling": {
+      "header_style": {
+        "background_color": "#2C5282",
+        "text_color": "white",
+        "font": "Helvetica-Bold",
+        "font_size": 10
+      },
+      "summary_style": {
+        "background_color": "#4299E1",
+        "text_color": "white",
+        "font": "Helvetica-Bold",
+        "font_size": 9
+      },
+      "kerani_style": {
+        "background_color": "#FFF5F5",
+        "percentage_color": "#E53E3E"
+      },
+      "mandor_style": {
+        "background_color": "#F0FFF4",
+        "percentage_color": "#38A169"
+      },
+      "asisten_style": {
+        "background_color": "#F0F9FF",
+        "percentage_color": "#3182CE"
+      }
+    }
+  },
+  "validation_rules": {
+    "required_fields": ["estate_name", "division_name", "employee_name", "role_type", "transaction_count"],
+    "data_validation": {
+      "transaction_count": {
+        "type": "integer",
+        "min_value": 0
+      },
+      "verification_percentage": {
+        "type": "decimal",
+        "min_value": 0,
+        "max_value": 100
+      }
+    }
+  },
+  "report_metadata": {
+    "generated_by": "PT. Rebinmas Jaya - Sistem Monitoring Transaksi FFB",
+    "version": "1.0",
+    "last_updated": "2025-10-31",
+    "description": "Laporan kinerja kerani, mandor, dan asisten berdasarkan analisis transaksi real-time"
+  }
+}

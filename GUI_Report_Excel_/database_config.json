@@ -1,0 +1,27 @@
+{
+  "databases": {
+    "ptrj_p2b": {
+      "path": "D:\\Gawean Rebinmas\\Monitoring Database\\Database Ifess\\IFESS_2B_24-10-2025\\PTRJ_P2B.FDB",
+      "description": "PTRJ P2B Production Database - IFESS 2B",
+      "added_date": "2025-01-31",
+      "last_used": null,
+      "use_localhost": true,
+      "username": "sysdba",
+      "password": "masterkey"
+    },
+    "test_db": {
+      "path": "test.fdb",
+      "description": "Test database for validation",
+      "added_date": "D:\\Gawean Rebinmas\\Monitoring Database\\Ifes Auto report\\excel_method\\GUI_Report_Excel_",
+      "last_used": null,
+      "username": "sysdba",
+      "password": "masterkey"
+    }
+  },
+  "connection_settings": {
+    "timeout": 30,
+    "charset": "UTF8",
+    "page_size": 4096
+  },
+  "default_database": "ptrj_p2b"
+}

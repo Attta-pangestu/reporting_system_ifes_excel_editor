@@ -1,0 +1,908 @@
+{
+  "template_info": {
+    "filename": "Template_Laporan_FFB_Analysis.xlsx",
+    "total_sheets": 5,
+    "total_placeholders": 57,
+    "repeating_sections_count": 4
+  },
+  "sheets_analysis": {
+    "Dashboard": {
+      "dimensions": "A1:H20",
+      "max_row": 20,
+      "max_column": 8,
+      "total_placeholders": 15,
+      "has_repeating_section": false,
+      "placeholders": {
+        "report_title": {
+          "cell": "A1",
+          "row": 1,
+          "col": 1,
+          "value": "{{report_title}}",
+          "col_letter": "A"
+        },
+        "report_period": {
+          "cell": "A2",
+          "row": 2,
+          "col": 1,
+          "value": "{{report_period}}",
+          "col_letter": "A"
+        },
+        "estate_name": {
+          "cell": "A3",
+          "row": 3,
+          "col": 1,
+          "value": "Estate: {{estate_name}}",
+          "col_letter": "A"
+        },
+        "generated_date": {
+          "cell": "A4",
+          "row": 4,
+          "col": 1,
+          "value": "Generated: {{generated_date}} {{generated_time}}",
+          "col_letter": "A"
+        },
+        "generated_time": {
+          "cell": "A4",
+          "row": 4,
+          "col": 1,
+          "value": "Generated: {{generated_date}} {{generated_time}}",
+          "col_letter": "A"
+        },
+        "total_transactions": {
+          "cell": "C8",
+          "row": 8,
+          "col": 3,
+          "value": "{{total_transactions}}",
+          "col_letter": "C"
+        },
+        "total_ripe_bunches": {
+          "cell": "C9",
+          "row": 9,
+          "col": 3,
+          "value": "{{total_ripe_bunches}}",
+          "col_letter": "C"
+        },
+        "total_unripe_bunches": {
+          "cell": "C10",
+          "row": 10,
+          "col": 3,
+          "value": "{{total_unripe_bunches}}",
+          "col_letter": "C"
+        },
+        "avg_ripe_per_transaction": {
+          "cell": "C11",
+          "row": 11,
+          "col": 3,
+          "value": "{{avg_ripe_per_transaction}}",
+          "col_letter": "C"
+        },
+        "quality_percentage": {
+          "cell": "C12",
+          "row": 12,
+          "col": 3,
+          "value": "{{quality_percentage}}",
+          "col_letter": "C"
+        },
+        "verification_rate": {
+          "cell": "C13",
+          "row": 13,
+          "col": 3,
+          "value": "{{verification_rate}}",
+          "col_letter": "C"
+        },
+        "daily_average_transactions": {
+          "cell": "C17",
+          "row": 17,
+          "col": 3,
+          "value": "{{daily_average_transactions}}",
+          "col_letter": "C"
+        },
+        "daily_average_ripe": {
+          "cell": "C18",
+          "row": 18,
+          "col": 3,
+          "value": "{{daily_average_ripe}}",
+          "col_letter": "C"
+        },
+        "peak_performance_day": {
+          "cell": "C19",
+          "row": 19,
+          "col": 3,
+          "value": "{{peak_performance_day}}",
+          "col_letter": "C"
+        },
+        "low_performance_day": {
+          "cell": "C20",
+          "row": 20,
+          "col": 3,
+          "value": "{{low_performance_day}}",
+          "col_letter": "C"
+        }
+      },
+      "repeating_section_info": null
+    },
+    "Harian": {
+      "dimensions": "A1:I10",
+      "max_row": 10,
+      "max_column": 9,
+      "total_placeholders": 11,
+      "has_repeating_section": true,
+      "placeholders": {
+        "estate_name": {
+          "cell": "A2",
+          "row": 2,
+          "col": 1,
+          "value": "Estate: {{estate_name}} | Periode: {{report_period}}",
+          "col_letter": "A"
+        },
+        "report_period": {
+          "cell": "A2",
+          "row": 2,
+          "col": 1,
+          "value": "Estate: {{estate_name}} | Periode: {{report_period}}",
+          "col_letter": "A"
+        },
+        "TRANSDATE": {
+          "cell": "A8",
+          "row": 8,
+          "col": 1,
+          "value": "{{TRANSDATE}}",
+          "col_letter": "A"
+        },
+        "JUMLAH_TRANSAKSI": {
+          "cell": "B8",
+          "row": 8,
+          "col": 2,
+          "value": "{{JUMLAH_TRANSAKSI}}",
+          "col_letter": "B"
+        },
+        "RIPE_BUNCHES": {
+          "cell": "C8",
+          "row": 8,
+          "col": 3,
+          "value": "{{RIPE_BUNCHES}}",
+          "col_letter": "C"
+        },
+        "UNRIPE_BUNCHES": {
+          "cell": "D8",
+          "row": 8,
+          "col": 4,
+          "value": "{{UNRIPE_BUNCHES}}",
+          "col_letter": "D"
+        },
+        "BLACK_BUNCHES": {
+          "cell": "E8",
+          "row": 8,
+          "col": 5,
+          "value": "{{BLACK_BUNCHES}}",
+          "col_letter": "E"
+        },
+        "ROTTEN_BUNCHES": {
+          "cell": "F8",
+          "row": 8,
+          "col": 6,
+          "value": "{{ROTTEN_BUNCHES}}",
+          "col_letter": "F"
+        },
+        "LONGSTALK_BUNCHES": {
+          "cell": "G8",
+          "row": 8,
+          "col": 7,
+          "value": "{{LONGSTALK_BUNCHES}}",
+          "col_letter": "G"
+        },
+        "RAT_DAMAGE_BUNCHES": {
+          "cell": "H8",
+          "row": 8,
+          "col": 8,
+          "value": "{{RAT_DAMAGE_BUNCHES}}",
+          "col_letter": "H"
+        },
+        "LOOSE_FRUIT_KG": {
+          "cell": "I8",
+          "row": 8,
+          "col": 9,
+          "value": "{{LOOSE_FRUIT_KG}}",
+          "col_letter": "I"
+        }
+      },
+      "repeating_section_info": {
+        "data_source": "daily_performance",
+        "start_row": 8,
+        "template_row": 8,
+        "columns": {
+          "A": "TRANSDATE",
+          "B": "JUMLAH_TRANSAKSI",
+          "C": "RIPE_BUNCHES",
+          "D": "UNRIPE_BUNCHES",
+          "E": "BLACK_BUNCHES",
+          "F": "ROTTEN_BUNCHES",
+          "G": "LONGSTALK_BUNCHES",
+          "H": "RAT_DAMAGE_BUNCHES",
+          "I": "LOOSE_FRUIT_KG"
+        }
+      }
+    },
+    "Karyawan": {
+      "dimensions": "A1:J8",
+      "max_row": 8,
+      "max_column": 10,
+      "total_placeholders": 12,
+      "has_repeating_section": true,
+      "placeholders": {
+        "estate_name": {
+          "cell": "A2",
+          "row": 2,
+          "col": 1,
+          "value": "Estate: {{estate_name}} | Periode: {{report_period}}",
+          "col_letter": "A"
+        },
+        "report_period": {
+          "cell": "A2",
+          "row": 2,
+          "col": 1,
+          "value": "Estate: {{estate_name}} | Periode: {{report_period}}",
+          "col_letter": "A"
+        },
+        "EMPLOYEE_NAME": {
+          "cell": "A8",
+          "row": 8,
+          "col": 1,
+          "value": "{{EMPLOYEE_NAME}}",
+          "col_letter": "A"
+        },
+        "RECORDTAG": {
+          "cell": "B8",
+          "row": 8,
+          "col": 2,
+          "value": "{{RECORDTAG}}",
+          "col_letter": "B"
+        },
+        "JUMLAH_TRANSAKSI": {
+          "cell": "C8",
+          "row": 8,
+          "col": 3,
+          "value": "{{JUMLAH_TRANSAKSI}}",
+          "col_letter": "C"
+        },
+        "TOTAL_RIPE": {
+          "cell": "D8",
+          "row": 8,
+          "col": 4,
+          "value": "{{TOTAL_RIPE}}",
+          "col_letter": "D"
+        },
+        "TOTAL_UNRIPE": {
+          "cell": "E8",
+          "row": 8,
+          "col": 5,
+          "value": "{{TOTAL_UNRIPE}}",
+          "col_letter": "E"
+        },
+        "TOTAL_BLACK": {
+          "cell": "F8",
+          "row": 8,
+          "col": 6,
+          "value": "{{TOTAL_BLACK}}",
+          "col_letter": "F"
+        },
+        "TOTAL_ROTTEN": {
+          "cell": "G8",
+          "row": 8,
+          "col": 7,
+          "value": "{{TOTAL_ROTTEN}}",
+          "col_letter": "G"
+        },
+        "TOTAL_LONGSTALK": {
+          "cell": "H8",
+          "row": 8,
+          "col": 8,
+          "value": "{{TOTAL_LONGSTALK}}",
+          "col_letter": "H"
+        },
+        "TOTAL_RATDAMAGE": {
+          "cell": "I8",
+          "row": 8,
+          "col": 9,
+          "value": "{{TOTAL_RATDAMAGE}}",
+          "col_letter": "I"
+        },
+        "TOTAL_LOOSEFRUIT": {
+          "cell": "J8",
+          "row": 8,
+          "col": 10,
+          "value": "{{TOTAL_LOOSEFRUIT}}",
+          "col_letter": "J"
+        }
+      },
+      "repeating_section_info": {
+        "data_source": "employee_performance",
+        "start_row": 8,
+        "template_row": 8,
+        "group_by": "RECORDTAG",
+        "columns": {
+          "A": "EMPLOYEE_NAME",
+          "B": "RECORDTAG",
+          "C": "JUMLAH_TRANSAKSI",
+          "D": "TOTAL_RIPE",
+          "E": "TOTAL_UNRIPE",
+          "F": "TOTAL_BLACK",
+          "G": "TOTAL_ROTTEN",
+          "H": "TOTAL_LONGSTALK",
+          "I": "TOTAL_RATDAMAGE",
+          "J": "TOTAL_LOOSEFRUIT"
+        }
+      }
+    },
+    "Field": {
+      "dimensions": "A1:I8",
+      "max_row": 8,
+      "max_column": 9,
+      "total_placeholders": 11,
+      "has_repeating_section": true,
+      "placeholders": {
+        "estate_name": {
+          "cell": "A2",
+          "row": 2,
+          "col": 1,
+          "value": "Estate: {{estate_name}} | Periode: {{report_period}}",
+          "col_letter": "A"
+        },
+        "report_period": {
+          "cell": "A2",
+          "row": 2,
+          "col": 1,
+          "value": "Estate: {{estate_name}} | Periode: {{report_period}}",
+          "col_letter": "A"
+        },
+        "FIELDNAME": {
+          "cell": "A8",
+          "row": 8,
+          "col": 1,
+          "value": "{{FIELDNAME}}",
+          "col_letter": "A"
+        },
+        "JUMLAH_TRANSAKSI": {
+          "cell": "B8",
+          "row": 8,
+          "col": 2,
+          "value": "{{JUMLAH_TRANSAKSI}}",
+          "col_letter": "B"
+        },
+        "TOTAL_RIPE": {
+          "cell": "C8",
+          "row": 8,
+          "col": 3,
+          "value": "{{TOTAL_RIPE}}",
+          "col_letter": "C"
+        },
+        "TOTAL_UNRIPE": {
+          "cell": "D8",
+          "row": 8,
+          "col": 4,
+          "value": "{{TOTAL_UNRIPE}}",
+          "col_letter": "D"
+        },
+        "TOTAL_BLACK": {
+          "cell": "E8",
+          "row": 8,
+          "col": 5,
+          "value": "{{TOTAL_BLACK}}",
+          "col_letter": "E"
+        },
+        "TOTAL_ROTTEN": {
+          "cell": "F8",
+          "row": 8,
+          "col": 6,
+          "value": "{{TOTAL_ROTTEN}}",
+          "col_letter": "F"
+        },
+        "TOTAL_LONGSTALK": {
+          "cell": "G8",
+          "row": 8,
+          "col": 7,
+          "value": "{{TOTAL_LONGSTALK}}",
+          "col_letter": "G"
+        },
+        "TOTAL_RATDAMAGE": {
+          "cell": "H8",
+          "row": 8,
+          "col": 8,
+          "value": "{{TOTAL_RATDAMAGE}}",
+          "col_letter": "H"
+        },
+        "TOTAL_LOOSEFRUIT": {
+          "cell": "I8",
+          "row": 8,
+          "col": 9,
+          "value": "{{TOTAL_LOOSEFRUIT}}",
+          "col_letter": "I"
+        }
+      },
+      "repeating_section_info": {
+        "data_source": "field_performance",
+        "start_row": 8,
+        "template_row": 8,
+        "columns": {
+          "A": "FIELDNAME",
+          "B": "JUMLAH_TRANSAKSI",
+          "C": "TOTAL_RIPE",
+          "D": "TOTAL_UNRIPE",
+          "E": "TOTAL_BLACK",
+          "F": "TOTAL_ROTTEN",
+          "G": "TOTAL_LONGSTALK",
+          "H": "TOTAL_RATDAMAGE",
+          "I": "TOTAL_LOOSEFRUIT"
+        }
+      }
+    },
+    "Kualitas": {
+      "dimensions": "A1:F13",
+      "max_row": 13,
+      "max_column": 6,
+      "total_placeholders": 8,
+      "has_repeating_section": true,
+      "placeholders": {
+        "estate_name": {
+          "cell": "A2",
+          "row": 2,
+          "col": 1,
+          "value": "Estate: {{estate_name}} | Periode: {{report_period}}",
+          "col_letter": "A"
+        },
+        "report_period": {
+          "cell": "A2",
+          "row": 2,
+          "col": 1,
+          "value": "Estate: {{estate_name}} | Periode: {{report_period}}",
+          "col_letter": "A"
+        },
+        "TRANSDATE": {
+          "cell": "A8",
+          "row": 8,
+          "col": 1,
+          "value": "{{TRANSDATE}}",
+          "col_letter": "A"
+        },
+        "TOTAL_RIPE": {
+          "cell": "B8",
+          "row": 8,
+          "col": 2,
+          "value": "{{TOTAL_RIPE}}",
+          "col_letter": "B"
+        },
+        "TOTAL_BLACK": {
+          "cell": "C8",
+          "row": 8,
+          "col": 3,
+          "value": "{{TOTAL_BLACK}}",
+          "col_letter": "C"
+        },
+        "TOTAL_ROTTEN": {
+          "cell": "D8",
+          "row": 8,
+          "col": 4,
+          "value": "{{TOTAL_ROTTEN}}",
+          "col_letter": "D"
+        },
+        "TOTAL_RATDAMAGE": {
+          "cell": "E8",
+          "row": 8,
+          "col": 5,
+          "value": "{{TOTAL_RATDAMAGE}}",
+          "col_letter": "E"
+        },
+        "PERCENTAGE_DEFECT": {
+          "cell": "F8",
+          "row": 8,
+          "col": 6,
+          "value": "{{PERCENTAGE_DEFECT}}",
+          "col_letter": "F"
+        }
+      },
+      "repeating_section_info": {
+        "data_source": "quality_analysis",
+        "start_row": 8,
+        "template_row": 8,
+        "columns": {
+          "A": "TRANSDATE",
+          "B": "TOTAL_RIPE",
+          "C": "TOTAL_BLACK",
+          "D": "TOTAL_ROTTEN",
+          "E": "TOTAL_RATDAMAGE",
+          "F": "PERCENTAGE_DEFECT"
+        }
+      }
+    }
+  },
+  "repeating_sections": {
+    "Harian": {
+      "data_source": "daily_performance",
+      "start_row": 8,
+      "template_row": 8,
+      "columns": {
+        "A": "TRANSDATE",
+        "B": "JUMLAH_TRANSAKSI",
+        "C": "RIPE_BUNCHES",
+        "D": "UNRIPE_BUNCHES",
+        "E": "BLACK_BUNCHES",
+        "F": "ROTTEN_BUNCHES",
+        "G": "LONGSTALK_BUNCHES",
+        "H": "RAT_DAMAGE_BUNCHES",
+        "I": "LOOSE_FRUIT_KG"
+      }
+    },
+    "Karyawan": {
+      "data_source": "employee_performance",
+      "start_row": 8,
+      "template_row": 8,
+      "group_by": "RECORDTAG",
+      "columns": {
+        "A": "EMPLOYEE_NAME",
+        "B": "RECORDTAG",
+        "C": "JUMLAH_TRANSAKSI",
+        "D": "TOTAL_RIPE",
+        "E": "TOTAL_UNRIPE",
+        "F": "TOTAL_BLACK",
+        "G": "TOTAL_ROTTEN",
+        "H": "TOTAL_LONGSTALK",
+        "I": "TOTAL_RATDAMAGE",
+        "J": "TOTAL_LOOSEFRUIT"
+      }
+    },
+    "Field": {
+      "data_source": "field_performance",
+      "start_row": 8,
+      "template_row": 8,
+      "columns": {
+        "A": "FIELDNAME",
+        "B": "JUMLAH_TRANSAKSI",
+        "C": "TOTAL_RIPE",
+        "D": "TOTAL_UNRIPE",
+        "E": "TOTAL_BLACK",
+        "F": "TOTAL_ROTTEN",
+        "G": "TOTAL_LONGSTALK",
+        "H": "TOTAL_RATDAMAGE",
+        "I": "TOTAL_LOOSEFRUIT"
+      }
+    },
+    "Kualitas": {
+      "data_source": "quality_analysis",
+      "start_row": 8,
+      "template_row": 8,
+      "columns": {
+        "A": "TRANSDATE",
+        "B": "TOTAL_RIPE",
+        "C": "TOTAL_BLACK",
+        "D": "TOTAL_ROTTEN",
+        "E": "TOTAL_RATDAMAGE",
+        "F": "PERCENTAGE_DEFECT"
+      }
+    }
+  },
+  "placeholder_by_category": {
+    "single_value": [
+      {
+        "placeholder": "report_title",
+        "sheet": "Dashboard",
+        "cell": "A1"
+      },
+      {
+        "placeholder": "report_period",
+        "sheet": "Dashboard",
+        "cell": "A2"
+      },
+      {
+        "placeholder": "estate_name",
+        "sheet": "Dashboard",
+        "cell": "A3"
+      },
+      {
+        "placeholder": "generated_date",
+        "sheet": "Dashboard",
+        "cell": "A4"
+      },
+      {
+        "placeholder": "generated_time",
+        "sheet": "Dashboard",
+        "cell": "A4"
+      },
+      {
+        "placeholder": "total_transactions",
+        "sheet": "Dashboard",
+        "cell": "C8"
+      },
+      {
+        "placeholder": "total_ripe_bunches",
+        "sheet": "Dashboard",
+        "cell": "C9"
+      },
+      {
+        "placeholder": "total_unripe_bunches",
+        "sheet": "Dashboard",
+        "cell": "C10"
+      },
+      {
+        "placeholder": "avg_ripe_per_transaction",
+        "sheet": "Dashboard",
+        "cell": "C11"
+      },
+      {
+        "placeholder": "quality_percentage",
+        "sheet": "Dashboard",
+        "cell": "C12"
+      },
+      {
+        "placeholder": "verification_rate",
+        "sheet": "Dashboard",
+        "cell": "C13"
+      },
+      {
+        "placeholder": "daily_average_transactions",
+        "sheet": "Dashboard",
+        "cell": "C17"
+      },
+      {
+        "placeholder": "daily_average_ripe",
+        "sheet": "Dashboard",
+        "cell": "C18"
+      },
+      {
+        "placeholder": "peak_performance_day",
+        "sheet": "Dashboard",
+        "cell": "C19"
+      },
+      {
+        "placeholder": "low_performance_day",
+        "sheet": "Dashboard",
+        "cell": "C20"
+      },
+      {
+        "placeholder": "estate_name",
+        "sheet": "Harian",
+        "cell": "A2"
+      },
+      {
+        "placeholder": "report_period",
+        "sheet": "Harian",
+        "cell": "A2"
+      },
+      {
+        "placeholder": "estate_name",
+        "sheet": "Karyawan",
+        "cell": "A2"
+      },
+      {
+        "placeholder": "report_period",
+        "sheet": "Karyawan",
+        "cell": "A2"
+      },
+      {
+        "placeholder": "estate_name",
+        "sheet": "Field",
+        "cell": "A2"
+      },
+      {
+        "placeholder": "report_period",
+        "sheet": "Field",
+        "cell": "A2"
+      },
+      {
+        "placeholder": "estate_name",
+        "sheet": "Kualitas",
+        "cell": "A2"
+      },
+      {
+        "placeholder": "report_period",
+        "sheet": "Kualitas",
+        "cell": "A2"
+      }
+    ],
+    "repeating_data": [
+      {
+        "placeholder": "TRANSDATE",
+        "sheet": "Harian",
+        "cell": "A8",
+        "data_source": "daily_performance"
+      },
+      {
+        "placeholder": "JUMLAH_TRANSAKSI",
+        "sheet": "Harian",
+        "cell": "B8",
+        "data_source": "daily_performance"
+      },
+      {
+        "placeholder": "RIPE_BUNCHES",
+        "sheet": "Harian",
+        "cell": "C8",
+        "data_source": "daily_performance"
+      },
+      {
+        "placeholder": "UNRIPE_BUNCHES",
+        "sheet": "Harian",
+        "cell": "D8",
+        "data_source": "daily_performance"
+      },
+      {
+        "placeholder": "BLACK_BUNCHES",
+        "sheet": "Harian",
+        "cell": "E8",
+        "data_source": "daily_performance"
+      },
+      {
+        "placeholder": "ROTTEN_BUNCHES",
+        "sheet": "Harian",
+        "cell": "F8",
+        "data_source": "daily_performance"
+      },
+      {
+        "placeholder": "LONGSTALK_BUNCHES",
+        "sheet": "Harian",
+        "cell": "G8",
+        "data_source": "daily_performance"
+      },
+      {
+        "placeholder": "RAT_DAMAGE_BUNCHES",
+        "sheet": "Harian",
+        "cell": "H8",
+        "data_source": "daily_performance"
+      },
+      {
+        "placeholder": "LOOSE_FRUIT_KG",
+        "sheet": "Harian",
+        "cell": "I8",
+        "data_source": "daily_performance"
+      },
+      {
+        "placeholder": "EMPLOYEE_NAME",
+        "sheet": "Karyawan",
+        "cell": "A8",
+        "data_source": "employee_performance"
+      },
+      {
+        "placeholder": "RECORDTAG",
+        "sheet": "Karyawan",
+        "cell": "B8",
+        "data_source": "employee_performance"
+      },
+      {
+        "placeholder": "JUMLAH_TRANSAKSI",
+        "sheet": "Karyawan",
+        "cell": "C8",
+        "data_source": "employee_performance"
+      },
+      {
+        "placeholder": "TOTAL_RIPE",
+        "sheet": "Karyawan",
+        "cell": "D8",
+        "data_source": "employee_performance"
+      },
+      {
+        "placeholder": "TOTAL_UNRIPE",
+        "sheet": "Karyawan",
+        "cell": "E8",
+        "data_source": "employee_performance"
+      },
+      {
+        "placeholder": "TOTAL_BLACK",
+        "sheet": "Karyawan",
+        "cell": "F8",
+        "data_source": "employee_performance"
+      },
+      {
+        "placeholder": "TOTAL_ROTTEN",
+        "sheet": "Karyawan",
+        "cell": "G8",
+        "data_source": "employee_performance"
+      },
+      {
+        "placeholder": "TOTAL_LONGSTALK",
+        "sheet": "Karyawan",
+        "cell": "H8",
+        "data_source": "employee_performance"
+      },
+      {
+        "placeholder": "TOTAL_RATDAMAGE",
+        "sheet": "Karyawan",
+        "cell": "I8",
+        "data_source": "employee_performance"
+      },
+      {
+        "placeholder": "TOTAL_LOOSEFRUIT",
+        "sheet": "Karyawan",
+        "cell": "J8",
+        "data_source": "employee_performance"
+      },
+      {
+        "placeholder": "FIELDNAME",
+        "sheet": "Field",
+        "cell": "A8",
+        "data_source": "field_performance"
+      },
+      {
+        "placeholder": "JUMLAH_TRANSAKSI",
+        "sheet": "Field",
+        "cell": "B8",
+        "data_source": "field_performance"
+      },
+      {
+        "placeholder": "TOTAL_RIPE",
+        "sheet": "Field",
+        "cell": "C8",
+        "data_source": "field_performance"
+      },
+      {
+        "placeholder": "TOTAL_UNRIPE",
+        "sheet": "Field",
+        "cell": "D8",
+        "data_source": "field_performance"
+      },
+      {
+        "placeholder": "TOTAL_BLACK",
+        "sheet": "Field",
+        "cell": "E8",
+        "data_source": "field_performance"
+      },
+      {
+        "placeholder": "TOTAL_ROTTEN",
+        "sheet": "Field",
+        "cell": "F8",
+        "data_source": "field_performance"
+      },
+      {
+        "placeholder": "TOTAL_LONGSTALK",
+        "sheet": "Field",
+        "cell": "G8",
+        "data_source": "field_performance"
+      },
+      {
+        "placeholder": "TOTAL_RATDAMAGE",
+        "sheet": "Field",
+        "cell": "H8",
+        "data_source": "field_performance"
+      },
+      {
+        "placeholder": "TOTAL_LOOSEFRUIT",
+        "sheet": "Field",
+        "cell": "I8",
+        "data_source": "field_performance"
+      },
+      {
+        "placeholder": "TRANSDATE",
+        "sheet": "Kualitas",
+        "cell": "A8",
+        "data_source": "quality_analysis"
+      },
+      {
+        "placeholder": "TOTAL_RIPE",
+        "sheet": "Kualitas",
+        "cell": "B8",
+        "data_source": "quality_analysis"
+      },
+      {
+        "placeholder": "TOTAL_BLACK",
+        "sheet": "Kualitas",
+        "cell": "C8",
+        "data_source": "quality_analysis"
+      },
+      {
+        "placeholder": "TOTAL_ROTTEN",
+        "sheet": "Kualitas",
+        "cell": "D8",
+        "data_source": "quality_analysis"
+      },
+      {
+        "placeholder": "TOTAL_RATDAMAGE",
+        "sheet": "Kualitas",
+        "cell": "E8",
+        "data_source": "quality_analysis"
+      },
+      {
+        "placeholder": "PERCENTAGE_DEFECT",
+        "sheet": "Kualitas",
+        "cell": "F8",
+        "data_source": "quality_analysis"
+      }
+    ]
+  }
+}
