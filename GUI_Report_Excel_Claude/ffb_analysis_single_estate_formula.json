@@ -1,0 +1,129 @@
+{
+  "formula_name": "FFB Analysis Single Estate Report",
+  "version": "1.0",
+  "description": "FFB Analysis Report adapted from multi-estate GUI for single database",
+  "author": "System Analysis",
+  "created_date": "2024-01-15",
+  "data_sources": {
+    "ffb_loading": "FFBLOADINGCROP{month:02d}",
+    "employee": "EMP"
+  },
+  "date_range": {
+    "start_date": "{start_date}",
+    "end_date": "{end_date}"
+  },
+  "queries": {
+    "employee_mapping": {
+      "sql": "SELECT DISTINCT EMPID, EMPNAME, EMPTYPE, EMPPOSITION, DIVISIONID FROM EMP WHERE EMPSTATUS = 'A' ORDER BY EMPID",
+      "description": "Get employee mapping with full details for active employees"
+    },
+    "divisions": {
+      "sql": "SELECT DISTINCT DIVISIONID, DIVISIONNAME FROM FFBLOADINGCROP{month:02d} WHERE TRANSDATE BETWEEN '{start_date}' AND '{end_date}' AND DIVISIONID IS NOT NULL AND DIVISIONNAME IS NOT NULL ORDER BY DIVISIONID",
+      "description": "Get list of divisions from FFB loading data for specific month and date range"
+    },
+    "division_tables": {
+      "sql": "SELECT RDB$RELATION_NAME FROM RDB$RELATIONS WHERE RDB$RELATION_NAME LIKE 'FFBLOADINGCROP%' AND RDB$SYSTEM_FLAG = 0 ORDER BY RDB$RELATION_NAME",
+      "description": "Get available FFBLOADINGCROP tables"
+    },
+    "analyze_division": {
+      "sql": "SELECT TRANSDATE, DIVISIONID, DIVISIONNAME, EMPID, EMPNAME, EMPTYPE, EMPPOSITION, FFBWEIGHT, FFBPRICE, FFBVALUE FROM FFBLOADINGCROP{month:02d} WHERE DIVISIONID = '{division_id}' AND TRANSDATE BETWEEN '{start_date}' AND '{end_date}' ORDER BY TRANSDATE, EMPID",
+      "description": "Analyze division data from FFB loading for specific division and date range"
+    },
+    "division_data": {
+      "sql": "SELECT ID, SCANUSERID, FIELDID as DIVISIONID, BUNCHES, LOOSEFRUIT, TRANSDATE, TRANSTIME, DRIVERID, DRIVERNAME, HARVESTINGDATE, VEHICLECODEID FROM FFBLOADINGCROP{month:02d} WHERE FIELDID = '{division_id}' AND TRANSDATE >= '{start_date}' AND TRANSDATE <= '{end_date}' ORDER BY TRANSDATE, TRANSTIME",
+      "description": "Get FFB data for specific division and date range"
+    },
+    "kerani_data": {
+      "sql": "SELECT DISTINCT SCANUSERID, COUNT(*) as TRANSACTION_COUNT FROM FFBLOADINGCROP{month:02d} WHERE FIELDID = '{division_id}' AND TRANSDATE >= '{start_date}' AND TRANSDATE <= '{end_date}' AND SCANUSERID IS NOT NULL GROUP BY SCANUSERID ORDER BY SCANUSERID",
+      "description": "Get Kerani (scanner user) transaction counts"
+    },
+    "mandor_data": {
+      "sql": "SELECT DISTINCT DRIVERID, DRIVERNAME, COUNT(*) as TRANSACTION_COUNT FROM FFBLOADINGCROP{month:02d} WHERE FIELDID = '{division_id}' AND TRANSDATE >= '{start_date}' AND TRANSDATE <= '{end_date}' AND DRIVERID IS NOT NULL GROUP BY DRIVERID, DRIVERNAME ORDER BY DRIVERID",
+      "description": "Get Mandor (driver) transaction counts"
+    },
+    "asisten_data": {
+      "sql": "SELECT DISTINCT VEHICLECODEID, COUNT(*) as TRANSACTION_COUNT FROM FFBLOADINGCROP{month:02d} WHERE FIELDID = '{division_id}' AND TRANSDATE >= '{start_date}' AND TRANSDATE <= '{end_date}' AND VEHICLECODEID IS NOT NULL GROUP BY VEHICLECODEID ORDER BY VEHICLECODEID",
+      "description": "Get Asisten (vehicle) transaction counts"
+    },
+    "daily_summary": {
+      "sql": "SELECT TRANSDATE, COUNT(*) as DAILY_TRANSACTIONS, SUM(BUNCHES) as DAILY_BUNCHES, SUM(LOOSEFRUIT) as DAILY_LOOSEFRUIT FROM FFBLOADINGCROP{month:02d} WHERE FIELDID = '{division_id}' AND TRANSDATE >= '{start_date}' AND TRANSDATE <= '{end_date}' GROUP BY TRANSDATE ORDER BY TRANSDATE",
+      "description": "Daily summary for division"
+    },
+    "total_summary": {
+      "sql": "SELECT COUNT(*) as TOTAL_TRANSACTIONS, SUM(BUNCHES) as TOTAL_BUNCHES, SUM(LOOSEFRUIT) as TOTAL_LOOSEFRUIT FROM FFBLOADINGCROP{month:02d} WHERE FIELDID = '{division_id}' AND TRANSDATE >= '{start_date}' AND TRANSDATE <= '{end_date}'",
+      "description": "Total summary for division"
+    },
+    "verification_status": {
+      "sql": "SELECT COUNT(*) as VERIFIED_COUNT FROM FFBLOADINGCROP{month:02d} WHERE FIELDID = '{division_id}' AND TRANSDATE >= '{start_date}' AND TRANSDATE <= '{end_date}' AND BUNCHES > 0 AND LOOSEFRUIT >= 0",
+      "description": "Count of verified transactions"
+    }
+  },
+  "calculated_variables": {
+    "kerani_percentage": "(verified_count / total_transactions) * 100",
+    "mandor_percentage": "(verified_count / total_transactions) * 100", 
+    "asisten_percentage": "(verified_count / total_transactions) * 100",
+    "total_bunches": "SUM(BUNCHES)",
+    "total_loosefruit": "SUM(LOOSEFRUIT)",
+    "total_transactions": "COUNT(*)",
+    "avg_bunches_per_transaction": "SUM(BUNCHES) / COUNT(*)",
+    "avg_loosefruit_per_transaction": "SUM(LOOSEFRUIT) / COUNT(*)",
+    "loosefruit_percentage": "(SUM(LOOSEFRUIT) / SUM(BUNCHES)) * 100"
+  },
+  "report_sections": {
+    "estate_summary": {
+      "title": "Estate Summary",
+      "queries": ["total_summary", "verification_status"]
+    },
+    "division_analysis": {
+      "title": "Division Analysis", 
+      "queries": ["divisions", "division_data", "daily_summary"]
+    },
+    "employee_performance": {
+      "title": "Employee Performance",
+      "queries": ["kerani_data", "mandor_data", "asisten_data", "employee_mapping"]
+    }
+  },
+  "repeating_sections": {
+    "division_details": {
+      "sheet_name": "Division Details",
+      "start_row": 5,
+      "template_rows": 1,
+      "data_source": "division_data",
+      "columns": {
+        "A": {"field": "TRANSDATE", "format": "date"},
+        "B": {"field": "SCANUSERID", "format": "text"},
+        "C": {"field": "BUNCHES", "format": "number"},
+        "D": {"field": "LOOSEFRUIT", "format": "number"},
+        "E": {"field": "DRIVERNAME", "format": "text"},
+        "F": {"field": "VEHICLECODEID", "format": "text"}
+      }
+    },
+    "employee_summary": {
+      "sheet_name": "Employee Summary",
+      "start_row": 3,
+      "template_rows": 1,
+      "data_source": "employee_performance",
+      "columns": {
+        "A": {"field": "EMPLOYEE_CODE", "format": "text"},
+        "B": {"field": "EMPLOYEE_NAME", "format": "text"},
+        "C": {"field": "ROLE", "format": "text"},
+        "D": {"field": "TRANSACTION_COUNT", "format": "number"},
+        "E": {"field": "VERIFICATION_PERCENTAGE", "format": "percentage"}
+      }
+    }
+  },
+  "formatting": {
+    "date_format": "YYYY-MM-DD",
+    "number_format": "#,##0.00",
+    "percentage_format": "0.00%"
+  },
+  "validation_rules": {
+    "required_fields": ["TRANSDATE", "BUNCHES", "LOOSEFRUIT", "FIELDID"],
+    "data_quality_checks": [
+      "BUNCHES >= 0",
+      "LOOSEFRUIT >= 0", 
+      "TRANSDATE IS NOT NULL",
+      "FIELDID IS NOT NULL"
+    ]
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "timestamp": "2025-11-01T11:51:17.891311",
+  "parameters": {
+    "start_date": "2025-10-01",
+    "end_date": "2025-10-31",
+    "month": "10",
+    "estate_name": "PGE 2B",
+    "estate_code": "PGE_2B"
+  },
+  "etl_stats": {
+    "extract": {
+      "start_time": "2025-11-01 11:51:16.888482",
+      "queries": 8,
+      "rows_extracted": 11,
+      "success": true
+    },
+    "transform": {
+      "start_time": "2025-11-01 11:51:17.483167",
+      "variables_processed": 20,
+      "calculations": 0,
+      "success": true
+    },
+    "load": {
+      "start_time": "2025-11-01 11:51:17.661445",
+      "data_types": 0,
+      "rows_processed": 0,
+      "success": true
+    }
+  },
+  "query_results": {
+    "daily_performance": [],
+    "processed_daily_data": [],
+    "employee_performance": [],
+    "processed_employee_data": [],
+    "field_performance": [],
+    "processed_field_data": [],
+    "verification_data": [
+      {
+        "total_transactions": 0,
+        "pm_transactions": 0,
+        "verified_transactions": 0,
+        "verification_rate": 0
+      }
+    ],
+    "ffb_scanner_data": [
+      {
+        "SCANUSERID": "776",
+        "WORKERID": "4717",
+        "CARRIERID": "4717",
+        "FIELDID": "286",
+        "RIPEBCH": "0",
+        "TRANSDATE": "2025-10-23",
+        "TRANSTIME": "14:13:05.0000",
+        "RANSSTATUS": "704"
+      },
+      {
+        "SCANUSERID": "776",
+        "WORKERID": "4717",
+        "CARRIERID": "4717",
+        "FIELDID": "286",
+        "RIPEBCH": "0",
+        "TRANSDATE": "2025-10-23",
+        "TRANSTIME": "14:12:33.0000",
+        "RANSSTATUS": "704"
+      },
+      {
+        "SCANUSERID": "776",
+        "WORKERID": "4717",
+        "CARRIERID": "4717",
+        "FIELDID": "285",
+        "RIPEBCH": "0",
+        "TRANSDATE": "2025-10-23",
+        "TRANSTIME": "14:12:00.0000",
+        "RANSSTATUS": "704"
+      },
+      {
+        "SCANUSERID": "776",
+        "WORKERID": "857",
+        "CARRIERID": "857",
+        "FIELDID": "286",
+        "RIPEBCH": "0",
+        "TRANSDATE": "2025-10-23",
+        "TRANSTIME": "14:11:20.0000",
+        "RANSSTATUS": "704"
+      },
+      {
+        "SCANUSERID": "776",
+        "WORKERID": "896",
+        "CARRIERID": "896",
+        "FIELDID": "284",
+        "RIPEBCH": "0",
+        "TRANSDATE": "2025-10-23",
+        "TRANSTIME": "13:52:23.0000",
+        "RANSSTATUS": "704"
+      },
+      {
+        "SCANUSERID": "819",
+        "WORKERID": "792",
+        "CARRIERID": "792",
+        "FIELDID": "278",
+        "RIPEBCH": "0",
+        "TRANSDATE": "2025-10-23",
+        "TRANSTIME": "13:52:15.0000",
+        "RANSSTATUS": "704"
+      },
+      {
+        "SCANUSERID": "819",
+        "WORKERID": "882",
+        "CARRIERID": "882",
+        "FIELDID": "289",
+        "RIPEBCH": "2",
+        "TRANSDATE": "2025-10-23",
+        "TRANSTIME": "13:51:34.0000",
+        "RANSSTATUS": "704"
+      },
+      {
+        "SCANUSERID": "776",
+        "WORKERID": "896",
+        "CARRIERID": "896",
+        "FIELDID": "284",
+        "RIPEBCH": "0",
+        "TRANSDATE": "2025-10-23",
+        "TRANSTIME": "13:51:23.0000",
+        "RANSSTATUS": "704"
+      },
+      {
+        "SCANUSERID": "819",
+        "WORKERID": "4501",
+        "CARRIERID": "4501",
+        "FIELDID": "289",
+        "RIPEBCH": "0",
+        "TRANSDATE": "2025-10-23",
+        "TRANSTIME": "13:50:39.0000",
+        "RANSSTATUS": "704"
+      },
+      {
+        "SCANUSERID": "819",
+        "WORKERID": "4702",
+        "CARRIERID": "4702",
+        "FIELDID": "278",
+        "RIPEBCH": "3",
+        "TRANSDATE": "2025-10-23",
+        "TRANSTIME": "13:50:02.0000",
+        "RANSSTATUS": "704"
+      }
+    ]
+  },
+  "summary": {
+    "total_queries": 8,
+    "total_rows_extracted": 11,
+    "total_rows_processed": 0,
+    "extract_duration": 0.594685,
+    "transform_duration": 0,
+    "load_duration": 0,
+    "total_duration": 0
+  }
+}

@@ -18,8 +18,15 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 try:
     from firebird_connector_enhanced import FirebirdConnectorEnhanced
-    from dynamic_formula_engine import DynamicFormulaEngine
+    from dynamic_formula_engine_enhanced import EnhancedDynamicFormulaEngine
     from adaptive_excel_processor import AdaptiveExcelProcessor
+    from database_helper import (
+        execute_query_with_extraction, 
+        get_table_count, 
+        get_sample_data,
+        normalize_data_row
+    )
+    from database_selector import DatabaseSelector
 except ImportError as e:
     messagebox.showerror("Import Error", f"Failed to import required modules: {e}")
     sys.exit(1)
@@ -45,8 +52,12 @@ class AdaptiveReportGeneratorGUI:
         self.output_path = tk.StringVar()
         self.start_date = tk.StringVar(value=(datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d"))
         self.end_date = tk.StringVar(value=datetime.now().strftime("%Y-%m-%d"))
-        self.formula_file = tk.StringVar(value="pge2b_real_formula.json")
+        self.formula_file = tk.StringVar(value="pge2b_corrected_formula.json")
         self.estate_var = tk.StringVar(value="PGE 2B")
+        
+        # Multi-estate style variables
+        self.is_generating = False
+        self.current_thread = None
 
         # Status variables
         self.db_connected = tk.BooleanVar(value=False)
@@ -59,6 +70,7 @@ class AdaptiveReportGeneratorGUI:
         self.dynamic_engine = None
         self.adaptive_processor = None
         self.template_analysis = {}
+        self.formula_data = None
 
         # Setup GUI
         self.setup_gui()
@@ -143,6 +155,9 @@ class AdaptiveReportGeneratorGUI:
 
         browse_db_btn = ttk.Button(db_path_frame, text="Browse", command=self.browse_database)
         browse_db_btn.grid(row=0, column=1)
+        
+        select_db_btn = ttk.Button(db_path_frame, text="Select DB", command=self.select_database)
+        select_db_btn.grid(row=0, column=2, padx=(5, 0))
 
         # Connection status
         ttk.Label(db_frame, text="Status:").grid(row=1, column=0, sticky=tk.W, pady=2)
@@ -426,12 +441,35 @@ class AdaptiveReportGeneratorGUI:
 
             # Load default template
             self.load_default_template()
+            
+            # Load formula data
+            self.load_formula_data()
 
             self.log_message("Adaptive components initialized successfully", "success")
 
         except Exception as e:
             self.log_message(f"Error initializing components: {e}", "error")
             messagebox.showerror("Initialization Error", f"Failed to initialize components: {e}")
+
+    def load_formula_data(self):
+        """Load formula data from JSON file"""
+        try:
+            formula_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                self.formula_file.get()
+            )
+            
+            if os.path.exists(formula_path):
+                with open(formula_path, 'r', encoding='utf-8') as f:
+                    self.formula_data = json.load(f)
+                self.log_message(f"Formula data loaded: {formula_path}", "info")
+            else:
+                self.log_message(f"Formula file not found: {formula_path}", "warning")
+                self.formula_data = None
+                
+        except Exception as e:
+            self.log_message(f"Error loading formula data: {e}", "error")
+            self.formula_data = None
 
     def load_default_template(self):
         """Load default template"""
@@ -450,6 +488,29 @@ class AdaptiveReportGeneratorGUI:
 
         except Exception as e:
             self.log_message(f"Error loading default template: {e}", "error")
+
+    def get_query_from_template(self, query_name, **kwargs):
+        """Get query from template file with parameter substitution"""
+        try:
+            if not hasattr(self, 'formula_data') or not self.formula_data:
+                return None
+                
+            queries = self.formula_data.get('queries', {})
+            if query_name not in queries:
+                print(f"Query '{query_name}' not found in template")
+                return None
+                
+            query_sql = queries[query_name]['sql']
+            
+            # Replace parameters in query
+            for key, value in kwargs.items():
+                placeholder = '{' + key + '}'
+                query_sql = query_sql.replace(placeholder, str(value))
+                
+            return query_sql
+        except Exception as e:
+            print(f"Error getting query from template: {e}")
+            return None
 
     def update_db_status_indicator(self, connected):
         """Update database connection status indicator"""
@@ -894,7 +955,7 @@ class AdaptiveReportGeneratorGUI:
         thread.start()
 
     def generate_adaptive_report(self):
-        """Generate report with adaptive processing"""
+        """Generate report with adaptive processing and FFB analysis"""
         # Check prerequisites
         if not self.db_connected.get():
             messagebox.showerror("Not Connected", "Please connect to database first")
@@ -910,11 +971,12 @@ class AdaptiveReportGeneratorGUI:
 
         def generate_worker():
             try:
-                self.log_message("=== STARTING ADAPTIVE REPORT GENERATION ===", "adaptive")
-                self.update_progress(5, "Initializing adaptive report generation...")
+                self.log_message("=== STARTING FFB ANALYSIS REPORT GENERATION ===", "adaptive")
+                self.update_progress(5, "Initializing FFB analysis report generation...")
 
                 # Disable generate button
                 self.generate_btn.config(state="disabled")
+                self.is_generating = True
 
                 # Parse dates
                 try:
@@ -923,81 +985,224 @@ class AdaptiveReportGeneratorGUI:
                 except ValueError as e:
                     raise ValueError(f"Invalid date format: {e}")
 
-                self.update_progress(10, "Validating prerequisites...")
+                self.update_progress(10, "Connecting to database...")
 
-                # Validate all components
-                if not self.db_connected.get() or not self.template_analyzed.get():
-                    raise Exception("Prerequisites not met")
+                # Get database connection - use the connector directly for queries
+                if not self.connector:
+                    raise Exception("Database connector not initialized")
+                
+                # For Firebird, we don't need a persistent connection object
+                # The connector handles connections internally
 
-                self.update_progress(20, "Preparing query parameters...")
+                self.update_progress(15, "Loading employee mapping...")
 
-                # Prepare parameters for dynamic engine
+                # Get employee mapping
+                employee_map = self.get_employee_mapping()
+                if not employee_map:
+                    self.log_message("Warning: No employee mapping found", "warning")
+
+                self.update_progress(25, "Discovering divisions...")
+
+                # Get divisions
+                divisions = self.get_divisions(self.start_date.get(), self.end_date.get())
+                if not divisions:
+                    raise Exception("No divisions found for the specified date range")
+
+                self.log_message(f"Found {len(divisions)} divisions to analyze", "info")
+
+                self.update_progress(35, "Analyzing FFB data by division...")
+
+                # Analyze each division
+                all_division_data = {}
+                progress_step = 40 / len(divisions) if divisions else 0
+
+                for i, (division_id, division_name) in enumerate(divisions):
+                    self.update_progress(35 + (i * progress_step), f"Analyzing division {division_id}: {division_name}...")
+                    
+                    division_data = self.analyze_division(
+                        division_id, division_name, 
+                        self.start_date.get(), self.end_date.get(), employee_map
+                    )
+                    
+                    if division_data:
+                        all_division_data[division_id] = {
+                            'name': division_name,
+                            'data': division_data
+                        }
+
+                self.update_progress(75, "Preparing report data structure...")
+
+                # Prepare comprehensive data for report
+                report_data = self.prepare_ffb_report_data(all_division_data, employee_map)
+
+                self.update_progress(80, "Executing additional queries...")
+
+                # Execute additional queries using dynamic engine
                 parameters = {
                     'start_date': self.start_date.get(),
                     'end_date': self.end_date.get(),
                     'month': f"{start_date.month:02d}"
                 }
 
-                self.update_progress(30, "Executing dynamic database queries...")
-
-                # Execute all queries
                 query_results = self.dynamic_engine.execute_all_queries(parameters)
-
-                self.update_progress(50, "Processing adaptive variables...")
-
-                # Process variables
                 variables = self.dynamic_engine.process_variables(query_results, parameters)
 
-                self.update_progress(70, "Preparing adaptive data structure...")
-
-                # Get repeating data and prepare adaptive structure
-                repeating_data = self.dynamic_engine.get_repeating_data(query_results)
-
-                # Combine all data for adaptive processing
+                # Combine FFB analysis data with dynamic variables
                 adaptive_data = {
-                    # Static variables
                     **variables,
-
-                    # Dynamic data for repeating sections
-                    **repeating_data
+                    **report_data
                 }
 
-                self.update_progress(80, "Generating adaptive Excel report...")
+                self.update_progress(90, "Generating Excel report...")
 
                 # Generate report using adaptive processor
                 success = self.adaptive_processor.generate_report(adaptive_data, self.output_path.get())
 
-                self.update_progress(90, "Finalizing adaptive report...")
+                self.update_progress(95, "Finalizing report...")
 
                 if success:
-                    self.update_progress(100, "Adaptive report generated successfully!")
-                    self.log_message(f"✅ Adaptive Excel report generated: {self.output_path.get()}", "success")
-                    self.log_message("=== ADAPTIVE REPORT GENERATION COMPLETED ===", "success")
+                    self.update_progress(100, "FFB analysis report generated successfully!")
+                    self.log_message(f"✅ FFB Analysis Excel report generated: {self.output_path.get()}", "success")
+                    self.log_message("=== FFB ANALYSIS REPORT GENERATION COMPLETED ===", "success")
 
                     # Ask user if they want to open the file
                     result = messagebox.askyesno(
                         "Report Generated",
-                        f"Adaptive Excel report generated successfully!\n\nOutput: {self.output_path.get()}\n\nDo you want to open the report?"
+                        f"FFB Analysis Excel report generated successfully!\n\nOutput: {self.output_path.get()}\n\nDo you want to open the report?"
                     )
 
                     if result:
                         self.open_output_file()
                 else:
-                    raise Exception("Adaptive report generation failed")
+                    raise Exception("FFB analysis report generation failed")
 
             except Exception as e:
-                self.update_progress(0, "Adaptive report generation failed")
-                self.log_message(f"❌ Adaptive report generation failed: {e}", "error")
-                messagebox.showerror("Generation Error", f"Failed to generate adaptive report: {e}")
+                self.update_progress(0, "FFB analysis report generation failed")
+                self.log_message(f"❌ FFB analysis report generation failed: {e}", "error")
+                messagebox.showerror("Generation Error", f"Failed to generate FFB analysis report: {e}")
 
             finally:
                 # Re-enable generate button
                 self.generate_btn.config(state="normal")
+                self.is_generating = False
 
-        # Run in separate thread
-        thread = threading.Thread(target=generate_worker)
-        thread.daemon = True
-        thread.start()
+        # Start generation in separate thread
+        self.current_thread = threading.Thread(target=generate_worker, daemon=True)
+        self.current_thread.start()
+
+    def prepare_ffb_report_data(self, all_division_data, employee_map):
+        """Prepare comprehensive FFB report data structure"""
+        try:
+            # Initialize report data structure
+            report_data = {
+                'divisions': [],
+                'all_transactions': [],
+                'summary_by_division': [],
+                'employee_summary': {},
+                'daily_summary': {},
+                'total_summary': {
+                    'total_divisions': len(all_division_data),
+                    'total_transactions': 0,
+                    'total_bunches': 0,
+                    'total_loosefruit': 0,
+                    'total_weight': 0
+                }
+            }
+
+            # Process each division
+            for division_id, division_info in all_division_data.items():
+                division_name = division_info['name']
+                division_data = division_info['data']
+                
+                # Add division info
+                report_data['divisions'].append({
+                    'division_id': division_id,
+                    'division_name': division_name,
+                    'transaction_count': division_data['summary']['total_transactions'],
+                    'total_bunches': division_data['summary']['total_bunches'],
+                    'total_loosefruit': division_data['summary']['total_loosefruit'],
+                    'total_weight': division_data['summary']['total_weight']
+                })
+
+                # Add all transactions
+                for transaction in division_data['transactions']:
+                    transaction['division_name'] = division_name
+                    report_data['all_transactions'].append(transaction)
+
+                # Update totals
+                report_data['total_summary']['total_transactions'] += division_data['summary']['total_transactions']
+                report_data['total_summary']['total_bunches'] += division_data['summary']['total_bunches']
+                report_data['total_summary']['total_loosefruit'] += division_data['summary']['total_loosefruit']
+                report_data['total_summary']['total_weight'] += division_data['summary']['total_weight']
+
+                # Process employee summary
+                for transaction in division_data['transactions']:
+                    for role in ['kerani', 'mandor', 'asisten']:
+                        emp_id = transaction.get(f'{role}_id')
+                        emp_name = transaction.get(f'{role}_name')
+                        
+                        if emp_id and emp_name:
+                            if emp_id not in report_data['employee_summary']:
+                                report_data['employee_summary'][emp_id] = {
+                                    'name': emp_name,
+                                    'role': role,
+                                    'divisions': set(),
+                                    'transaction_count': 0,
+                                    'total_bunches': 0,
+                                    'total_loosefruit': 0,
+                                    'total_weight': 0
+                                }
+                            
+                            emp_summary = report_data['employee_summary'][emp_id]
+                            emp_summary['divisions'].add(division_name)
+                            emp_summary['transaction_count'] += 1
+                            emp_summary['total_bunches'] += transaction['bunches']
+                            emp_summary['total_loosefruit'] += transaction['loosefruit']
+                            emp_summary['total_weight'] += transaction['totalweight']
+
+                # Process daily summary
+                for transaction in division_data['transactions']:
+                    trans_date = transaction['transdate']
+                    if isinstance(trans_date, str):
+                        date_key = trans_date
+                    else:
+                        date_key = trans_date.strftime('%Y-%m-%d') if trans_date else 'Unknown'
+                    
+                    if date_key not in report_data['daily_summary']:
+                        report_data['daily_summary'][date_key] = {
+                            'date': date_key,
+                            'transaction_count': 0,
+                            'total_bunches': 0,
+                            'total_loosefruit': 0,
+                            'total_weight': 0,
+                            'divisions': set()
+                        }
+                    
+                    daily = report_data['daily_summary'][date_key]
+                    daily['transaction_count'] += 1
+                    daily['total_bunches'] += transaction['bunches']
+                    daily['total_loosefruit'] += transaction['loosefruit']
+                    daily['total_weight'] += transaction['totalweight']
+                    daily['divisions'].add(division_name)
+
+            # Convert sets to lists for JSON serialization
+            for emp_id, emp_data in report_data['employee_summary'].items():
+                emp_data['divisions'] = list(emp_data['divisions'])
+
+            for date_key, daily_data in report_data['daily_summary'].items():
+                daily_data['divisions'] = list(daily_data['divisions'])
+
+            # Convert daily summary to list
+            report_data['daily_summary_list'] = list(report_data['daily_summary'].values())
+            report_data['employee_summary_list'] = list(report_data['employee_summary'].values())
+
+            self.log_message(f"Prepared report data: {len(report_data['divisions'])} divisions, {len(report_data['all_transactions'])} transactions", "info")
+            
+            return report_data
+
+        except Exception as e:
+            self.log_message(f"Error preparing FFB report data: {e}", "error")
+            return {}
 
     def preview_data(self):
         """Preview data from database with complete ETL process logging"""
@@ -1027,13 +1232,17 @@ class AdaptiveReportGeneratorGUI:
                 etl_stats['extract']['start_time'] = datetime.now()
                 self.update_progress(15, "Extract: Connecting to database...")
 
+                # Load corrected formula data
+                if not self.formula_data:
+                    self.load_formula_data()
+
                 if not self.dynamic_engine:
                     formula_path = os.path.join(
                         os.path.dirname(os.path.abspath(__file__)),
                         self.formula_file.get()
                     )
-                    self.dynamic_engine = DynamicFormulaEngine(formula_path, self.connector)
-                    self.log_message(f"SUCCESS: Formula engine loaded: {self.formula_file.get()}", "success")
+                    self.dynamic_engine = EnhancedDynamicFormulaEngine(formula_path, self.connector)
+                    self.log_message(f"SUCCESS: Enhanced formula engine loaded: {self.formula_file.get()}", "success")
 
                 self.update_progress(25, "Extract: Preparing query parameters...")
 
@@ -1060,7 +1269,14 @@ class AdaptiveReportGeneratorGUI:
 
                 # Execute queries with detailed logging
                 extract_start = datetime.now()
+                
+                # Get FFB Scanner data using corrected table names
+                ffb_data = self.get_ffb_scanner_preview_data(parameters['start_date'], parameters['end_date'])
+                
+                # Execute other queries
                 query_results = self.dynamic_engine.execute_all_queries(parameters)
+                query_results['ffb_scanner_data'] = ffb_data
+                
                 extract_end = datetime.now()
                 extract_duration = (extract_end - extract_start).total_seconds() if extract_start else 0
 
@@ -1200,6 +1416,20 @@ class AdaptiveReportGeneratorGUI:
                 preview_text += "SAMPLE DATA (First 3 rows per type):\n"
                 preview_text += "-" * 50 + "\n"
 
+                # Add FFB Scanner Data section first
+                if 'ffb_scanner_data' in query_results and query_results['ffb_scanner_data']:
+                    ffb_data = query_results['ffb_scanner_data']
+                    preview_text += f"\nFFB SCANNER DATA ({len(ffb_data):,} rows total):\n"
+                    preview_text += "Using corrected FFBSCANNERDATA tables (not FFBLOADINGCROP)\n"
+                    for i, row in enumerate(ffb_data[:3]):
+                        preview_text += f"   Row {i+1}:\n"
+                        for key, value in row.items():
+                            preview_text += f"      {key}: {value}\n"
+                    if len(ffb_data) > 3:
+                        preview_text += f"   ... and {len(ffb_data) - 3:,} more rows\n"
+                else:
+                    preview_text += f"\nFFB SCANNER DATA: No data available\n"
+
                 for data_type, data_list in repeating_data.items():
                     if data_list:
                         preview_text += f"\n{data_type.upper()} ({len(data_list):,} rows total):\n"
@@ -1248,6 +1478,19 @@ class AdaptiveReportGeneratorGUI:
         if filename:
             self.db_path.set(filename)
             self.check_database_connection()
+
+    def select_database(self):
+        """Select from available production databases"""
+        try:
+            selector = DatabaseSelector()
+            selected_db = selector.select_database()
+            if selected_db:
+                self.db_path.set(selected_db)
+                self.check_database_connection()
+                self.log_message(f"Selected database: {os.path.basename(selected_db)}")
+        except Exception as e:
+            messagebox.showerror("Database Selection Error", f"Failed to select database: {e}")
+            self.log_message(f"Database selection error: {e}", "error")
 
     def browse_template(self):
         """Browse for template file"""
@@ -1592,6 +1835,341 @@ ADAPTIVE ADVANTAGES:
         except Exception as e:
             self.log_message(f"Error opening file: {e}", "error")
             messagebox.showerror("Error", f"Failed to open file: {e}")
+
+    def get_employee_mapping(self):
+        """Get employee mapping from EMP table using template query"""
+        try:
+            # Try to get query from template first
+            query = self.get_query_from_template('employee_mapping')
+            if not query:
+                # Fallback to hardcoded query if template not available
+                query = """
+                SELECT EMPID, EMPNAME, EMPTYPE, EMPPOSITION, DIVISIONID
+                FROM EMP
+                WHERE EMPSTATUS = 'A'
+                ORDER BY EMPID
+                """
+            
+            # Use helper function to extract data properly
+            results = execute_query_with_extraction(self.connector, query)
+            
+            employee_map = {}
+            for row in results:
+                normalized_row = normalize_data_row(row)
+                empid = normalized_row.get('EMPID')
+                empname = normalized_row.get('EMPNAME')
+                emptype = normalized_row.get('EMPTYPE')
+                empposition = normalized_row.get('EMPPOSITION')
+                divisionid = normalized_row.get('DIVISIONID')
+                
+                if empid:  # Only add if we have a valid employee ID
+                    employee_map[empid] = {
+                        'name': empname or 'Unknown',
+                        'type': emptype or 'Unknown',
+                        'position': empposition or 'Unknown',
+                        'division': divisionid or 'Unknown'
+                    }
+            
+            self.log_message(f"Loaded {len(employee_map)} employee records", "info")
+            return employee_map
+            
+        except Exception as e:
+            self.log_message(f"Error getting employee mapping: {e}", "error")
+            return {}
+
+    def get_ffb_scanner_preview_data(self, start_date, end_date):
+        """Get FFB Scanner data preview using corrected FFBSCANNERDATA tables"""
+        try:
+            current_date = datetime.strptime(start_date, '%Y-%m-%d')
+            table_name = f"FFBSCANNERDATA{current_date.month:02d}"
+            
+            # Query to get sample FFB scanner data with proper structure handling
+            query = f"""
+            SELECT FIRST 10
+                SCANUSERID,
+                WORKERID,
+                CARRIERID,
+                FIELDID,
+                RIPEBCH,
+                UNRIPEBCH,
+                TRANSDATE,
+                TRANSTIME,
+                TRANSSTATUS
+            FROM {table_name}
+            WHERE TRANSDATE BETWEEN '{start_date}' AND '{end_date}'
+            ORDER BY TRANSDATE DESC, TRANSTIME DESC
+            """
+            
+            # Use the new helper function to properly extract data
+            data = execute_query_with_extraction(self.connector, query)
+            
+            # Normalize the data
+            normalized_data = []
+            for row in data:
+                normalized_row = normalize_data_row(row)
+                normalized_data.append(normalized_row)
+            
+            self.log_message(f"SUCCESS: FFB Scanner data retrieved from {table_name}: {len(normalized_data)} rows", "success")
+            return normalized_data
+            
+        except Exception as e:
+            self.log_message(f"ERROR: Failed to get FFB scanner data: {str(e)}", "error")
+            return []
+
+    def get_divisions(self, start_date, end_date):
+        """Get divisions from FFBSCANNERDATA tables within date range using template query"""
+        try:
+            divisions = set()
+            
+            # Generate table names for the date range
+            current_date = datetime.strptime(start_date, "%Y-%m-%d")
+            end_date_obj = datetime.strptime(end_date, "%Y-%m-%d")
+            
+            table_names = []
+            while current_date <= end_date_obj:
+                table_name = f"FFBSCANNERDATA{current_date.month:02d}"
+                if table_name not in table_names:
+                    table_names.append((table_name, current_date.month))
+                
+                # Move to next month
+                if current_date.month == 12:
+                    current_date = current_date.replace(year=current_date.year + 1, month=1)
+                else:
+                    current_date = current_date.replace(month=current_date.month + 1)
+            
+            # Query each table for divisions
+            for table_name, month in table_names:
+                try:
+                    # Try to get query from template first
+                    query = self.get_query_from_template('division_list', 
+                                                       month=month, 
+                                                       start_date=start_date, 
+                                                       end_date=end_date)
+                    if not query:
+                        # Fallback to hardcoded query with proper structure
+                        query = f"""
+                        SELECT DISTINCT 
+                            f.FIELDID as DIVID,
+                            o.FIELDNAME as DIVNAME
+                        FROM {table_name} f
+                        LEFT JOIN OCFIELD o ON f.FIELDID = o.ID
+                        WHERE f.TRANSDATE BETWEEN '{start_date}' AND '{end_date}'
+                        AND f.FIELDID IS NOT NULL 
+                        AND o.FIELDNAME IS NOT NULL
+                        ORDER BY f.FIELDID
+                        """
+                    
+                    # Use helper function to extract data properly
+                    results = execute_query_with_extraction(self.connector, query)
+                    
+                    for row in results:
+                        normalized_row = normalize_data_row(row)
+                        div_id = normalized_row.get('DIVID') or normalized_row.get('FIELDID')
+                        div_name = normalized_row.get('DIVNAME') or normalized_row.get('FIELDNAME')
+                        if div_id and div_name:
+                            divisions.add((div_id, div_name))
+                        
+                except Exception as table_error:
+                    self.log_message(f"Warning: Could not query table {table_name}: {table_error}", "warning")
+                    continue
+            
+            division_list = list(divisions)
+            self.log_message(f"Found {len(division_list)} divisions", "info")
+            return division_list
+            
+        except Exception as e:
+            self.log_message(f"Error getting divisions: {e}", "error")
+            return []
+
+    def analyze_division(self, division_id, division_name, start_date, end_date, employee_map):
+        """Analyze FFB data for a specific division using template query"""
+        try:
+            # Generate table names for the date range
+            current_date = datetime.strptime(start_date, "%Y-%m-%d")
+            end_date_obj = datetime.strptime(end_date, "%Y-%m-%d")
+            
+            table_names = []
+            while current_date <= end_date_obj:
+                table_name = f"FFBSCANNERDATA{current_date.month:02d}"
+                if table_name not in table_names:
+                    table_names.append((table_name, current_date.month))
+                
+                # Move to next month
+                if current_date.month == 12:
+                    current_date = current_date.replace(year=current_date.year + 1, month=1)
+                else:
+                    current_date = current_date.replace(month=current_date.month + 1)
+            
+            all_data = []
+            
+            # Query each table
+            for table_name, month in table_names:
+                try:
+                    # Try to get query from template first
+                    query = self.get_query_from_template('division_data', 
+                                                       month=month, 
+                                                       div_id=division_id,
+                                                       start_date=start_date, 
+                                                       end_date=end_date)
+                    if not query:
+                        # Fallback to hardcoded query with proper FFBSCANNERDATA structure
+                        query = f"""
+                        SELECT f.ID, f.SCANUSERID, f.OCID, f.WORKERID, f.CARRIERID, f.FIELDID, 
+                               f.TASKNO, f.RIPEBCH, f.UNRIPEBCH, f.BLACKBCH, f.ROTTENBCH, 
+                               f.LONGSTALKBCH, f.RATDMGBCH, f.LOOSEFRUIT, f.TRANSNO, 
+                               f.TRANSDATE, f.TRANSTIME, f.UPLOADDATETIME, f.RECORDTAG, 
+                               f.TRANSSTATUS, f.TRANSTYPE, f.LASTUSER, f.LASTUPDATED, 
+                               f.OVERRIPEBCH, f.UNDERRIPEBCH, f.ABNORMALBCH, f.LOOSEFRUIT2
+                        FROM {table_name} f 
+                        LEFT JOIN OCFIELD o ON f.FIELDID = o.ID 
+                        WHERE o.DIVID = '{division_id}'
+                        AND f.TRANSDATE BETWEEN '{start_date}' AND '{end_date}'
+                        ORDER BY f.TRANSDATE, f.TRANSTIME
+                        """
+                    
+                    # Use helper function to extract data properly
+                    results = execute_query_with_extraction(self.connector, query)
+                    
+                    for row in results:
+                        normalized_row = normalize_data_row(row)
+                        all_data.append({
+                            'table': table_name,
+                            'id': normalized_row.get('ID'),
+                            'scanuserid': normalized_row.get('SCANUSERID'),
+                            'ocid': normalized_row.get('OCID'),
+                            'workerid': normalized_row.get('WORKERID'),
+                            'carrierid': normalized_row.get('CARRIERID'),
+                            'fieldid': normalized_row.get('FIELDID'),
+                            'taskno': normalized_row.get('TASKNO'),
+                            'ripebch': normalized_row.get('RIPEBCH', 0),
+                            'unripebch': normalized_row.get('UNRIPEBCH', 0),
+                            'blackbch': normalized_row.get('BLACKBCH', 0),
+                            'rottenbch': normalized_row.get('ROTTENBCH', 0),
+                            'longstalkbch': normalized_row.get('LONGSTALKBCH', 0),
+                            'ratdmgbch': normalized_row.get('RATDMGBCH', 0),
+                            'loosefruit': normalized_row.get('LOOSEFRUIT', 0),
+                            'transno': normalized_row.get('TRANSNO'),
+                            'transdate': normalized_row.get('TRANSDATE'),
+                            'transtime': normalized_row.get('TRANSTIME'),
+                            'uploaddatetime': normalized_row.get('UPLOADDATETIME'),
+                            'recordtag': normalized_row.get('RECORDTAG'),
+                            'transstatus': normalized_row.get('TRANSSTATUS'),
+                            'transtype': normalized_row.get('TRANSTYPE'),
+                            'lastuser': normalized_row.get('LASTUSER'),
+                            'lastupdated': normalized_row.get('LASTUPDATED'),
+                            'overripebch': normalized_row.get('OVERRIPEBCH', 0),
+                            'underripebch': normalized_row.get('UNDERRIPEBCH', 0),
+                            'abnormalbch': normalized_row.get('ABNORMALBCH', 0),
+                            'loosefruit2': normalized_row.get('LOOSEFRUIT2', 0)
+                        })
+                        
+                except Exception as table_error:
+                    self.log_message(f"Warning: Could not query table {table_name}: {table_error}", "warning")
+                    continue
+            
+            # Process the data to calculate employee details
+            processed_data = self.process_division_data(all_data, employee_map, division_id, start_date, end_date)
+            
+            return processed_data
+            
+        except Exception as e:
+            self.log_message(f"Error analyzing division {division_id}: {e}", "error")
+            return {}
+
+    def process_division_data(self, raw_data, employee_map, division_id, start_date, end_date):
+        """Process raw division data to calculate employee details"""
+        try:
+            # Group by transaction number to handle duplicates
+            transactions = {}
+            
+            for record in raw_data:
+                transno = record['transno']
+                if transno not in transactions:
+                    transactions[transno] = []
+                transactions[transno].append(record)
+            
+            # Calculate employee details for each transaction
+            processed_transactions = []
+            
+            for transno, records in transactions.items():
+                # Find the main record (usually RECORDTAG = 1)
+                main_record = None
+                for record in records:
+                    if record['recordtag'] == 1:
+                        main_record = record
+                        break
+                
+                if not main_record:
+                    main_record = records[0]  # Fallback to first record
+                
+                # Calculate employee details
+                kerani_id = None
+                mandor_id = None
+                asisten_id = None
+                
+                # Find employees based on SCANUSERID and employee hierarchy
+                scanner_id = main_record['scanuserid']
+                if scanner_id and scanner_id in employee_map:
+                    emp_info = employee_map[scanner_id]
+                    position = emp_info.get('position', '').upper()
+                    
+                    if 'KERANI' in position:
+                        kerani_id = scanner_id
+                    elif 'MANDOR' in position:
+                        mandor_id = scanner_id
+                    elif 'ASISTEN' in position:
+                        asisten_id = scanner_id
+                
+                # Handle special case for TRANSSTATUS = 704 (if needed)
+                apply_704_filter = False
+                if main_record['transstatus'] == 704:
+                    # Apply special filtering logic if needed
+                    apply_704_filter = True
+                
+                processed_record = {
+                    'transdate': main_record['transdate'],
+                    'transno': transno,
+                    'division_id': division_id,
+                    'driverid': main_record['driverid'],
+                    'vehicleid': main_record['vehicleid'],
+                    'bunches': sum(r['bunches'] for r in records),
+                    'loosefruit': sum(r['loosefruit'] for r in records),
+                    'totalweight': sum(r['totalweight'] for r in records),
+                    'kerani_id': kerani_id,
+                    'mandor_id': mandor_id,
+                    'asisten_id': asisten_id,
+                    'kerani_name': employee_map.get(kerani_id, {}).get('name', '') if kerani_id else '',
+                    'mandor_name': employee_map.get(mandor_id, {}).get('name', '') if mandor_id else '',
+                    'asisten_name': employee_map.get(asisten_id, {}).get('name', '') if asisten_id else '',
+                    'transstatus': main_record['transstatus'],
+                    'apply_704_filter': apply_704_filter
+                }
+                
+                processed_transactions.append(processed_record)
+            
+            # Calculate summary statistics
+            total_bunches = sum(t['bunches'] for t in processed_transactions)
+            total_loosefruit = sum(t['loosefruit'] for t in processed_transactions)
+            total_weight = sum(t['totalweight'] for t in processed_transactions)
+            
+            result = {
+                'division_id': division_id,
+                'transactions': processed_transactions,
+                'summary': {
+                    'total_transactions': len(processed_transactions),
+                    'total_bunches': total_bunches,
+                    'total_loosefruit': total_loosefruit,
+                    'total_weight': total_weight,
+                    'date_range': f"{start_date} to {end_date}"
+                }
+            }
+            
+            self.log_message(f"Processed {len(processed_transactions)} transactions for division {division_id}", "info")
+            return result
+            
+        except Exception as e:
+            self.log_message(f"Error processing division data: {e}", "error")
+            return {}
 
 
 def main():

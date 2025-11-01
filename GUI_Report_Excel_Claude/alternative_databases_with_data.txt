@@ -1,0 +1,171 @@
+DATABASES WITH FFB DATA FOUND:
+==================================================
+
+1. PTRJ_ARC.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_ARE_C_24-10-2025\PTRJ_ARC.FDB
+   Size: 1488.9 MB
+   Modified: 2025-11-01 11:38:09.055052
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+2. PTRJ_ARC.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_ARE_C_24-10-2025\PTRJ_ARC.FDB
+   Size: 1488.9 MB
+   Modified: 2025-11-01 11:38:09.055052
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+3. PTRJ_P1A.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\1a\PTRJ_P1A 2025-10-24 10;23;29 (Full)\PTRJ_P1A.FDB
+   Size: 1482.9 MB
+   Modified: 2025-11-01 11:38:02.969697
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+4. PTRJ_P1A.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\1a\PTRJ_P1A 2025-10-24 10;23;29 (Full)\PTRJ_P1A.FDB
+   Size: 1482.9 MB
+   Modified: 2025-11-01 11:38:02.969697
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+5. PTRJ_P1A.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\PTRJ_P1A.FDB
+   Size: 1464.4 MB
+   Modified: 2025-11-01 11:37:57.525673
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+6. PTRJ_P1A.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\PTRJ_P1A.FDB
+   Size: 1464.4 MB
+   Modified: 2025-11-01 11:37:57.525673
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+7. PTRJ_P1A.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\1a\PTRJ_P1A.FDB
+   Size: 1436.5 MB
+   Modified: 2025-11-01 11:37:59.039484
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+8. PTRJ_P1A.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\1a\PTRJ_P1A.FDB
+   Size: 1436.5 MB
+   Modified: 2025-11-01 11:37:59.039484
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+9. PTRJ_P1A.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\ifess\PTRJ_P1A_08042025\PTRJ_P1A.FDB
+   Size: 1405.5 MB
+   Modified: 2025-11-01 11:35:33.972737
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+10. PTRJ_P1A.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\ifess\PTRJ_P1A_08042025\PTRJ_P1A.FDB
+   Size: 1405.5 MB
+   Modified: 2025-11-01 11:35:33.972737
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+11. PTRJ_P2A.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_PGE_2A_24-10-2025\PTRJ_P2A.FDB
+   Size: 1368.7 MB
+   Modified: 2025-11-01 11:38:04.667562
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+12. PTRJ_P2A.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_PGE_2A_24-10-2025\PTRJ_P2A.FDB
+   Size: 1368.7 MB
+   Modified: 2025-11-01 11:38:04.667562
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+13. PTRJ_P1B.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\1b\PTRJ_P1B 2025-10-24 10;00;14 (Full)\PTRJ_P1B.FDB
+   Size: 1345.5 MB
+   Modified: 2025-11-01 11:38:07.219086
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+14. PTRJ_P1B.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\1b\PTRJ_P1B 2025-10-24 10;00;14 (Full)\PTRJ_P1B.FDB
+   Size: 1345.5 MB
+   Modified: 2025-11-01 11:38:07.219086
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+15. PTRJ_P1B.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\1b\PTRJ_P1B.FDB
+   Size: 1345.5 MB
+   Modified: 2025-11-01 11:38:01.366095
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+16. PTRJ_P1B.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\1b\PTRJ_P1B.FDB
+   Size: 1345.5 MB
+   Modified: 2025-11-01 11:38:01.366095
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+17. PTRJ_ARA.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_ARE_A_24-10-2025\PTRJ_ARA.FDB
+   Size: 1009.0 MB
+   Modified: 2025-11-01 11:38:10.873573
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+18. PTRJ_ARA.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_ARE_A_24-10-2025\PTRJ_ARA.FDB
+   Size: 1009.0 MB
+   Modified: 2025-11-01 11:38:10.873573
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+19. PTRJ_AB2.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_ARE_B2_24-10-2025\PTRJ_AB2.FDB
+   Size: 807.9 MB
+   Modified: 2025-11-01 11:38:14.959424
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+20. PTRJ_AB2.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_ARE_B2_24-10-2025\PTRJ_AB2.FDB
+   Size: 807.9 MB
+   Modified: 2025-11-01 11:38:14.959424
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+21. PTRJ_P2B.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+   Size: 682.0 MB
+   Modified: 2025-11-01 11:37:55.968164
+   Data: Data found in 1 tables: {'FFBAVGBCHWT': 1}
+
+22. PTRJ_P2B.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+   Size: 682.0 MB
+   Modified: 2025-11-01 11:37:55.968164
+   Data: Data found in 1 tables: {'FFBAVGBCHWT': 1}
+
+23. PTRJ_DME.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\New folder\PTRJ_DME.FDB
+   Size: 554.1 MB
+   Modified: 2025-11-01 11:38:19.197108
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+24. PTRJ_DME.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\New folder\PTRJ_DME.FDB
+   Size: 554.1 MB
+   Modified: 2025-11-01 11:38:19.197108
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+25. PTRJ_AB1.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_ARE_B1_24-10-2025\PTRJ_AB1.FDB
+   Size: 437.9 MB
+   Modified: 2025-11-01 11:38:12.235461
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+26. PTRJ_AB1.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_ARE_B1_24-10-2025\PTRJ_AB1.FDB
+   Size: 437.9 MB
+   Modified: 2025-11-01 11:38:12.235461
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+27. PTRJ_IJL_IMPIANJAYALESTARI.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_IJL_24-10-2025\PTRJ_IJL_IMPIANJAYALESTARI.FDB
+   Size: 244.8 MB
+   Modified: 2025-11-01 11:38:17.169415
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+
+28. PTRJ_IJL_IMPIANJAYALESTARI.FDB
+   Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_IJL_24-10-2025\PTRJ_IJL_IMPIANJAYALESTARI.FDB
+   Size: 244.8 MB
+   Modified: 2025-11-01 11:38:17.169415
+   Data: Data found in 2 tables: {'FFBAVGBCHWT': 1, 'FFBLOADINGCROP01': 1}
+

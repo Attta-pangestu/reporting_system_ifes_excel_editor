@@ -1,0 +1,24 @@
+{
+  "test_info": {
+    "test_name": "October 2025 Comprehensive Test",
+    "test_timestamp": "2025-11-01T12:13:44.219018",
+    "test_duration": 6
+  },
+  "database_info": {
+    "connection": "FAILED",
+    "ffbscannerdata04_exists": false,
+    "total_records": 0
+  },
+  "query_results": {},
+  "variables": {},
+  "test_results": [
+    "[12:13:43] INFO: ============================================================",
+    "[12:13:43] INFO: STARTING COMPREHENSIVE OCTOBER 2025 TEST",
+    "[12:13:43] INFO: ============================================================",
+    "[12:13:43] INFO: Testing database connection...",
+    "[12:13:44] ERROR: Database connection error: 'charmap' codec can't encode character '\\u2713' in position 20: character maps to <undefined>",
+    "[12:13:44] INFO: Generating test report JSON..."
+  ],
+  "report_file": null,
+  "success": true
+}

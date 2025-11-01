@@ -1,0 +1,105 @@
+{
+  "essential_sql_queries": {
+    "employee_mapping": {
+      "query": "SELECT ID, NAME FROM EMP",
+      "table": "EMP",
+      "purpose": "Get all employee IDs and names for mapping",
+      "python_processor": "def get_employee_mapping(self, connector):\n    query = \"SELECT ID, NAME FROM EMP\"\n    result = connector.execute_query(query)\n    df = connector.to_pandas(result)\n    mapping = {}\n    if not df.empty:\n        for _, row in df.iterrows():\n            emp_id = str(row.iloc[0]).strip()\n            emp_name = str(row.iloc[1]).strip()\n            mapping[emp_id] = emp_name\n    return mapping"
+    },
+
+    "division_mapping": {
+      "query_template": "SELECT DISTINCT b.DIVID, c.DIVNAME FROM {table_name} a JOIN OCFIELD b ON a.FIELDID = b.ID LEFT JOIN CRDIVISION c ON b.DIVID = c.ID WHERE b.DIVID IS NOT NULL AND c.DIVNAME IS NOT NULL",
+      "tables": ["FFBSCANNERDATA01", "FFBSCANNERDATA02", ..., "FFBSCANNERDATA12"],
+      "purpose": "Get all divisions that have FFB transactions in date range",
+      "python_processor": "def get_divisions(self, connector, start_date, end_date):\n    # Generate month tables based on date range\n    month_tables = []\n    current_date = start_date\n    while current_date <= end_date:\n        month_tables.append(f'FFBSCANNERDATA{current_date.month:02d}')\n        # Move to next month\n        if current_date.month == 12:\n            current_date = current_date.replace(year=current_date.year + 1, month=1, day=1)\n        else:\n            current_date = current_date.replace(month=current_date.month + 1, day=1)\n    \n    all_divisions = {}\n    for ffb_table in month_tables:\n        query = f'SELECT DISTINCT b.DIVID, c.DIVNAME FROM {ffb_table} a JOIN OCFIELD b ON a.FIELDID = b.ID LEFT JOIN CRDIVISION c ON b.DIVID = c.ID WHERE b.DIVID IS NOT NULL AND c.DIVNAME IS NOT NULL'\n        result = connector.execute_query(query)\n        df = connector.to_pandas(result)\n        if not df.empty:\n            for _, row in df.iterrows():\n                div_id = str(row.iloc[0]).strip()\n                div_name = str(row.iloc[1]).strip()\n                all_divisions[div_id] = div_name\n    \n    return all_divisions, month_tables"
+    },
+
+    "main_ffb_extraction": {
+      "query": "SELECT a.ID, a.SCANUSERID, a.OCID, a.WORKERID, a.CARRIERID, a.FIELDID, a.TASKNO, a.RIPEBCH, a.UNRIPEBCH, a.BLACKBCH, a.ROTTENBCH, a.LONGSTALKBCH, a.RATDMGBCH, a.LOOSEFRUIT, a.TRANSNO, a.TRANSDATE, a.TRANSTIME, a.UPLOADDATETIME, a.RECORDTAG, a.TRANSSTATUS, a.TRANSTYPE, a.LASTUSER, a.LASTUPDATED, a.OVERRIPEBCH, a.UNDERRIPEBCH, a.ABNORMALBCH, a.LOOSEFRUIT2 FROM {table_name} a JOIN OCFIELD b ON a.FIELDID = b.ID WHERE b.DIVID = '{div_id}' AND a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}'",
+      "dynamic_tables": "FFBSCANNERDATA{month:02d}",
+      "joins": "JOIN OCFIELD b ON a.FIELDID = b.ID",
+      "filters": ["b.DIVID = '{div_id}'", "a.TRANSDATE >= '{start_date}'", "a.TRANSDATE <= '{end_date}'"],
+      "purpose": "Extract all FFB scanner transactions for specific division and date range"
+    },
+
+    "may_704_filter_query": {
+      "additional_filter": "AND a.TRANSSTATUS = '704'",
+      "applied_to": "Matching transactions for difference calculation",
+      "purpose": "Filter out May adjustment transactions (status 704)",
+      "python_implementation": "if use_status_704_filter:\n    matching_transactions = matching_transactions[matching_transactions['TRANSSTATUS'] == '704']"
+    }
+  },
+
+  "core_python_processing": {
+    "duplicate_detection": {
+      "code": "# Detect verified transactions (duplicates)\nduplicated_rows = df[df.duplicated(subset=['TRANSNO'], keep=False)]\nverified_transnos = set(duplicated_rows['TRANSNO'].tolist())",
+      "logic": "Find all rows with duplicate TRANSNO values",
+      "purpose": "Identify transactions that have been verified by other roles"
+    },
+
+    "employee_role_categorization": {
+      "code": "# Categorize by employee role\nkerani_df = df[df['RECORDTAG'] == 'PM']  # Kerani\nmandor_df = df[df['RECORDTAG'] == 'P1']     # Mandor \nasisten_df = df[df['RECORDTAG'] == 'P5']    # Asisten",
+      "role_mapping": {
+        "PM": "Kerani (Clerk)",
+        "P1": "Mandor (Foreman)",
+        "P5": "Asisten (Assistant)"
+      },
+      "purpose": "Separate transactions by employee roles for analysis"
+    },
+
+    "verification_analysis": {
+      "code": "# For each Kerani transaction that was verified\nfor _, kerani_row in kerani_df.iterrows():\n    if kerani_row['TRANSNO'] in verified_transnos:\n        # Find matching Mandor/Asisten transactions\n        matching_transactions = df[(df['TRANSNO'] == kerani_row['TRANSNO']) & (df['RECORDTAG'] != 'PM')]\n        \n        # Apply May 704 filter if needed\n        if use_status_704_filter:\n            matching_transactions = matching_transactions[matching_transactions['TRANSSTATUS'] == '704']\n        \n        # Priority: P1 > P5\n        p1_records = matching_transactions[matching_transactions['RECORDTAG'] == 'P1']\n        p5_records = matching_transactions[matching_transactions['RECORDTAG'] == 'P5']\n        \n        if not p1_records.empty:\n            other_row = p1_records.iloc[0]\n        elif not p5_records.empty:\n            other_row = p5_records.iloc[0]\n        else:\n            continue",
+      "purpose": "Find verified Kerani transactions and their corresponding Mandor/Asisten transactions"
+    },
+
+    "difference_calculation": {
+      "code": "# Compare fields between Kerani and Mandor/Asisten\nfields_to_compare = ['RIPEBCH', 'UNRIPEBCH', 'BLACKBCH', 'ROTTENBCH', 'LONGSTALKBCH', 'RATDMGBCH', 'LOOSEFRUIT']\n\nhas_difference = False\nfor field in fields_to_compare:\n    try:\n        kerani_val = float(kerani_row[field]) if kerani_row[field] else 0\n        other_val = float(other_row[field]) if other_row[field] else 0\n        if kerani_val != other_val:\n            has_difference = True\n            break\n    except (ValueError, TypeError):\n        continue\n\n# Count as 1 transaction difference if any field differs\nif has_difference:\n    differences_count += 1",
+      "comparison_logic": "ANY field different = 1 transaction difference",
+      "fields_compared": 7 ,
+      "purpose": "Count differences between Kerani and Mandor/Asisten input data"
+    },
+
+    "verification_rate_calculation": {
+      "code": "# Calculate verification rate for Kerani\ntotal_kerani = sum(d['kerani'] for d in employee_details.values())\nverified_kerani = sum(d['kerani_verified'] for d in employee_details.values())\nverification_rate = (verified_kerani / total_kerani * 100) if total_kerani > 0 else 0",
+      "formula": "(Verified Kerani Transactions / Total Kerani Transactions) × 100",
+      "purpose": "Calculate percentage of Kerani transactions that were verified"
+    },
+
+    "employee_aggregation": {
+      "code": "# Aggregate results by employee\nfor emp_id, emp_data in result['employee_details'].items():\n    if emp_id not in estate_employee_totals:\n        estate_employee_totals[emp_id] = {\n            'name': emp_data['name'],\n            'kerani': 0,\n            'kerani_verified': 0,\n            'kerani_differences': 0,\n            'mandor': 0,\n            'asisten': 0\n        }\n    \n    estate_employee_totals[emp_id]['kerani'] += emp_data['kerani']\n    estate_employee_totals[emp_id]['kerani_verified'] += emp_data['kerani_verified']\n    estate_employee_totals[emp_id]['kerani_differences'] += emp_data['kerani_differences']\n    estate_employee_totals[emp_id]['mandor'] += emp_data['mandor']\n    estate_employee_totals[emp_id]['asisten'] += emp_data['asisten']",
+      "purpose": "Aggregate employee performance across all divisions in an estate"
+    }
+  },
+
+  "data_structure_definitions": {
+    "employee_details_structure": {
+      "template": "employee_details[emp_id] = {\n    'name': str,\n    'kerani': int,\n    'kerani_verified': int,\n    'kerani_differences': int,\n    'mandor': int,\n    'asisten': int\n}",
+      "purpose": "Store detailed transaction counts and metrics per employee"
+    },
+
+    "division_result_structure": {
+      "template": "{\n    'estate': str,\n    'division': str,\n    'kerani_total': int,\n    'mandor_total': int,\n    'asisten_total': int,\n    'verifikasi_total': int,\n    'verification_rate': float,\n    'employee_details': dict\n}",
+      "purpose": "Store aggregated results for each division"
+    },
+
+    "estate_totals_structure": {
+      "template": "estate_employee_totals[emp_id] = {\n    'name': str,\n    'kerani': int,\n    'kerani_verified': int,\n    'kerani_differences': int,\n    'mandor': int,\n    'asisten': int\n}",
+      "purpose": "Store estate-wide aggregated employee metrics"
+    }
+  },
+
+    "key_business_logic": {
+      "verification_definition": "A Kerani transaction is 'verified' when there exists another transaction with the same TRANSNO but different RECORDTAG (P1 or P5)",
+
+      "difference_definition": "A 'difference' is counted when ANY of the 7 quality fields differ between Kerani and Mandor/Asisten verified transactions",
+
+      "priority_logic": "When both P1 and P5 exist for the same TRANSNO, prioritize P1 (Asisten) over P5 (Mandor) for comparison",
+
+      "may_adjustment_filter": "For May 2025 analysis, only count differences when Mandor/Asisten transactions have TRANSSTATUS = '704' (excludes May adjustments)",
+
+      "performance_calculation": "Employee performance = Total transactions + Verification rate + Difference count",
+
+      "aggregation_logic": "Sum all employee metrics across divisions to get estate-wide performance data"
+    }
+  }
+}

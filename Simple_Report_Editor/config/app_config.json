@@ -1,0 +1,73 @@
+{
+  "app_info": {
+    "name": "Simple Report Editor",
+    "version": "1.0.0",
+    "description": "FFB Report Generator with Template Engine and PDF Export",
+    "author": "Claude AI Assistant",
+    "created_date": "2025-11-01"
+  },
+  "ui_settings": {
+    "window_title": "Simple Report Editor - FFB Report Generator",
+    "window_size": "1200x800",
+    "min_window_size": "1000x600",
+    "theme": "default"
+  },
+  "database_settings": {
+    "default_database": "D:\\Gawean Rebinmas\\Monitoring Database\\Database Ifess\\IFESS_2B_24-10-2025\\PTRJ_P2B.FDB",
+    "default_username": "SYSDBA",
+    "default_password": "masterkey",
+    "charset": "UTF8",
+    "timeout": 300,
+    "retry_count": 3,
+    "retry_delay": 5
+  },
+  "template_settings": {
+    "default_template_dir": "./templates",
+    "supported_formats": [".xlsx", ".xls"],
+    "placeholder_pattern": "{{variable_name}}",
+    "auto_backup": true
+  },
+  "formula_settings": {
+    "default_formula_dir": "./templates",
+    "supported_formats": [".json"],
+    "validation_enabled": true,
+    "auto_reload": false
+  },
+  "output_settings": {
+    "default_output_dir": "./reports",
+    "excel_settings": {
+      "auto_filter": true,
+      "freeze_panes": "A12",
+      "zoom_level": 85
+    },
+    "pdf_settings": {
+      "orientation": "landscape",
+      "paper_size": "A4",
+      "margins": {
+        "top": 1.0,
+        "bottom": 1.0,
+        "left": 1.0,
+        "right": 1.0
+      },
+      "scale_to_fit": true,
+      "header_text": "FFB Report - {{estate_name}}",
+      "footer_text": "Page {page_num} of {total_pages} - Generated {{generation_time}}"
+    }
+  },
+  "logging_settings": {
+    "level": "INFO",
+    "log_file": "simple_report_editor.log",
+    "max_log_size": "10MB",
+    "backup_count": 5,
+    "log_queries": true,
+    "log_performance": true
+  },
+  "advanced_settings": {
+    "max_records_preview": 1000,
+    "max_records_export": 10000,
+    "memory_limit": "512MB",
+    "temp_dir": "./temp",
+    "auto_cleanup_temp": true,
+    "enable_debug_mode": false
+  }
+}

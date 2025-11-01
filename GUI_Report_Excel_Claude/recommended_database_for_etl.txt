@@ -1,0 +1,13 @@
+RECOMMENDED DATABASE FOR ETL TESTING
+========================================
+
+Database: PTRJ_ARC.FDB
+Path: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_ARE_C_24-10-2025\PTRJ_ARC.FDB
+Size: 1488.9 MB
+Tested: 2025-11-01 11:44:13.329019
+Status: Contains actual FFB data
+
+USAGE INSTRUCTIONS:
+1. Update firebird_connector_enhanced.py DEFAULT_DATABASE path
+2. Test ETL queries with this database
+3. Validate data extraction and report generation

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "mcp__obsidian-mcp-tools__show_file_in_obsidian",
+      "mcp__obsidian-mcp-tools__create_vault_file"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

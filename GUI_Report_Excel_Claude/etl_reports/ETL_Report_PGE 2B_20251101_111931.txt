@@ -1,0 +1,217 @@
+ETL PROCESS REPORT
+================================================================================
+
+ETL EXECUTION SUMMARY:
+----------------------------------------
+Total Duration: 2.187 seconds
+Extract Phase: 1.974s (90.3%)
+Transform Phase: 0.000s (0.0%)
+Load Phase: 0.003s (0.2%)
+
+EXTRACT PHASE DETAILS:
+----------------------------------------
+Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+Date Range: 2025-10-02 to 2025-11-01
+Queries Executed: 19
+Rows Extracted: 15
+Extract Rate: 8 rows/second
+
+Query Breakdown:
+   WARNING: employee_mapping: 0 rows
+   WARNING: raw_ffb_data: 0 rows
+   SUCCESS: division_list: 1 rows
+   WARNING: division_data: 0 rows
+   SUCCESS: daily_summary: 1 rows
+   WARNING: scanner_performance: 0 rows
+   WARNING: field_performance: 0 rows
+   SUCCESS: quality_analysis: 1 rows
+   WARNING: duplicate_analysis: 0 rows
+   SUCCESS: kerani_mandor_analysis: 1 rows
+   WARNING: monthly_summary: 0 rows
+   WARNING: verification_status: 0 rows
+   WARNING: daily_performance: 0 rows
+   WARNING: processed_daily_data: 0 rows
+   WARNING: employee_performance: 0 rows
+   WARNING: processed_employee_data: 0 rows
+   WARNING: processed_field_data: 0 rows
+   SUCCESS: verification_data: 1 rows
+   SUCCESS: ffb_scanner_data: 10 rows
+
+TRANSFORM PHASE DETAILS:
+----------------------------------------
+Variables Processed: 20
+Calculations Performed: 0
+Transform Rate: 0 variables/second
+
+Processed Variables:
+   - total_transactions: 0
+   - total_ripe_bunches: 0
+   - total_unripe_bunches: 0
+   - total_black: 0
+   - total_rotten: 0
+   - total_ratdamage: 0
+   - verified_transactions: 0
+   - avg_ripe_per_transaction: 0
+   - daily_average_transactions: 0.0
+   - daily_average_ripe: 0.0
+   - quality_percentage: 0
+   - verification_rate: 0
+   - peak_performance_day: No Data
+   - low_performance_day: No Data
+   - report_title: LAPORAN ANALISIS FRESH FRUIT BUNCH (FFB) - PGE 2B
+   - estate_name: PGE 2B
+   - estate_code: PGE_2B
+   - report_period: 2025-10-02 - 2025-11-01
+   - generated_date: 01 November 2025
+   - generated_time: 11:19:31
+
+LOAD PHASE DETAILS:
+----------------------------------------
+Data Types Loaded: 0
+Rows Processed: 0
+Load Rate: 0 rows/second
+
+Data Types Breakdown:
+
+SAMPLE DATA (First 3 rows per type):
+--------------------------------------------------
+
+FFB SCANNER DATA (10 rows total):
+Using corrected FFBSCANNERDATA tables (not FFBLOADINGCROP)
+   Row 1:
+      SCANUSERID: 776
+      WORKERID: 4717
+      CARRIERID: 4717
+      FIELDID: 286
+      RIPEBCH: 0
+      TRANSDATE: 2025-10-23
+      TRANSTIME: 14:13:05.0000
+      RANSSTATUS: 704
+   Row 2:
+      SCANUSERID: 776
+      WORKERID: 4717
+      CARRIERID: 4717
+      FIELDID: 286
+      RIPEBCH: 0
+      TRANSDATE: 2025-10-23
+      TRANSTIME: 14:12:33.0000
+      RANSSTATUS: 704
+   Row 3:
+      SCANUSERID: 776
+      WORKERID: 4717
+      CARRIERID: 4717
+      FIELDID: 285
+      RIPEBCH: 0
+      TRANSDATE: 2025-10-23
+      TRANSTIME: 14:12:00.0000
+      RANSSTATUS: 704
+   ... and 7 more rows
+
+================================================================================
+PERFORMANCE METRICS:
+   - Overall Throughput: 7 rows/second
+   - Success Rate: 100% (19/19 queries)
+   - Data Quality: 0.0% data retained
+
+
+================================================================================
+🔍 DETAILED QUERY RESULTS
+================================================================================
+
+
+EMPLOYEE_MAPPING:
+----------------------------------------
+No data returned
+
+RAW_FFB_DATA:
+----------------------------------------
+No data returned
+
+DIVISION_LIST:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'headers': ['DIVID DIVNAM'], 'rows': [{'DIVID DIVNAM': '40'}, {'DIVID DIVNAM': '41'}, {'DIVID DIVNAM': '46'}]}
+
+DIVISION_DATA:
+----------------------------------------
+No data returned
+
+DAILY_SUMMARY:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'headers': ['TRANSDATE T', 'TAL_TRANSACTIONS', 'TOTAL_BUNCHES', 'TOTAL_LOOSEFRUIT U', 'IQUE_SCANNERS'], 'rows': [{'TRANSDATE T': '2025-10-02', 'TAL_TRANSACTIONS': '149', 'TOTAL_BUNCHES': '2671', 'TOTAL_LOOSEFRUIT U': '554.00', 'IQUE_SCANNERS': '7'}, {'TRANSDATE T': '2025-10-03', 'TAL_TRANSACTIONS': '176', 'TOTAL_BUNCHES': '3277', 'TOTAL_LOOSEFRUIT U': '732.00', 'IQUE_SCANNERS': '6'}, {'TRANSDATE T': '2025-10-04', 'TAL_TRANSACTIONS': '214', 'TOTAL_BUNCHES': '3861', 'TOTAL_LOOSEFRUIT U': '795.00', 'IQUE_SCANNERS': '7'}, {'TRANSDATE T': '2025-10-06', 'TAL_TRANSACTIONS': '183', 'TOTAL_BUNCHES': '3719', 'TOTAL_LOOSEFRUIT U': '785.00', 'IQUE_SCANNERS': '7'}, {'TRANSDATE T': '2025-10-07', 'TAL_TRANSACTIONS': '192', 'TOTAL_BUNCHES': '3293', 'TOTAL_LOOSEFRUIT U': '704.00', 'IQUE_SCANNERS': '8'}, {'TRANSDATE T': '2025-10-08', 'TAL_TRANSACTIONS': '178', 'TOTAL_BUNCHES': '3289', 'TOTAL_LOOSEFRUIT U': '750.00', 'IQUE_SCANNERS': '6'}, {'TRANSDATE T': '2025-10-09', 'TAL_TRANSACTIONS': '162', 'TOTAL_BUNCHES': '3639', 'TOTAL_LOOSEFRUIT U': '771.00', 'IQUE_SCANNERS': '6'}, {'TRANSDATE T': '2025-10-10', 'TAL_TRANSACTIONS': '154', 'TOTAL_BUNCHES': '3293', 'TOTAL_LOOSEFRUIT U': '689.00', 'IQUE_SCANNERS': '6'}, {'TRANSDATE T': '2025-10-11', 'TAL_TRANSACTIONS': '181', 'TOTAL_BUNCHES': '3496', 'TOTAL_LOOSEFRUIT U': '777.00', 'IQUE_SCANNERS': '6'}, {'TRANSDATE T': '2025-10-13', 'TAL_TRANSACTIONS': '240', 'TOTAL_BUNCHES': '4831', 'TOTAL_LOOSEFRUIT U': '1050.00', 'IQUE_SCANNERS': '7'}, {'TRANSDATE T': '2025-10-14', 'TAL_TRANSACTIONS': '220', 'TOTAL_BUNCHES': '5036', 'TOTAL_LOOSEFRUIT U': '1090.00', 'IQUE_SCANNERS': '5'}, {'TRANSDATE T': '2025-10-15', 'TAL_TRANSACTIONS': '178', 'TOTAL_BUNCHES': '4296', 'TOTAL_LOOSEFRUIT U': '947.00', 'IQUE_SCANNERS': '4'}, {'TRANSDATE T': '2025-10-16', 'TAL_TRANSACTIONS': '197', 'TOTAL_BUNCHES': '3973', 'TOTAL_LOOSEFRUIT U': '814.00', 'IQUE_SCANNERS': '6'}, {'TRANSDATE T': '2025-10-17', 'TAL_TRANSACTIONS': '196', 'TOTAL_BUNCHES': '3842', 'TOTAL_LOOSEFRUIT U': '728.00', 'IQUE_SCANNERS': '7'}, {'TRANSDATE T': '2025-10-18', 'TAL_TRANSACTIONS': '197', 'TOTAL_BUNCHES': '3791', 'TOTAL_LOOSEFRUIT U': '762.00', 'IQUE_SCANNERS': '7'}, {'TRANSDATE T': '2025-10-20', 'TAL_TRANSACTIONS': '214', 'TOTAL_BUNCHES': '4194', 'TOTAL_LOOSEFRUIT U': '901.00', 'IQUE_SCANNERS': '7'}, {'TRANSDATE T': '2025-10-21', 'TAL_TRANSACTIONS': '202', 'TOTAL_BUNCHES': '4046', 'TOTAL_LOOSEFRUIT U': '863.00', 'IQUE_SCANNERS': '8'}, {'TRANSDATE T': '2025-10-22', 'TAL_TRANSACTIONS': '185', 'TOTAL_BUNCHES': '3919', 'TOTAL_LOOSEFRUIT U': '789.00', 'IQUE_SCANNERS': '6'}, {'TRANSDATE T': '2025-10-23', 'TAL_TRANSACTIONS': '224', 'TOTAL_BUNCHES': '4566', 'TOTAL_LOOSEFRUIT U': '938.00', 'IQUE_SCANNERS': '7'}]}
+
+SCANNER_PERFORMANCE:
+----------------------------------------
+No data returned
+
+FIELD_PERFORMANCE:
+----------------------------------------
+No data returned
+
+QUALITY_ANALYSIS:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'headers': ['TRANSDATE', 'RIPE_BUNCHES', 'UNRIPE_BUNCHES', 'OVERRIPE_BUNCHES', 'UNDERRIPE_BUNCHES', 'BLACK_BUNCHES', 'ROTTEN_BUNCHES', 'LONGSTALK_BUNCHES', 'RATDAMAGE_BUNCHES', 'ABNORMAL_BUNCHES'], 'rows': [{'TRANSDATE': '2025-10-02', 'RIPE_BUNCHES': '2333', 'UNRIPE_BUNCHES': '60', 'OVERRIPE_BUNCHES': '110', 'UNDERRIPE_BUNCHES': '168', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '21'}, {'TRANSDATE': '2025-10-03', 'RIPE_BUNCHES': '2849', 'UNRIPE_BUNCHES': '61', 'OVERRIPE_BUNCHES': '155', 'UNDERRIPE_BUNCHES': '212', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '19'}, {'TRANSDATE': '2025-10-04', 'RIPE_BUNCHES': '3375', 'UNRIPE_BUNCHES': '40', 'OVERRIPE_BUNCHES': '179', 'UNDERRIPE_BUNCHES': '267', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '4', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '40'}, {'TRANSDATE': '2025-10-06', 'RIPE_BUNCHES': '3227', 'UNRIPE_BUNCHES': '51', 'OVERRIPE_BUNCHES': '191', 'UNDERRIPE_BUNCHES': '250', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '41'}, {'TRANSDATE': '2025-10-07', 'RIPE_BUNCHES': '2780', 'UNRIPE_BUNCHES': '39', 'OVERRIPE_BUNCHES': '172', 'UNDERRIPE_BUNCHES': '302', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '38'}, {'TRANSDATE': '2025-10-08', 'RIPE_BUNCHES': '2904', 'UNRIPE_BUNCHES': '17', 'OVERRIPE_BUNCHES': '150', 'UNDERRIPE_BUNCHES': '218', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '20'}, {'TRANSDATE': '2025-10-09', 'RIPE_BUNCHES': '3241', 'UNRIPE_BUNCHES': '34', 'OVERRIPE_BUNCHES': '122', 'UNDERRIPE_BUNCHES': '242', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '0'}, {'TRANSDATE': '2025-10-10', 'RIPE_BUNCHES': '2911', 'UNRIPE_BUNCHES': '51', 'OVERRIPE_BUNCHES': '108', 'UNDERRIPE_BUNCHES': '223', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '6'}, {'TRANSDATE': '2025-10-11', 'RIPE_BUNCHES': '3034', 'UNRIPE_BUNCHES': '38', 'OVERRIPE_BUNCHES': '172', 'UNDERRIPE_BUNCHES': '252', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '1', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '28'}, {'TRANSDATE': '2025-10-13', 'RIPE_BUNCHES': '4194', 'UNRIPE_BUNCHES': '35', 'OVERRIPE_BUNCHES': '250', 'UNDERRIPE_BUNCHES': '352', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '1', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '52'}, {'TRANSDATE': '2025-10-14', 'RIPE_BUNCHES': '4409', 'UNRIPE_BUNCHES': '48', 'OVERRIPE_BUNCHES': '255', 'UNDERRIPE_BUNCHES': '324', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '4', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '51'}, {'TRANSDATE': '2025-10-15', 'RIPE_BUNCHES': '3946', 'UNRIPE_BUNCHES': '23', 'OVERRIPE_BUNCHES': '151', 'UNDERRIPE_BUNCHES': '176', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '1'}, {'TRANSDATE': '2025-10-16', 'RIPE_BUNCHES': '3420', 'UNRIPE_BUNCHES': '147', 'OVERRIPE_BUNCHES': '155', 'UNDERRIPE_BUNCHES': '251', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '9', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '6'}, {'TRANSDATE': '2025-10-17', 'RIPE_BUNCHES': '3274', 'UNRIPE_BUNCHES': '45', 'OVERRIPE_BUNCHES': '178', 'UNDERRIPE_BUNCHES': '345', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '30'}, {'TRANSDATE': '2025-10-18', 'RIPE_BUNCHES': '3252', 'UNRIPE_BUNCHES': '53', 'OVERRIPE_BUNCHES': '173', 'UNDERRIPE_BUNCHES': '313', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '1', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '38'}, {'TRANSDATE': '2025-10-20', 'RIPE_BUNCHES': '3533', 'UNRIPE_BUNCHES': '58', 'OVERRIPE_BUNCHES': '240', 'UNDERRIPE_BUNCHES': '363', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '34'}, {'TRANSDATE': '2025-10-21', 'RIPE_BUNCHES': '3466', 'UNRIPE_BUNCHES': '25', 'OVERRIPE_BUNCHES': '217', 'UNDERRIPE_BUNCHES': '338', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '0', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '10'}, {'TRANSDATE': '2025-10-22', 'RIPE_BUNCHES': '3365', 'UNRIPE_BUNCHES': '62', 'OVERRIPE_BUNCHES': '160', 'UNDERRIPE_BUNCHES': '332', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '1', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '32'}, {'TRANSDATE': '2025-10-23', 'RIPE_BUNCHES': '3877', 'UNRIPE_BUNCHES': '65', 'OVERRIPE_BUNCHES': '198', 'UNDERRIPE_BUNCHES': '426', 'BLACK_BUNCHES': '0', 'ROTTEN_BUNCHES': '1', 'LONGSTALK_BUNCHES': '0', 'RATDAMAGE_BUNCHES': '0', 'ABNORMAL_BUNCHES': '52'}]}
+
+DUPLICATE_ANALYSIS:
+----------------------------------------
+No data returned
+
+KERANI_MANDOR_ANALYSIS:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'headers': ['SCANUSERID R', 'CORDTAG T', 'ANSACTION_COUNT', 'TOTAL_BUNCHES'], 'rows': [{'SCANUSERID R': '776', 'CORDTAG T': 'PM', 'ANSACTION_COUNT': '1167', 'TOTAL_BUNCHES': '28432'}, {'SCANUSERID R': '808', 'CORDTAG T': 'PM', 'ANSACTION_COUNT': '453', 'TOTAL_BUNCHES': '8418'}, {'SCANUSERID R': '819', 'CORDTAG T': 'PM', 'ANSACTION_COUNT': '898', 'TOTAL_BUNCHES': '14642'}, {'SCANUSERID R': '4109', 'CORDTAG T': 'PM', 'ANSACTION_COUNT': '344', 'TOTAL_BUNCHES': '6390'}, {'SCANUSERID R': '4472', 'CORDTAG T': 'PM', 'ANSACTION_COUNT': '15', 'TOTAL_BUNCHES': '661'}, {'SCANUSERID R': '4703', 'CORDTAG T': 'PM', 'ANSACTION_COUNT': '92', 'TOTAL_BUNCHES': '2307'}]}
+
+MONTHLY_SUMMARY:
+----------------------------------------
+No data returned
+
+VERIFICATION_STATUS:
+----------------------------------------
+No data returned
+
+DAILY_PERFORMANCE:
+----------------------------------------
+No data returned
+
+PROCESSED_DAILY_DATA:
+----------------------------------------
+No data returned
+
+EMPLOYEE_PERFORMANCE:
+----------------------------------------
+No data returned
+
+PROCESSED_EMPLOYEE_DATA:
+----------------------------------------
+No data returned
+
+PROCESSED_FIELD_DATA:
+----------------------------------------
+No data returned
+
+VERIFICATION_DATA:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'total_transactions': 0, 'pm_transactions': 0, 'verified_transactions': 0, 'verification_rate': 0}
+
+FFB_SCANNER_DATA:
+----------------------------------------
+Total Rows: 10
+
+Row 1: {'SCANUSERID': '776', 'WORKERID': '4717', 'CARRIERID': '4717', 'FIELDID': '286', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '14:13:05.0000', 'RANSSTATUS': '704'}
+Row 2: {'SCANUSERID': '776', 'WORKERID': '4717', 'CARRIERID': '4717', 'FIELDID': '286', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '14:12:33.0000', 'RANSSTATUS': '704'}
+Row 3: {'SCANUSERID': '776', 'WORKERID': '4717', 'CARRIERID': '4717', 'FIELDID': '285', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '14:12:00.0000', 'RANSSTATUS': '704'}
+Row 4: {'SCANUSERID': '776', 'WORKERID': '857', 'CARRIERID': '857', 'FIELDID': '286', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '14:11:20.0000', 'RANSSTATUS': '704'}
+Row 5: {'SCANUSERID': '776', 'WORKERID': '896', 'CARRIERID': '896', 'FIELDID': '284', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:52:23.0000', 'RANSSTATUS': '704'}
+Row 6: {'SCANUSERID': '819', 'WORKERID': '792', 'CARRIERID': '792', 'FIELDID': '278', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:52:15.0000', 'RANSSTATUS': '704'}
+Row 7: {'SCANUSERID': '819', 'WORKERID': '882', 'CARRIERID': '882', 'FIELDID': '289', 'RIPEBCH': '2', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:51:34.0000', 'RANSSTATUS': '704'}
+Row 8: {'SCANUSERID': '776', 'WORKERID': '896', 'CARRIERID': '896', 'FIELDID': '284', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:51:23.0000', 'RANSSTATUS': '704'}
+Row 9: {'SCANUSERID': '819', 'WORKERID': '4501', 'CARRIERID': '4501', 'FIELDID': '289', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:50:39.0000', 'RANSSTATUS': '704'}
+Row 10: {'SCANUSERID': '819', 'WORKERID': '4702', 'CARRIERID': '4702', 'FIELDID': '278', 'RIPEBCH': '3', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:50:02.0000', 'RANSSTATUS': '704'}

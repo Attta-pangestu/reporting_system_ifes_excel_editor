@@ -1,0 +1,154 @@
+ETL PROCESS REPORT
+================================================================================
+
+ETL EXECUTION SUMMARY:
+----------------------------------------
+Total Duration: 0.114 seconds
+Extract Phase: 0.064s (55.9%)
+Transform Phase: 0.000s (0.0%)
+Load Phase: 0.003s (2.7%)
+
+EXTRACT PHASE DETAILS:
+----------------------------------------
+Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+Date Range: 2025-10-01 to 2025-10-31
+Queries Executed: 8
+Rows Extracted: 11
+Extract Rate: 172 rows/second
+
+Query Breakdown:
+   WARNING: daily_performance: 0 rows
+   WARNING: processed_daily_data: 0 rows
+   WARNING: employee_performance: 0 rows
+   WARNING: processed_employee_data: 0 rows
+   WARNING: field_performance: 0 rows
+   WARNING: processed_field_data: 0 rows
+   SUCCESS: verification_data: 1 rows
+   SUCCESS: ffb_scanner_data: 10 rows
+
+TRANSFORM PHASE DETAILS:
+----------------------------------------
+Variables Processed: 20
+Calculations Performed: 0
+Transform Rate: 0 variables/second
+
+Processed Variables:
+   - total_transactions: 0
+   - total_ripe_bunches: 0
+   - total_unripe_bunches: 0
+   - total_black: 0
+   - total_rotten: 0
+   - total_ratdamage: 0
+   - verified_transactions: 0
+   - avg_ripe_per_transaction: 0
+   - daily_average_transactions: 0.0
+   - daily_average_ripe: 0.0
+   - quality_percentage: 0
+   - verification_rate: 0
+   - peak_performance_day: No Data
+   - low_performance_day: No Data
+   - report_title: LAPORAN ANALISIS FRESH FRUIT BUNCH (FFB) - PGE 2B
+   - estate_name: PGE 2B
+   - estate_code: PGE_2B
+   - report_period: 2025-10-01 - 2025-10-31
+   - generated_date: 01 November 2025
+   - generated_time: 11:48:30
+
+LOAD PHASE DETAILS:
+----------------------------------------
+Data Types Loaded: 0
+Rows Processed: 0
+Load Rate: 0 rows/second
+
+Data Types Breakdown:
+
+SAMPLE DATA (First 3 rows per type):
+--------------------------------------------------
+
+FFB SCANNER DATA (10 rows total):
+Using corrected FFBSCANNERDATA tables (not FFBLOADINGCROP)
+   Row 1:
+      SCANUSERID: 776
+      WORKERID: 4717
+      CARRIERID: 4717
+      FIELDID: 286
+      RIPEBCH: 0
+      TRANSDATE: 2025-10-23
+      TRANSTIME: 14:13:05.0000
+      RANSSTATUS: 704
+   Row 2:
+      SCANUSERID: 776
+      WORKERID: 4717
+      CARRIERID: 4717
+      FIELDID: 286
+      RIPEBCH: 0
+      TRANSDATE: 2025-10-23
+      TRANSTIME: 14:12:33.0000
+      RANSSTATUS: 704
+   Row 3:
+      SCANUSERID: 776
+      WORKERID: 4717
+      CARRIERID: 4717
+      FIELDID: 285
+      RIPEBCH: 0
+      TRANSDATE: 2025-10-23
+      TRANSTIME: 14:12:00.0000
+      RANSSTATUS: 704
+   ... and 7 more rows
+
+================================================================================
+PERFORMANCE METRICS:
+   - Overall Throughput: 96 rows/second
+   - Success Rate: 100% (8/8 queries)
+   - Data Quality: 0.0% data retained
+
+
+================================================================================
+🔍 DETAILED QUERY RESULTS
+================================================================================
+
+
+DAILY_PERFORMANCE:
+----------------------------------------
+No data returned
+
+PROCESSED_DAILY_DATA:
+----------------------------------------
+No data returned
+
+EMPLOYEE_PERFORMANCE:
+----------------------------------------
+No data returned
+
+PROCESSED_EMPLOYEE_DATA:
+----------------------------------------
+No data returned
+
+FIELD_PERFORMANCE:
+----------------------------------------
+No data returned
+
+PROCESSED_FIELD_DATA:
+----------------------------------------
+No data returned
+
+VERIFICATION_DATA:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'total_transactions': 0, 'pm_transactions': 0, 'verified_transactions': 0, 'verification_rate': 0}
+
+FFB_SCANNER_DATA:
+----------------------------------------
+Total Rows: 10
+
+Row 1: {'SCANUSERID': '776', 'WORKERID': '4717', 'CARRIERID': '4717', 'FIELDID': '286', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '14:13:05.0000', 'RANSSTATUS': '704'}
+Row 2: {'SCANUSERID': '776', 'WORKERID': '4717', 'CARRIERID': '4717', 'FIELDID': '286', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '14:12:33.0000', 'RANSSTATUS': '704'}
+Row 3: {'SCANUSERID': '776', 'WORKERID': '4717', 'CARRIERID': '4717', 'FIELDID': '285', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '14:12:00.0000', 'RANSSTATUS': '704'}
+Row 4: {'SCANUSERID': '776', 'WORKERID': '857', 'CARRIERID': '857', 'FIELDID': '286', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '14:11:20.0000', 'RANSSTATUS': '704'}
+Row 5: {'SCANUSERID': '776', 'WORKERID': '896', 'CARRIERID': '896', 'FIELDID': '284', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:52:23.0000', 'RANSSTATUS': '704'}
+Row 6: {'SCANUSERID': '819', 'WORKERID': '792', 'CARRIERID': '792', 'FIELDID': '278', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:52:15.0000', 'RANSSTATUS': '704'}
+Row 7: {'SCANUSERID': '819', 'WORKERID': '882', 'CARRIERID': '882', 'FIELDID': '289', 'RIPEBCH': '2', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:51:34.0000', 'RANSSTATUS': '704'}
+Row 8: {'SCANUSERID': '776', 'WORKERID': '896', 'CARRIERID': '896', 'FIELDID': '284', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:51:23.0000', 'RANSSTATUS': '704'}
+Row 9: {'SCANUSERID': '819', 'WORKERID': '4501', 'CARRIERID': '4501', 'FIELDID': '289', 'RIPEBCH': '0', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:50:39.0000', 'RANSSTATUS': '704'}
+Row 10: {'SCANUSERID': '819', 'WORKERID': '4702', 'CARRIERID': '4702', 'FIELDID': '278', 'RIPEBCH': '3', 'TRANSDATE': '2025-10-23', 'TRANSTIME': '13:50:02.0000', 'RANSSTATUS': '704'}

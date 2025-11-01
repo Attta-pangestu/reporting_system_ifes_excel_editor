@@ -1,0 +1,138 @@
+{
+  "timestamp": "2025-11-01T10:45:51.819403",
+  "parameters": {
+    "start_date": "2025-10-02",
+    "end_date": "2025-11-01",
+    "month": "10",
+    "estate_name": "PGE 2B",
+    "estate_code": "PGE_2B",
+    "month:02d": "10"
+  },
+  "etl_stats": {
+    "extract": {
+      "start_time": "2025-11-01 10:45:51.322206",
+      "queries": 19,
+      "rows_extracted": 5,
+      "success": true
+    },
+    "transform": {
+      "start_time": "2025-11-01 10:45:51.797071",
+      "variables_processed": 20,
+      "calculations": 2,
+      "success": true
+    },
+    "load": {
+      "start_time": "2025-11-01 10:45:51.805243",
+      "data_types": 2,
+      "rows_processed": 0,
+      "success": true
+    }
+  },
+  "query_results": {
+    "employee_mapping": [],
+    "divisions": [],
+    "division_tables": [
+      {
+        "headers": [
+          "RDB$RELATION_NAME"
+        ],
+        "rows": [
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP01"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP02"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP03"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP04"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP05"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP06"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP07"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP08"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP09"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP10"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP11"
+          },
+          {
+            "RDB$RELATION_NAME": "FFBLOADINGCROP12"
+          }
+        ]
+      }
+    ],
+    "analyze_division": [],
+    "division_data": [],
+    "kerani_data": [],
+    "mandor_data": [],
+    "asisten_data": [],
+    "daily_summary": [
+      {
+        "headers": [
+          "TRANSDATE D",
+          "ILY_TRANSACTIONS",
+          "DAILY_BUNCHES",
+          "DAILY_LOOSEFRUIT"
+        ],
+        "rows": []
+      }
+    ],
+    "total_summary": [
+      {
+        "headers": [
+          "TOTAL_TRANSACTIONS",
+          "TOTAL_BUNCHES",
+          "TOTAL_LOOSEFRUIT"
+        ],
+        "rows": []
+      }
+    ],
+    "verification_status": [
+      {
+        "headers": [
+          "VERIFIED_COUNT"
+        ],
+        "rows": []
+      }
+    ],
+    "daily_performance": [],
+    "processed_daily_data": [],
+    "employee_performance": [],
+    "processed_employee_data": [],
+    "field_performance": [],
+    "processed_field_data": [],
+    "verification_data": [
+      {
+        "total_transactions": 0,
+        "pm_transactions": 0,
+        "verified_transactions": 0,
+        "verification_rate": 0
+      }
+    ],
+    "ffb_scanner_data": []
+  },
+  "summary": {
+    "total_queries": 19,
+    "total_rows_extracted": 5,
+    "total_rows_processed": 0,
+    "extract_duration": 0.474865,
+    "transform_duration": 0,
+    "load_duration": 0,
+    "total_duration": 0
+  }
+}

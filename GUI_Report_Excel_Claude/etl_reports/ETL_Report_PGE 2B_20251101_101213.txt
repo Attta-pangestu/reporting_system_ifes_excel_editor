@@ -1,0 +1,176 @@
+ETL PROCESS REPORT
+================================================================================
+
+ETL EXECUTION SUMMARY:
+----------------------------------------
+Total Duration: 0.723 seconds
+Extract Phase: 0.659s (91.1%)
+Transform Phase: 0.000s (0.0%)
+Load Phase: 0.001s (0.1%)
+
+EXTRACT PHASE DETAILS:
+----------------------------------------
+Database: D:\Gawean Rebinmas\Monitoring Database\Database Ifess\IFESS_2B_24-10-2025\PTRJ_P2B.FDB
+Date Range: 2025-10-02 to 2025-11-01
+Queries Executed: 18
+Rows Extracted: 5
+Extract Rate: 8 rows/second
+
+Query Breakdown:
+   WARNING: employee_mapping: 0 rows
+   WARNING: divisions: 0 rows
+   SUCCESS: division_tables: 1 rows
+   WARNING: analyze_division: 0 rows
+   WARNING: division_data: 0 rows
+   WARNING: kerani_data: 0 rows
+   WARNING: mandor_data: 0 rows
+   WARNING: asisten_data: 0 rows
+   SUCCESS: daily_summary: 1 rows
+   SUCCESS: total_summary: 1 rows
+   SUCCESS: verification_status: 1 rows
+   WARNING: daily_performance: 0 rows
+   WARNING: processed_daily_data: 0 rows
+   WARNING: employee_performance: 0 rows
+   WARNING: processed_employee_data: 0 rows
+   WARNING: field_performance: 0 rows
+   WARNING: processed_field_data: 0 rows
+   SUCCESS: verification_data: 1 rows
+
+TRANSFORM PHASE DETAILS:
+----------------------------------------
+Variables Processed: 20
+Calculations Performed: 2
+Transform Rate: 0 variables/second
+
+Processed Variables:
+   - total_transactions: 0
+   - total_ripe_bunches: 0
+   - total_unripe_bunches: 0
+   - total_black: 0
+   - total_rotten: 0
+   - total_ratdamage: 0
+   - verified_transactions: 0
+   - avg_ripe_per_transaction: 0
+   - daily_average_transactions: 0.0
+   - daily_average_ripe: 0.0
+   - quality_percentage: 0
+   - verification_rate: 0
+   - peak_performance_day: No Data
+   - low_performance_day: No Data
+   - report_title: LAPORAN ANALISIS FRESH FRUIT BUNCH (FFB) - PGE 2B
+   - estate_name: PGE 2B
+   - estate_code: PGE_2B
+   - report_period: 2025-10-02 - 2025-11-01
+   - generated_date: 01 November 2025
+   - generated_time: 10:12:13
+
+LOAD PHASE DETAILS:
+----------------------------------------
+Data Types Loaded: 2
+Rows Processed: 0
+Load Rate: 0 rows/second
+
+Data Types Breakdown:
+   WARNING: DIVISION_DETAILS: 0 rows
+   WARNING: EMPLOYEE_SUMMARY: 0 rows
+
+SAMPLE DATA (First 3 rows per type):
+--------------------------------------------------
+
+DIVISION_DETAILS: No data available
+
+EMPLOYEE_SUMMARY: No data available
+
+================================================================================
+PERFORMANCE METRICS:
+   - Overall Throughput: 7 rows/second
+   - Success Rate: 100% (18/18 queries)
+   - Data Quality: 0.0% data retained
+
+
+================================================================================
+🔍 DETAILED QUERY RESULTS
+================================================================================
+
+
+EMPLOYEE_MAPPING:
+----------------------------------------
+No data returned
+
+DIVISIONS:
+----------------------------------------
+No data returned
+
+DIVISION_TABLES:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'headers': ['RDB$RELATION_NAME'], 'rows': [{'RDB$RELATION_NAME': 'FFBLOADINGCROP01'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP02'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP03'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP04'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP05'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP06'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP07'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP08'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP09'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP10'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP11'}, {'RDB$RELATION_NAME': 'FFBLOADINGCROP12'}]}
+
+ANALYZE_DIVISION:
+----------------------------------------
+No data returned
+
+DIVISION_DATA:
+----------------------------------------
+No data returned
+
+KERANI_DATA:
+----------------------------------------
+No data returned
+
+MANDOR_DATA:
+----------------------------------------
+No data returned
+
+ASISTEN_DATA:
+----------------------------------------
+No data returned
+
+DAILY_SUMMARY:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'headers': ['TRANSDATE D', 'ILY_TRANSACTIONS', 'DAILY_BUNCHES', 'DAILY_LOOSEFRUIT'], 'rows': []}
+
+TOTAL_SUMMARY:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'headers': ['TOTAL_TRANSACTIONS', 'TOTAL_BUNCHES', 'TOTAL_LOOSEFRUIT'], 'rows': []}
+
+VERIFICATION_STATUS:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'headers': ['VERIFIED_COUNT'], 'rows': []}
+
+DAILY_PERFORMANCE:
+----------------------------------------
+No data returned
+
+PROCESSED_DAILY_DATA:
+----------------------------------------
+No data returned
+
+EMPLOYEE_PERFORMANCE:
+----------------------------------------
+No data returned
+
+PROCESSED_EMPLOYEE_DATA:
+----------------------------------------
+No data returned
+
+FIELD_PERFORMANCE:
+----------------------------------------
+No data returned
+
+PROCESSED_FIELD_DATA:
+----------------------------------------
+No data returned
+
+VERIFICATION_DATA:
+----------------------------------------
+Total Rows: 1
+
+Row 1: {'total_transactions': 0, 'pm_transactions': 0, 'verified_transactions': 0, 'verification_rate': 0}

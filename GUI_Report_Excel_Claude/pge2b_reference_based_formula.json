@@ -1,0 +1,280 @@
+{
+  "employee_mapping": {
+    "description": "Get employee ID to name mapping from EMP table",
+    "query": "SELECT ID, NAME FROM EMP",
+    "parameters": [],
+    "expected_columns": [
+      "ID",
+      "NAME"
+    ]
+  },
+  "raw_ffb_data": {
+    "description": "Get raw FFB scanner data with field information",
+    "query": "\n            SELECT a.ID, a.SCANUSERID, a.OCID, a.WORKERID, a.CARRIERID, a.FIELDID, a.TASKNO,\n                   a.RIPEBCH, a.UNRIPEBCH, a.BLACKBCH, a.ROTTENBCH, a.LONGSTALKBCH, a.RATDMGBCH,\n                   a.LOOSEFRUIT, a.TRANSNO, a.TRANSDATE, a.TRANSTIME, a.UPLOADDATETIME,\n                   a.RECORDTAG, a.TRANSSTATUS, a.TRANSTYPE, a.LASTUSER, a.LASTUPDATED,\n                   a.OVERRIPEBCH, a.UNDERRIPEBCH, a.ABNORMALBCH, a.LOOSEFRUIT2,\n                   b.DIVID, b.FIELDNAME\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "ID",
+      "SCANUSERID",
+      "FIELDID",
+      "RIPEBCH",
+      "UNRIPEBCH",
+      "TRANSDATE"
+    ]
+  },
+  "division_list": {
+    "description": "Get list of divisions with names",
+    "query": "\n            SELECT DISTINCT b.DIVID, c.DIVNAME\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            LEFT JOIN CRDIVISION c ON b.DIVID = c.ID\n            WHERE b.DIVID IS NOT NULL AND c.DIVNAME IS NOT NULL\n                AND a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "DIVID",
+      "DIVNAME"
+    ]
+  },
+  "division_data": {
+    "description": "Get division-specific FFB data",
+    "query": "\n            SELECT a.ID, a.SCANUSERID, a.FIELDID, a.RIPEBCH, a.UNRIPEBCH, a.BLACKBCH, \n                   a.ROTTENBCH, a.LONGSTALKBCH, a.RATDMGBCH, a.LOOSEFRUIT, a.TRANSDATE,\n                   a.RECORDTAG, a.TRANSSTATUS, b.DIVID, c.DIVNAME\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            LEFT JOIN CRDIVISION c ON b.DIVID = c.ID\n            WHERE b.DIVID = '{division_id}'\n                AND a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month",
+      "division_id"
+    ],
+    "expected_columns": [
+      "ID",
+      "SCANUSERID",
+      "FIELDID",
+      "RIPEBCH",
+      "TRANSDATE"
+    ]
+  },
+  "daily_summary": {
+    "description": "Get daily summary of FFB transactions",
+    "query": "\n            SELECT a.TRANSDATE, \n                   COUNT(*) as TOTAL_TRANSACTIONS,\n                   SUM(a.RIPEBCH) as TOTAL_RIPE,\n                   SUM(a.UNRIPEBCH) as TOTAL_UNRIPE,\n                   SUM(a.BLACKBCH) as TOTAL_BLACK,\n                   SUM(a.ROTTENBCH) as TOTAL_ROTTEN,\n                   SUM(a.RATDMGBCH) as TOTAL_RATDAMAGE,\n                   COUNT(DISTINCT a.SCANUSERID) as UNIQUE_SCANNERS\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            GROUP BY a.TRANSDATE\n            ORDER BY a.TRANSDATE\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "TRANSDATE",
+      "TOTAL_TRANSACTIONS",
+      "TOTAL_RIPE"
+    ]
+  },
+  "scanner_performance": {
+    "description": "Get scanner performance metrics",
+    "query": "\n            SELECT a.SCANUSERID, \n                   COUNT(*) as TOTAL_SCANS,\n                   SUM(a.RIPEBCH) as TOTAL_RIPE,\n                   SUM(a.UNRIPEBCH) as TOTAL_UNRIPE,\n                   AVG(a.RIPEBCH) as AVG_RIPE_PER_SCAN,\n                   e.NAME as SCANNER_NAME\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            LEFT JOIN EMP e ON a.SCANUSERID = e.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            GROUP BY a.SCANUSERID, e.NAME\n            ORDER BY TOTAL_SCANS DESC\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "SCANUSERID",
+      "TOTAL_SCANS",
+      "TOTAL_RIPE",
+      "SCANNER_NAME"
+    ]
+  },
+  "field_performance": {
+    "description": "Get field performance metrics",
+    "query": "\n            SELECT a.FIELDID, b.FIELDNAME, b.DIVID, c.DIVNAME,\n                   COUNT(*) as TOTAL_TRANSACTIONS,\n                   SUM(a.RIPEBCH) as TOTAL_RIPE,\n                   SUM(a.UNRIPEBCH) as TOTAL_UNRIPE,\n                   AVG(a.RIPEBCH) as AVG_RIPE_PER_TRANSACTION\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            LEFT JOIN CRDIVISION c ON b.DIVID = c.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            GROUP BY a.FIELDID, b.FIELDNAME, b.DIVID, c.DIVNAME\n            ORDER BY TOTAL_RIPE DESC\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "FIELDID",
+      "FIELDNAME",
+      "TOTAL_TRANSACTIONS",
+      "TOTAL_RIPE"
+    ]
+  },
+  "quality_analysis": {
+    "description": "Analyze fruit quality metrics",
+    "query": "\n            SELECT \n                SUM(a.RIPEBCH) as TOTAL_RIPE,\n                SUM(a.UNRIPEBCH) as TOTAL_UNRIPE,\n                SUM(a.BLACKBCH) as TOTAL_BLACK,\n                SUM(a.ROTTENBCH) as TOTAL_ROTTEN,\n                SUM(a.RATDMGBCH) as TOTAL_RATDAMAGE,\n                SUM(a.OVERRIPEBCH) as TOTAL_OVERRIPE,\n                SUM(a.UNDERRIPEBCH) as TOTAL_UNDERRIPE,\n                SUM(a.ABNORMALBCH) as TOTAL_ABNORMAL,\n                COUNT(*) as TOTAL_TRANSACTIONS\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "TOTAL_RIPE",
+      "TOTAL_UNRIPE",
+      "TOTAL_BLACK",
+      "TOTAL_TRANSACTIONS"
+    ]
+  },
+  "duplicate_analysis": {
+    "description": "Analyze duplicate transactions",
+    "query": "\n            SELECT a.TRANSNO, COUNT(*) as DUPLICATE_COUNT,\n                   STRING_AGG(a.RECORDTAG, ',') as RECORD_TAGS\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            GROUP BY a.TRANSNO\n            HAVING COUNT(*) > 1\n            ORDER BY DUPLICATE_COUNT DESC\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "TRANSNO",
+      "DUPLICATE_COUNT",
+      "RECORD_TAGS"
+    ]
+  },
+  "kerani_mandor_analysis": {
+    "description": "Analyze Kerani and Mandor performance",
+    "query": "\n            SELECT a.RECORDTAG, a.SCANUSERID, e.NAME,\n                   COUNT(*) as TOTAL_RECORDS,\n                   SUM(a.RIPEBCH) as TOTAL_RIPE,\n                   AVG(a.RIPEBCH) as AVG_RIPE\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            LEFT JOIN EMP e ON a.SCANUSERID = e.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n                AND a.RECORDTAG IN ('PM', 'P1', 'P5')\n            GROUP BY a.RECORDTAG, a.SCANUSERID, e.NAME\n            ORDER BY a.RECORDTAG, TOTAL_RECORDS DESC\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "RECORDTAG",
+      "SCANUSERID",
+      "NAME",
+      "TOTAL_RECORDS"
+    ]
+  },
+  "monthly_summary": {
+    "description": "Get monthly summary statistics",
+    "query": "\n            SELECT \n                COUNT(*) as TOTAL_TRANSACTIONS,\n                COUNT(DISTINCT a.SCANUSERID) as UNIQUE_SCANNERS,\n                COUNT(DISTINCT a.FIELDID) as UNIQUE_FIELDS,\n                SUM(a.RIPEBCH) as TOTAL_RIPE,\n                SUM(a.UNRIPEBCH) as TOTAL_UNRIPE,\n                AVG(a.RIPEBCH) as AVG_RIPE_PER_TRANSACTION,\n                MIN(a.TRANSDATE) as FIRST_DATE,\n                MAX(a.TRANSDATE) as LAST_DATE\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "TOTAL_TRANSACTIONS",
+      "UNIQUE_SCANNERS",
+      "TOTAL_RIPE"
+    ]
+  },
+  "verification_status": {
+    "description": "Check verification status of transactions",
+    "query": "\n            SELECT a.TRANSSTATUS, COUNT(*) as STATUS_COUNT,\n                   SUM(a.RIPEBCH) as TOTAL_RIPE\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            GROUP BY a.TRANSSTATUS\n            ORDER BY STATUS_COUNT DESC\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "TRANSSTATUS",
+      "STATUS_COUNT",
+      "TOTAL_RIPE"
+    ]
+  },
+  "daily_performance": {
+    "description": "Daily performance breakdown",
+    "query": "\n            SELECT a.TRANSDATE, a.RECORDTAG,\n                   COUNT(*) as DAILY_COUNT,\n                   SUM(a.RIPEBCH) as DAILY_RIPE,\n                   COUNT(DISTINCT a.SCANUSERID) as DAILY_SCANNERS\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            GROUP BY a.TRANSDATE, a.RECORDTAG\n            ORDER BY a.TRANSDATE, a.RECORDTAG\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "TRANSDATE",
+      "RECORDTAG",
+      "DAILY_COUNT",
+      "DAILY_RIPE"
+    ]
+  },
+  "processed_daily_data": {
+    "description": "Processed daily data with calculations",
+    "query": "\n            SELECT a.TRANSDATE,\n                   SUM(a.RIPEBCH + a.UNRIPEBCH + a.BLACKBCH + a.ROTTENBCH) as TOTAL_BUNCHES,\n                   SUM(a.RIPEBCH) as RIPE_BUNCHES,\n                   CASE \n                       WHEN SUM(a.RIPEBCH + a.UNRIPEBCH + a.BLACKBCH + a.ROTTENBCH) > 0 \n                       THEN (SUM(a.RIPEBCH) * 100.0 / SUM(a.RIPEBCH + a.UNRIPEBCH + a.BLACKBCH + a.ROTTENBCH))\n                       ELSE 0 \n                   END as QUALITY_PERCENTAGE\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            GROUP BY a.TRANSDATE\n            ORDER BY a.TRANSDATE\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "TRANSDATE",
+      "TOTAL_BUNCHES",
+      "RIPE_BUNCHES",
+      "QUALITY_PERCENTAGE"
+    ]
+  },
+  "employee_performance": {
+    "description": "Employee performance metrics",
+    "query": "\n            SELECT a.SCANUSERID, e.NAME, a.RECORDTAG,\n                   COUNT(*) as PERFORMANCE_COUNT,\n                   SUM(a.RIPEBCH) as PERFORMANCE_RIPE,\n                   AVG(a.RIPEBCH) as AVG_PERFORMANCE\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            LEFT JOIN EMP e ON a.SCANUSERID = e.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            GROUP BY a.SCANUSERID, e.NAME, a.RECORDTAG\n            ORDER BY PERFORMANCE_COUNT DESC\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "SCANUSERID",
+      "NAME",
+      "RECORDTAG",
+      "PERFORMANCE_COUNT"
+    ]
+  },
+  "processed_employee_data": {
+    "description": "Processed employee data with metrics",
+    "query": "\n            SELECT e.ID, e.NAME,\n                   COUNT(a.ID) as TOTAL_TRANSACTIONS,\n                   SUM(a.RIPEBCH) as TOTAL_RIPE_PROCESSED,\n                   AVG(a.RIPEBCH) as AVG_RIPE_PROCESSED\n            FROM EMP e\n            LEFT JOIN FFBSCANNERDATA{month:02d} a ON e.ID = a.SCANUSERID\n            LEFT JOIN OCFIELD b ON a.FIELDID = b.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            GROUP BY e.ID, e.NAME\n            HAVING COUNT(a.ID) > 0\n            ORDER BY TOTAL_TRANSACTIONS DESC\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "ID",
+      "NAME",
+      "TOTAL_TRANSACTIONS",
+      "TOTAL_RIPE_PROCESSED"
+    ]
+  },
+  "processed_field_data": {
+    "description": "Processed field data with metrics",
+    "query": "\n            SELECT b.ID, b.FIELDNAME, b.DIVID, c.DIVNAME,\n                   COUNT(a.ID) as FIELD_TRANSACTIONS,\n                   SUM(a.RIPEBCH) as FIELD_RIPE_TOTAL,\n                   AVG(a.RIPEBCH) as FIELD_AVG_RIPE\n            FROM OCFIELD b\n            LEFT JOIN FFBSCANNERDATA{month:02d} a ON b.ID = a.FIELDID\n            LEFT JOIN CRDIVISION c ON b.DIVID = c.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            GROUP BY b.ID, b.FIELDNAME, b.DIVID, c.DIVNAME\n            HAVING COUNT(a.ID) > 0\n            ORDER BY FIELD_TRANSACTIONS DESC\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "ID",
+      "FIELDNAME",
+      "FIELD_TRANSACTIONS",
+      "FIELD_RIPE_TOTAL"
+    ]
+  },
+  "verification_data": {
+    "description": "Verification data analysis",
+    "query": "\n            SELECT a.TRANSNO, a.RECORDTAG, a.TRANSSTATUS,\n                   COUNT(*) as VERIFICATION_COUNT,\n                   SUM(a.RIPEBCH) as VERIFICATION_RIPE\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n                AND a.TRANSSTATUS IN ('704', '731', '732')\n            GROUP BY a.TRANSNO, a.RECORDTAG, a.TRANSSTATUS\n            ORDER BY VERIFICATION_COUNT DESC\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "TRANSNO",
+      "RECORDTAG",
+      "TRANSSTATUS",
+      "VERIFICATION_COUNT"
+    ]
+  },
+  "ffb_scanner_data": {
+    "description": "Raw FFB scanner data for analysis",
+    "query": "\n            SELECT a.ID, a.SCANUSERID, a.FIELDID, a.TRANSNO, a.TRANSDATE,\n                   a.RIPEBCH, a.UNRIPEBCH, a.BLACKBCH, a.ROTTENBCH,\n                   a.RECORDTAG, a.TRANSSTATUS, b.FIELDNAME, c.DIVNAME\n            FROM FFBSCANNERDATA{month:02d} a\n            JOIN OCFIELD b ON a.FIELDID = b.ID\n            LEFT JOIN CRDIVISION c ON b.DIVID = c.ID\n            WHERE a.TRANSDATE >= '{start_date}' \n                AND a.TRANSDATE <= '{end_date}'\n            ORDER BY a.TRANSDATE, a.TRANSNO\n            ",
+    "parameters": [
+      "start_date",
+      "end_date",
+      "month"
+    ],
+    "expected_columns": [
+      "ID",
+      "SCANUSERID",
+      "FIELDID",
+      "TRANSDATE",
+      "RIPEBCH"
+    ]
+  }
+}

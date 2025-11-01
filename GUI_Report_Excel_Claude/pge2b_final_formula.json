@@ -1,0 +1,175 @@
+{
+  "template_info": {
+    "name": "PGE 2B FFB Analysis Report - Final Corrected",
+    "version": "3.0",
+    "description": "FFB Loading Analysis with corrected database schema",
+    "estate": "PGE 2B",
+    "created_date": "2025-11-01",
+    "last_modified": "2025-11-01"
+  },
+  "data_sources": {
+    "ffb_loading_data": "FFBLOADINGCROP{month:02d}",
+    "employee_data": "EMP"
+  },
+  "queries": {
+    "employee_mapping": {
+      "description": "Get employee ID to name mapping",
+      "sql": "SELECT DISTINCT \"ID EMPCODE\" as EMPID, \"ID NAME\" as EMPNAME FROM EMP WHERE \"ID EMPCODE\" IS NOT NULL AND \"ID NAME\" IS NOT NULL",
+      "cache": true
+    },
+    "division_list": {
+      "description": "Get list of divisions from employee data",
+      "sql": "SELECT DISTINCT \"ID   DIVISIO\" as DIVISION FROM EMP WHERE \"ID   DIVISIO\" IS NOT NULL ORDER BY \"ID   DIVISIO\"",
+      "cache": true
+    },
+    "raw_ffb_data": {
+      "description": "Extract raw FFB loading data for the specified period",
+      "sql": "SELECT \"ID   SCANUSE\" as SCANID, \"ID         O\" as OPERATORID, \"ID VEHICLECO\" as VEHICLEID, \"EID      FIEL\" as FIELDID, \"ID      BUNC\" as BUNCHES, \"ES   LOOSEFR\" as LOOSEFRUIT, \"IT TRANSNO\" as TRANSNO, \"FFBTRANSN\" as FFBTRANSNO, \"TRANSSTA\" as TRANSSTATUS, \"US TRANSDA\" as TRANSDATE, \"E     TRANS\" as TRANSTIME, \"IME\" as TIME_FIELD, \"UPLOADDATETIME LASTUSER\" as UPLOAD_DATETIME, \"LASTUPDATED RECORDTAG\" as LAST_UPDATED, \"DRIVERNAM\" as DRIVER_NAME, \"DRIVE\" as DRIVER_FULL, \"ID HARVESTIN\" as HARVEST_ID, \"DATE PROCESSFL\" as PROCESS_DATE, \"G\" as STATUS_FLAG FROM FFBLOADINGCROP{month:02d} WHERE \"DATE PROCESSFL\" BETWEEN '{start_date}' AND '{end_date}' ORDER BY \"DATE PROCESSFL\", \"ID   SCANUSE\"",
+      "parameters": ["start_date", "end_date", "month"]
+    },
+    "daily_summary": {
+      "description": "Daily summary of FFB loading activities",
+      "sql": "SELECT \"DATE PROCESSFL\" as PROCESS_DATE, COUNT(*) as TOTAL_TRANSACTIONS, SUM(\"ID      BUNC\") as TOTAL_BUNCHES, SUM(\"ES   LOOSEFR\") as TOTAL_LOOSEFRUIT, COUNT(DISTINCT \"ID         O\") as UNIQUE_OPERATORS, COUNT(DISTINCT \"ID VEHICLECO\") as UNIQUE_VEHICLES FROM FFBLOADINGCROP{month:02d} WHERE \"DATE PROCESSFL\" BETWEEN '{start_date}' AND '{end_date}' GROUP BY \"DATE PROCESSFL\" ORDER BY \"DATE PROCESSFL\"",
+      "parameters": ["start_date", "end_date", "month"]
+    },
+    "operator_performance": {
+      "description": "Performance summary by operator",
+      "sql": "SELECT f.\"ID         O\" as OPERATORID, e.\"ID NAME\" as OPERATOR_NAME, COUNT(*) as TOTAL_TRANSACTIONS, SUM(f.\"ID      BUNC\") as TOTAL_BUNCHES, SUM(f.\"ES   LOOSEFR\") as TOTAL_LOOSEFRUIT, AVG(f.\"ID      BUNC\") as AVG_BUNCHES_PER_TRANS FROM FFBLOADINGCROP{month:02d} f LEFT JOIN EMP e ON f.\"ID         O\" = e.\"ID EMPCODE\" WHERE f.\"DATE PROCESSFL\" BETWEEN '{start_date}' AND '{end_date}' GROUP BY f.\"ID         O\", e.\"ID NAME\" ORDER BY TOTAL_BUNCHES DESC",
+      "parameters": ["start_date", "end_date", "month"]
+    },
+    "field_performance": {
+      "description": "Performance summary by field",
+      "sql": "SELECT \"EID      FIEL\" as FIELDID, COUNT(*) as TOTAL_TRANSACTIONS, SUM(\"ID      BUNC\") as TOTAL_BUNCHES, SUM(\"ES   LOOSEFR\") as TOTAL_LOOSEFRUIT, AVG(\"ID      BUNC\") as AVG_BUNCHES_PER_TRANS FROM FFBLOADINGCROP{month:02d} WHERE \"DATE PROCESSFL\" BETWEEN '{start_date}' AND '{end_date}' GROUP BY \"EID      FIEL\" ORDER BY TOTAL_BUNCHES DESC",
+      "parameters": ["start_date", "end_date", "month"]
+    },
+    "vehicle_utilization": {
+      "description": "Vehicle utilization summary",
+      "sql": "SELECT \"ID VEHICLECO\" as VEHICLEID, COUNT(*) as TOTAL_TRIPS, SUM(\"ID      BUNC\") as TOTAL_BUNCHES, SUM(\"ES   LOOSEFR\") as TOTAL_LOOSEFRUIT, COUNT(DISTINCT \"DATE PROCESSFL\") as ACTIVE_DAYS FROM FFBLOADINGCROP{month:02d} WHERE \"DATE PROCESSFL\" BETWEEN '{start_date}' AND '{end_date}' GROUP BY \"ID VEHICLECO\" ORDER BY TOTAL_BUNCHES DESC",
+      "parameters": ["start_date", "end_date", "month"]
+    },
+    "quality_analysis": {
+      "description": "Quality analysis based on loose fruit ratio",
+      "sql": "SELECT \"DATE PROCESSFL\" as PROCESS_DATE, COUNT(*) as TOTAL_TRANSACTIONS, SUM(\"ID      BUNC\") as TOTAL_BUNCHES, SUM(\"ES   LOOSEFR\") as TOTAL_LOOSEFRUIT, CASE WHEN SUM(\"ID      BUNC\") > 0 THEN (SUM(\"ES   LOOSEFR\") * 100.0 / SUM(\"ID      BUNC\")) ELSE 0 END as LOOSEFRUIT_PERCENTAGE FROM FFBLOADINGCROP{month:02d} WHERE \"DATE PROCESSFL\" BETWEEN '{start_date}' AND '{end_date}' GROUP BY \"DATE PROCESSFL\" ORDER BY \"DATE PROCESSFL\"",
+      "parameters": ["start_date", "end_date", "month"]
+    },
+    "monthly_trend": {
+      "description": "Monthly trend analysis",
+      "sql": "SELECT EXTRACT(YEAR FROM \"DATE PROCESSFL\") as YEAR, EXTRACT(MONTH FROM \"DATE PROCESSFL\") as MONTH, COUNT(*) as TOTAL_TRANSACTIONS, SUM(\"ID      BUNC\") as TOTAL_BUNCHES, SUM(\"ES   LOOSEFR\") as TOTAL_LOOSEFRUIT FROM FFBLOADINGCROP{month:02d} WHERE \"DATE PROCESSFL\" BETWEEN '{start_date}' AND '{end_date}' GROUP BY EXTRACT(YEAR FROM \"DATE PROCESSFL\"), EXTRACT(MONTH FROM \"DATE PROCESSFL\") ORDER BY YEAR, MONTH",
+      "parameters": ["start_date", "end_date", "month"]
+    },
+    "driver_performance": {
+      "description": "Driver performance analysis",
+      "sql": "SELECT \"DRIVERNAM\" as DRIVER_NAME, \"DRIVE\" as DRIVER_FULL_NAME, COUNT(*) as TOTAL_TRIPS, SUM(\"ID      BUNC\") as TOTAL_BUNCHES, SUM(\"ES   LOOSEFR\") as TOTAL_LOOSEFRUIT, COUNT(DISTINCT \"DATE PROCESSFL\") as ACTIVE_DAYS FROM FFBLOADINGCROP{month:02d} WHERE \"DATE PROCESSFL\" BETWEEN '{start_date}' AND '{end_date}' AND \"DRIVERNAM\" IS NOT NULL GROUP BY \"DRIVERNAM\", \"DRIVE\" ORDER BY TOTAL_BUNCHES DESC",
+      "parameters": ["start_date", "end_date", "month"]
+    },
+    "harvest_summary": {
+      "description": "Harvest summary by harvest ID",
+      "sql": "SELECT \"ID HARVESTIN\" as HARVEST_ID, COUNT(*) as TOTAL_TRANSACTIONS, SUM(\"ID      BUNC\") as TOTAL_BUNCHES, SUM(\"ES   LOOSEFR\") as TOTAL_LOOSEFRUIT, MIN(\"DATE PROCESSFL\") as FIRST_DATE, MAX(\"DATE PROCESSFL\") as LAST_DATE FROM FFBLOADINGCROP{month:02d} WHERE \"DATE PROCESSFL\" BETWEEN '{start_date}' AND '{end_date}' GROUP BY \"ID HARVESTIN\" ORDER BY TOTAL_BUNCHES DESC",
+      "parameters": ["start_date", "end_date", "month"]
+    }
+  },
+  "calculated_variables": {
+    "total_transactions": {
+      "description": "Total number of FFB loading transactions",
+      "formula": "SUM(raw_ffb_data.length)"
+    },
+    "total_bunches": {
+      "description": "Total bunches loaded",
+      "formula": "SUM(raw_ffb_data.BUNCHES)"
+    },
+    "total_loosefruit": {
+      "description": "Total loose fruit collected",
+      "formula": "SUM(raw_ffb_data.LOOSEFRUIT)"
+    },
+    "average_bunches_per_transaction": {
+      "description": "Average bunches per transaction",
+      "formula": "total_bunches / total_transactions"
+    },
+    "loosefruit_percentage": {
+      "description": "Loose fruit as percentage of total bunches",
+      "formula": "(total_loosefruit / total_bunches) * 100"
+    },
+    "active_days": {
+      "description": "Number of active processing days",
+      "formula": "COUNT(DISTINCT(daily_summary.PROCESS_DATE))"
+    },
+    "daily_average_bunches": {
+      "description": "Average bunches per day",
+      "formula": "total_bunches / active_days"
+    },
+    "unique_operators": {
+      "description": "Number of unique operators",
+      "formula": "COUNT(DISTINCT(operator_performance.OPERATORID))"
+    },
+    "unique_vehicles": {
+      "description": "Number of unique vehicles used",
+      "formula": "COUNT(DISTINCT(vehicle_utilization.VEHICLEID))"
+    },
+    "unique_fields": {
+      "description": "Number of unique fields harvested",
+      "formula": "COUNT(DISTINCT(field_performance.FIELDID))"
+    }
+  },
+  "report_sections": {
+    "executive_summary": {
+      "title": "Executive Summary",
+      "variables": ["total_transactions", "total_bunches", "total_loosefruit", "loosefruit_percentage", "active_days"]
+    },
+    "daily_performance": {
+      "title": "Daily Performance Analysis",
+      "data_source": "daily_summary",
+      "variables": ["daily_average_bunches"]
+    },
+    "operator_analysis": {
+      "title": "Operator Performance Analysis",
+      "data_source": "operator_performance",
+      "variables": ["unique_operators"]
+    },
+    "field_analysis": {
+      "title": "Field Performance Analysis",
+      "data_source": "field_performance",
+      "variables": ["unique_fields"]
+    },
+    "vehicle_analysis": {
+      "title": "Vehicle Utilization Analysis",
+      "data_source": "vehicle_utilization",
+      "variables": ["unique_vehicles"]
+    },
+    "quality_analysis": {
+      "title": "Quality Analysis",
+      "data_source": "quality_analysis"
+    },
+    "driver_analysis": {
+      "title": "Driver Performance Analysis",
+      "data_source": "driver_performance"
+    }
+  },
+  "parameters": {
+    "start_date": {
+      "type": "date",
+      "description": "Start date for analysis period",
+      "required": true
+    },
+    "end_date": {
+      "type": "date", 
+      "description": "End date for analysis period",
+      "required": true
+    },
+    "month": {
+      "type": "integer",
+      "description": "Month number for table selection (1-12)",
+      "required": true,
+      "default": 10
+    },
+    "estate_name": {
+      "type": "string",
+      "description": "Estate name for report header",
+      "default": "PGE 2B"
+    },
+    "estate_code": {
+      "type": "string",
+      "description": "Estate code for identification",
+      "default": "PGE_2B"
+    }
+  }
+}

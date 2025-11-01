@@ -1,0 +1,228 @@
+{
+  "template_info": {
+    "name": "FFB Scanner Data 04 Report",
+    "description": "Laporan transaksi FFB dari tabel FFBSCANNERDATA04",
+    "version": "1.0",
+    "author": "Claude AI Assistant",
+    "created_date": "2025-11-01",
+    "database_table": "FFBSCANNERDATA04",
+    "template_file": "FFB_ScannerData04_Template_20251101_114530.xlsx"
+  },
+  "database_config": {
+    "connection_string": "D:\\Gawean Rebinmas\\Monitoring Database\\Database Ifess\\IFESS_2B_24-10-2025\\PTRJ_P2B.FDB",
+    "username": "SYSDBA",
+    "password": "masterkey",
+    "charset": "UTF8"
+  },
+  "parameters": {
+    "start_date": {
+      "type": "date",
+      "description": "Tanggal mulai filter data",
+      "required": true,
+      "default": "first_day_of_month"
+    },
+    "end_date": {
+      "type": "date",
+      "description": "Tanggal akhir filter data",
+      "required": true,
+      "default": "last_day_of_month"
+    }
+  },
+  "queries": {
+    "main_data": {
+      "type": "sql",
+      "description": "Query utama untuk mengambil data FFBSCANNERDATA04",
+      "sql": "SELECT \n    a.ID,\n    a.SCANUSERID,\n    a.OCID,\n    a.WORKERID,\n    a.CARRIERID,\n    a.FIELDID,\n    a.TASKNO,\n    a.RIPEBCH,\n    a.UNRIPEBCH,\n    a.BLACKBCH,\n    a.ROTTENBCH,\n    a.LONGSTALKBCH,\n    a.RATDMGBCH,\n    a.LOOSEFRUIT,\n    a.TRANSNO,\n    a.TRANSDATE,\n    a.TRANSTIME,\n    a.UPLOADDATETIME,\n    a.RECORDTAG,\n    a.TRANSSTATUS,\n    a.TRANSTYPE,\n    a.LASTUSER,\n    a.LASTUPDATED,\n    a.UNDERRIPEBCH,\n    a.OVERRIPEBCH,\n    a.ABNORMALBCH,\n    a.LOOSEFRUIT2\nFROM FFBSCANNERDATA04 a\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}\nORDER BY a.TRANSDATE, a.TRANSTIME, a.ID",
+      "return_format": "dict"
+    },
+    "summary_stats": {
+      "type": "sql",
+      "description": "Query untuk statistik ringkasan",
+      "sql": "SELECT \n    COUNT(*) as total_records,\n    COALESCE(SUM(a.RIPEBCH), 0) as total_ripe_bunch,\n    COALESCE(SUM(a.UNRIPEBCH), 0) as total_unripe_bunch,\n    COALESCE(SUM(a.BLACKBCH), 0) as total_black_bunch,\n    COALESCE(SUM(a.ROTTENBCH), 0) as total_rotten_bunch,\n    COALESCE(SUM(a.LONGSTALKBCH), 0) as total_long_stalk_bunch,\n    COALESCE(SUM(a.RATDMGBCH), 0) as total_rat_damage_bunch,\n    COALESCE(SUM(a.LOOSEFRUIT), 0) as total_loose_fruit,\n    COALESCE(SUM(a.LOOSEFRUIT2), 0) as total_loose_fruit_2,\n    COALESCE(SUM(a.UNDERRIPEBCH), 0) as total_underripe_bunch,\n    COALESCE(SUM(a.OVERRIPEBCH), 0) as total_overripe_bunch,\n    COALESCE(SUM(a.ABNORMALBCH), 0) as total_abnormal_bunch,\n    MIN(a.TRANSDATE) as min_date,\n    MAX(a.TRANSDATE) as max_date,\n    COUNT(DISTINCT a.WORKERID) as unique_workers,\n    COUNT(DISTINCT a.FIELDID) as unique_fields\nFROM FFBSCANNERDATA04 a\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}",
+      "return_format": "dict"
+    },
+    "field_info": {
+      "type": "sql",
+      "description": "Query untuk mendapatkan informasi field/lokasi",
+      "sql": "SELECT DISTINCT \n    a.FIELDID,\n    f.BLOCKNAME as FIELD_NAME,\n    f.DIVISIONID,\n    d.DIVNAME as DIVISION_NAME\nFROM FFBSCANNERDATA04 a\nLEFT JOIN OCFIELD f ON a.FIELDID = f.FIELDID\nLEFT JOIN CRDIVISION d ON f.DIVISIONID = d.DIVISIONID\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}\nORDER BY a.FIELDID",
+      "return_format": "dict"
+    },
+    "worker_info": {
+      "type": "sql",
+      "description": "Query untuk mendapatkan informasi pekerja",
+      "sql": "SELECT DISTINCT \n    a.WORKERID,\n    e.EMPNAME as WORKER_NAME,\n    e.EMPPOSITION as POSITION,\n    COUNT(*) as transaction_count\nFROM FFBSCANNERDATA04 a\nLEFT JOIN EMP e ON a.WORKERID = e.EMPID\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}\nGROUP BY a.WORKERID, e.EMPNAME, e.EMPPOSITION\nORDER BY transaction_count DESC",
+      "return_format": "dict"
+    }
+  },
+  "variables": {
+    "estate_name": {
+      "type": "constant",
+      "value": "PGE 2B",
+      "description": "Nama estate/perkebunan"
+    },
+    "report_period": {
+      "type": "calculation",
+      "description": "Periode laporan",
+      "formula": "IF(ISBLANK(start_date), MONTH(TODAY()) & ' ' & YEAR(TODAY()), MONTH(start_date) & ' ' & YEAR(start_date))"
+    },
+    "report_date": {
+      "type": "formatting",
+      "description": "Tanggal laporan",
+      "source": "TODAY()",
+      "format": "dd MMMM yyyy"
+    },
+    "database_name": {
+      "type": "constant",
+      "value": "PTRJ_P2B.FDB",
+      "description": "Nama database"
+    },
+    "generated_by": {
+      "type": "constant",
+      "value": "System",
+      "description": "User yang generate report"
+    },
+    "generation_time": {
+      "type": "formatting",
+      "description": "Waktu generate",
+      "source": "NOW()",
+      "format": "dd-MM-yyyy HH:mm:ss"
+    },
+    "data_records": {
+      "type": "direct",
+      "source": "main_data",
+      "description": "Data transaksi FFB utama"
+    },
+    "summary": {
+      "type": "calculation",
+      "description": "Ringkasan data",
+      "variables": {
+        "total_records": "summary_stats.total_records",
+        "total_ripe_bunch": "summary_stats.total_ripe_bunch",
+        "total_unripe_bunch": "summary_stats.total_unripe_bunch",
+        "total_black_bunch": "summary_stats.total_black_bunch",
+        "total_rotten_bunch": "summary_stats.total_rotten_bunch",
+        "total_long_stalk_bunch": "summary_stats.total_long_stalk_bunch",
+        "total_rat_damage_bunch": "summary_stats.total_rat_damage_bunch",
+        "total_loose_fruit": "summary_stats.total_loose_fruit",
+        "total_loose_fruit_2": "summary_stats.total_loose_fruit_2",
+        "total_underripe_bunch": "summary_stats.total_underripe_bunch",
+        "total_overripe_bunch": "summary_stats.total_overripe_bunch",
+        "total_abnormal_bunch": "summary_stats.total_abnormal_bunch",
+        "date_range": "IF(summary_stats.min_date = summary_stats.max_date, summary_stats.min_date, summary_stats.min_date & ' s/d ' & summary_stats.max_date)",
+        "unique_workers": "summary_stats.unique_workers",
+        "unique_fields": "summary_stats.unique_fields"
+      }
+    }
+  },
+  "repeating_sections": {
+    "FFB Scanner Data 04": {
+      "data_section": {
+        "data_source": "main_data",
+        "start_row": 12,
+        "end_row": null,
+        "columns": {
+          "A": "ID",
+          "B": "SCANUSERID",
+          "C": "OCID",
+          "D": "WORKERID",
+          "E": "CARRIERID",
+          "F": "FIELDID",
+          "G": "TASKNO",
+          "H": "RIPEBCH",
+          "I": "UNRIPEBCH",
+          "J": "BLACKBCH",
+          "K": "ROTTENBCH",
+          "L": "LONGSTALKBCH",
+          "M": "RATDMGBCH",
+          "N": "LOOSEFRUIT",
+          "O": "TRANSNO",
+          "P": "TRANSDATE",
+          "Q": "TRANSTIME",
+          "R": "UPLOADDATETIME",
+          "S": "RECORDTAG",
+          "T": "TRANSSTATUS",
+          "U": "TRANSTYPE",
+          "V": "LASTUSER",
+          "W": "LASTUPDATED",
+          "X": "UNDERRIPEBCH",
+          "Y": "OVERRIPEBCH",
+          "Z": "ABNORMALBCH",
+          "AA": "LOOSEFRUIT2"
+        },
+        "auto_expand": true,
+        "preserve_formatting": true
+      }
+    }
+  },
+  "validations": {
+    "required_fields": [
+      "ID",
+      "TRANSDATE",
+      "WORKERID",
+      "FIELDID"
+    ],
+    "numeric_fields": [
+      "RIPEBCH",
+      "UNRIPEBCH",
+      "BLACKBCH",
+      "ROTTENBCH",
+      "LONGSTALKBCH",
+      "RATDMGBCH",
+      "LOOSEFRUIT",
+      "UNDERRIPEBCH",
+      "OVERRIPEBCH",
+      "ABNORMALBCH",
+      "LOOSEFRUIT2"
+    ],
+    "date_fields": [
+      "TRANSDATE",
+      "TRANSTIME",
+      "UPLOADDATETIME",
+      "LASTUPDATED"
+    ]
+  },
+  "output_settings": {
+    "output_format": "pdf",
+    "pdf_settings": {
+      "orientation": "landscape",
+      "paper_size": "A4",
+      "margin_top": "1cm",
+      "margin_bottom": "1cm",
+      "margin_left": "1cm",
+      "margin_right": "1cm",
+      "scale_to_fit": true,
+      "include_headers": true,
+      "include_footers": true,
+      "header_text": "FFB Scanner Data 04 Report - {{estate_name}}",
+      "footer_text": "Page {page_num} of {total_pages} - Generated {{generation_time}}"
+    },
+    "excel_settings": {
+      "auto_filter": true,
+      "freeze_panes": "A12",
+      "zoom_level": 85
+    }
+  },
+  "error_handling": {
+    "database_connection": {
+      "retry_count": 3,
+      "retry_delay": 5,
+      "fallback_database": null
+    },
+    "query_execution": {
+      "timeout": 300,
+      "max_records": 10000,
+      "continue_on_error": false
+    },
+    "file_operations": {
+      "backup_original": true,
+      "overwrite_existing": true,
+      "create_backup_folder": true
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "log_file": "ffb_scannerdata04_report.log",
+    "log_queries": true,
+    "log_performance": true
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "template_info": {
+    "name": "PGE 2B FFB Analysis Report - Corrected with FFBSCANNERDATA",
+    "version": "5.0",
+    "description": "FFB Scanner Analysis with correct table names matching reference implementation",
+    "estate": "PGE 2B",
+    "created_date": "2025-11-01",
+    "last_modified": "2025-11-01",
+    "correction_notes": "Removed OCFIELD joins to fix 0 results issue. Using FIELDID directly."
+  },
+  "data_sources": {
+    "ffb_scanner_data": "FFBSCANNERDATA{month:02d}",
+    "employee_data": "EMP",
+    "division_data": "CRDIVISION"
+  },
+  "queries": {
+    "employee_mapping": {
+      "description": "Get employee ID to name mapping from EMP table",
+      "sql": "SELECT DISTINCT \"ID EMPCODE\" as EMPID, \"ID NAME\" as EMPNAME FROM EMP WHERE \"ID EMPCODE\" IS NOT NULL AND \"ID NAME\" IS NOT NULL",
+      "cache": true
+    },
+    "division_list": {
+      "description": "Get divisions using proper JOIN with OCFIELD and CRDIVISION",
+      "sql": "SELECT DISTINCT b.DIVID FROM FFBSCANNERDATA{month:02d} aELDID = b.ID LEFT JOIN CRDIVISION c ON b.DIVID = c.ID NOT NULL AND c.DIVNAME IS NOT NULL ORDER BY b.DIVID",
+      "parameters": [
+        "month"
+      ]
+    },
+    "raw_ffb_data": {
+      "description": "Extract raw FFB scanner data with proper field structure",
+      "sql": "SELECT a.ID, a.SCANUSERID, a.OCID, a.WORKERID, a.CARRIERID, a.FIELDID, a.TASKNO, a.RIPEBCH, a.UNRIPEBCH, a.BLACKBCH, a.ROTTENBCH, a.LONGSTALKBCH, a.RATDMGBCH, a.LOOSEFRUIT, a.TRANSNO, a.TRANSDATE, a.TRANSTIME, a.UPLOADDATETIME, a.RECORDTAG, a.TRANSSTATUS, a.TRANSTYPE, a.LASTUSER, a.LASTUPDATED, a.OVERRIPEBCH, a.UNDERRIPEBCH, a.ABNORMALBCH, a.LOOSEFRUIT2 FROM FFBSCANNERDATA{month:02d} aELDID = b.ID WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' ORDER BY a.TRANSDATE, a.TRANSTIME",
+      "parameters": [
+        "start_date",
+        "end_date",
+        "month"
+      ]
+    },
+    "division_data": {
+      "description": "Get data for specific division with proper JOINs",
+      "sql": "SELECT a.ID, a.SCANUSERID, a.OCID, a.WORKERID, a.CARRIERID, a.FIELDID, a.TASKNO, a.RIPEBCH, a.UNRIPEBCH, a.BLACKBCH, a.ROTTENBCH, a.LONGSTALKBCH, a.RATDMGBCH, a.LOOSEFRUIT, a.TRANSNO, a.TRANSDATE, a.TRANSTIME, a.UPLOADDATETIME, a.RECORDTAG, a.TRANSSTATUS, a.TRANSTYPE, a.LASTUSER, a.LASTUPDATED, a.OVERRIPEBCH, a.UNDERRIPEBCH, a.ABNORMALBCH, a.LOOSEFRUIT2 FROM FFBSCANNERDATA{month:02d} aELDID = b.ID '{div_id}' AND a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' ORDER BY a.TRANSDATE, a.TRANSTIME",
+      "parameters": [
+        "div_id",
+        "start_date",
+        "end_date",
+        "month"
+      ]
+    },
+    "daily_summary": {
+      "description": "Daily summary of FFB scanner activities",
+      "sql": "SELECT a.TRANSDATE, COUNT(*) as TOTAL_TRANSACTIONS, SUM(a.RIPEBCH + a.UNRIPEBCH + a.OVERRIPEBCH + a.UNDERRIPEBCH) as TOTAL_BUNCHES, SUM(a.LOOSEFRUIT + a.LOOSEFRUIT2) as TOTAL_LOOSEFRUIT, COUNT(DISTINCT a.SCANUSERID) as UNIQUE_SCANNERS FROM FFBSCANNERDATA{month:02d} aELDID = b.ID WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' GROUP BY a.TRANSDATE ORDER BY a.TRANSDATE",
+      "parameters": [
+        "start_date",
+        "end_date",
+        "month"
+      ]
+    },
+    "scanner_performance": {
+      "description": "Performance summary by scanner user",
+      "sql": "SELECT a.SCANUSERID, e.\"ID NAME\" as SCANNER_NAME, COUNT(*) as TOTAL_SCANS, SUM(a.RIPEBCH + a.UNRIPEBCH + a.OVERRIPEBCH + a.UNDERRIPEBCH) as TOTAL_BUNCHES, SUM(a.LOOSEFRUIT + a.LOOSEFRUIT2) as TOTAL_LOOSEFRUIT FROM FFBSCANNERDATA{month:02d} aELDID = b.ID LEFT JOIN EMP e ON a.SCANUSERID = e.\"ID EMPCODE\" WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' GROUP BY a.SCANUSERID, e.\"ID NAME\" ORDER BY TOTAL_BUNCHES DESC",
+      "parameters": [
+        "start_date",
+        "end_date",
+        "month"
+      ]
+    },
+    "field_performance": {
+      "description": "Performance summary by field with division info",
+      "sql": "SELECT a.FIELDID, COUNT(*) as TOTAL_TRANSACTIONS, SUM(a.RIPEBCH + a.UNRIPEBCH + a.OVERRIPEBCH + a.UNDERRIPEBCH) as TOTAL_BUNCHES, SUM(a.LOOSEFRUIT + a.LOOSEFRUIT2) as TOTAL_LOOSEFRUIT FROM FFBSCANNERDATA{month:02d} aELDID = b.ID LEFT JOIN CRDIVISION c ON b.DIVID = c.ID WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' GROUP BY a.FIELDID ORDER BY TOTAL_BUNCHES DESC",
+      "parameters": [
+        "start_date",
+        "end_date",
+        "month"
+      ]
+    },
+    "quality_analysis": {
+      "description": "Quality analysis of FFB bunches",
+      "sql": "SELECT a.TRANSDATE, SUM(a.RIPEBCH) as RIPE_BUNCHES, SUM(a.UNRIPEBCH) as UNRIPE_BUNCHES, SUM(a.OVERRIPEBCH) as OVERRIPE_BUNCHES, SUM(a.UNDERRIPEBCH) as UNDERRIPE_BUNCHES, SUM(a.BLACKBCH) as BLACK_BUNCHES, SUM(a.ROTTENBCH) as ROTTEN_BUNCHES, SUM(a.LONGSTALKBCH) as LONGSTALK_BUNCHES, SUM(a.RATDMGBCH) as RATDAMAGE_BUNCHES, SUM(a.ABNORMALBCH) as ABNORMAL_BUNCHES FROM FFBSCANNERDATA{month:02d} aELDID = b.ID WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' GROUP BY a.TRANSDATE ORDER BY a.TRANSDATE",
+      "parameters": [
+        "start_date",
+        "end_date",
+        "month"
+      ]
+    },
+    "duplicate_analysis": {
+      "description": "Find duplicate transactions for verification analysis",
+      "sql": "SELECT a.TRANSNO, COUNT(*) as DUPLICATE_COUNT, STRING_AGG(a.RECORDTAG, ',') as RECORD_TAGS FROM FFBSCANNERDATA{month:02d} aELDID = b.ID WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' GROUP BY a.TRANSNO HAVING COUNT(*) > 1 ORDER BY DUPLICATE_COUNT DESC",
+      "parameters": [
+        "start_date",
+        "end_date",
+        "month"
+      ]
+    },
+    "kerani_mandor_analysis": {
+      "description": "Analysis of Kerani (PM) vs Mandor/Asisten verification",
+      "sql": "SELECT a.SCANUSERID, a.RECORDTAG, COUNT(*) as TRANSACTION_COUNT, SUM(a.RIPEBCH + a.UNRIPEBCH + a.OVERRIPEBCH + a.UNDERRIPEBCH) as TOTAL_BUNCHES FROM FFBSCANNERDATA{month:02d} aELDID = b.ID WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' AND a.RECORDTAG IN ('PM', 'MN', 'AS') GROUP BY a.SCANUSERID, a.RECORDTAG ORDER BY a.SCANUSERID, a.RECORDTAG",
+      "parameters": [
+        "start_date",
+        "end_date",
+        "month"
+      ]
+    },
+    "monthly_summary": {
+      "description": "Monthly summary statistics",
+      "sql": "SELECT EXTRACT(YEAR FROM a.TRANSDATE) as YEAR, EXTRACT(MONTH FROM a.TRANSDATE) as MONTH, COUNT(*) as TOTAL_TRANSACTIONS, SUM(a.RIPEBCH + a.UNRIPEBCH + a.OVERRIPEBCH + a.UNDERRIPEBCH) as TOTAL_BUNCHES, SUM(a.LOOSEFRUIT + a.LOOSEFRUIT2) as TOTAL_LOOSEFRUIT, COUNT(DISTINCT a.SCANUSERID) as UNIQUE_SCANNERS FROM FFBSCANNERDATA{month:02d} aELDID = b.ID WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' GROUP BY EXTRACT(YEAR FROM a.TRANSDATE), EXTRACT(MONTH FROM a.TRANSDATE) ORDER BY YEAR, MONTH",
+      "parameters": [
+        "start_date",
+        "end_date",
+        "month"
+      ]
+    },
+    "verification_status": {
+      "description": "Check verification status using TRANSSTATUS field",
+      "sql": "SELECT a.TRANSSTATUS, COUNT(*) as STATUS_COUNT, SUM(a.RIPEBCH + a.UNRIPEBCH + a.OVERRIPEBCH + a.UNDERRIPEBCH) as TOTAL_BUNCHES FROM FFBSCANNERDATA{month:02d} aELDID = b.ID WHERE a.TRANSDATE >= '{start_date}' AND a.TRANSDATE <= '{end_date}' GROUP BY a.TRANSSTATUS ORDER BY STATUS_COUNT DESC",
+      "parameters": [
+        "start_date",
+        "end_date",
+        "month"
+      ]
+    }
+  },
+  "processing_rules": {
+    "duplicate_handling": {
+      "description": "Remove duplicates based on ID field",
+      "method": "drop_duplicates",
+      "subset": [
+        "ID"
+      ]
+    },
+    "date_filtering": {
+      "description": "Filter data within specified date range",
+      "field": "TRANSDATE",
+      "format": "YYYY-MM-DD"
+    },
+    "verification_logic": {
+      "description": "Special logic for Estate 1A May 2025 - use TRANSSTATUS 704 filter",
+      "condition": "estate == 'PGE 1A' and month == 5 and year == 2025",
+      "filter": "TRANSSTATUS = '704'"
+    }
+  },
+  "output_format": {
+    "employee_details": {
+      "structure": {
+        "name": "Employee name from mapping",
+        "kerani": "Count of PM records created",
+        "kerani_verified": "Count of verified PM records",
+        "kerani_differences": "Count of input differences",
+        "mandor": "Count of MN records",
+        "asisten": "Count of AS records"
+      }
+    },
+    "division_summary": {
+      "structure": {
+        "division_id": "Division ID",
+        "division_name": "Division name",
+        "total_transactions": "Total transaction count",
+        "total_bunches": "Sum of all bunch types",
+        "total_loosefruit": "Sum of loose fruit"
+      }
+    }
+  }
+}

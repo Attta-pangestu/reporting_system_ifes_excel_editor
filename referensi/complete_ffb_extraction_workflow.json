@@ -1,0 +1,133 @@
+{
+  "workflow_complete": {
+    "entry_points": {
+      "main": {
+        "file": "gui_multi_estate_ffb_analysis.py",
+        "function": "main()",
+        "code": "def main():\n    root = tk.Tk()\n    app = MultiEstateFFBAnalysisGUI(root)\n    root.mainloop()\n\nif __name__ == '__main__':\n    main()"
+      }
+    },
+
+    "core_extraction_workflow": {
+      "step_1_estate_selection": {
+        "function": "start_analysis()",
+        "code": "def start_analysis(self):\n    selected_indices = self.estate_tree.selection()\n    if not selected_indices:\n        messagebox.showerror('Error', 'Silakan pilih minimal satu estate')\n        return\n    \n    start_date = self.start_date.get_date()\n    end_date = self.end_date.get_date()\n    \n    if start_date > end_date:\n        messagebox.showerror('Error Tanggal', 'Tanggal mulai tidak boleh lebih besar dari tanggal akhir.')\n        return\n    \n    thread = threading.Thread(target=self.run_analysis)\n    thread.daemon = True\n    thread.start()",
+        "purpose": "Validasi input estate dan tanggal, start analysis thread"
+      },
+
+      "step_2_main_analysis_loop": {
+        "function": "run_analysis()",
+        "code": "def run_analysis(self):\n    try:\n        selected_items = self.estate_tree.selection()\n        selected_estates = []\n        for item_id in selected_items:\n            values = self.estate_tree.item(item_id, 'values')\n            estate_name = values[0]\n            db_path = values[1]\n            selected_estates.append((estate_name, db_path))\n        \n        start_date = self.start_date.get_date()\n        end_date = self.end_date.get_date()\n        \n        self.log_message('=== LAPORAN KINERJA KERANI, MANDOR, DAN ASISTEN MULTI-ESTATE ===')\n        self.log_message(f'Periode: {start_date.strftime(\"%d %B %Y\")} - {end_date.strftime(\"%d %B %Y\")}')\n        self.log_message(f'Jumlah Estate: {len(selected_estates)}')\n        \n        self.progress_bar['maximum'] = len(selected_estates)\n        all_results = []\n        \n        for i, (estate_name, db_path) in enumerate(selected_estates):\n            self.progress_var.set(f'Menganalisis {estate_name}')\n            self.progress_bar['value'] = i\n            self.root.update_idletasks()\n            \n            try:\n                estate_results = self.analyze_estate(estate_name, db_path, start_date, end_date)\n                if estate_results:\n                    all_results.extend(estate_results)\n                    self.log_message(f'{estate_name}: {len(estate_results)} divisi')\n                else:\n                    self.log_message(f'{estate_name}: Tidak ada data')\n            except Exception as e:\n                self.log_message(f'{estate_name}: {str(e)}')\n        \n        if all_results:\n            self.log_message('Membuat laporan kinerja PDF...')\n            pdf_path = self.create_pdf_report(all_results, start_date, end_date)\n            self.log_message(f'Laporan kinerja PDF: {pdf_path}')\n        \n        self.progress_var.set('Analisis selesai')\n        \n    except Exception as e:\n        self.log_message(f'ERROR: {str(e)}')",
+        "purpose": "Loop utama analisis untuk setiap estate"
+      },
+
+      "step_3_estate_analysis": {
+        "function": "analyze_estate()",
+        "code": "def analyze_estate(self, estate_name, db_path, start_date, end_date):\n    # Handle path that is a folder (like PGE 2A)\n    if os.path.isdir(db_path):\n        # Look for .FDB file in the folder\n        for file in os.listdir(db_path):\n            if file.upper().endswith('.FDB'):\n                db_path = os.path.join(db_path, file)\n                break\n        else:\n            self.log_message(f'  No .FDB file found in {db_path}')\n            return None\n    \n    if not os.path.exists(db_path):\n        self.log_message(f'  Database not found: {db_path}')\n        return None\n    \n    try:\n        connector = FirebirdConnector(db_path)\n        if not connector.test_connection():\n            return None\n        \n        employee_mapping = self.get_employee_mapping(connector)\n        divisions, month_tables = self.get_divisions(connector, start_date, end_date)\n        \n        month_num = start_date.month\n        use_status_704_filter = (start_date.month == 5 or end_date.month == 5)\n        \n        if use_status_704_filter:\n            self.log_message(f'  *** FILTER TRANSSTATUS 704 AKTIF untuk {estate_name} bulan {month_num} ***')\n            self.log_message(f'  Menggunakan analisis transaksi real (bukan nilai statis)')\n        \n        # Akumulasi per karyawan dari semua divisi\n        estate_employee_totals = {}\n        \n        estate_results = []\n        for div_id, div_name in divisions.items():\n            result = self.analyze_division(connector, estate_name, div_id, div_name, \n                                         start_date, end_date, employee_mapping, use_status_704_filter, month_tables)\n            if result:\n                # Akumulasi per karyawan\n                for emp_id, emp_data in result['employee_details'].items():\n                    if emp_id not in estate_employee_totals:\n                        estate_employee_totals[emp_id] = {\n                            'name': emp_data['name'],\n                            'kerani': 0,\n                            'kerani_verified': 0,\n                            'kerani_differences': 0,\n                            'mandor': 0,\n                            'asisten': 0\n                        }\n                    \n                    estate_employee_totals[emp_id]['kerani'] += emp_data['kerani']\n                    estate_employee_totals[emp_id]['kerani_verified'] += emp_data['kerani_verified']\n                    estate_employee_totals[emp_id]['kerani_differences'] += emp_data['kerani_differences']\n                    estate_employee_totals[emp_id]['mandor'] += emp_data['mandor']\n                    estate_employee_totals[emp_id]['asisten'] += emp_data['asisten']\n                \n                estate_results.append(result)\n        \n        if use_status_704_filter:\n            total_actual_differences = sum(emp_data['kerani_differences'] for emp_data in estate_employee_totals.values())\n            self.log_message(f'  HASIL ANALISIS REAL: {total_actual_differences} total perbedaan ditemukan')\n            \n            # Log detail per karyawan untuk transparansi\n            for emp_id, emp_data in estate_employee_totals.items():\n                if emp_data['kerani_differences'] > 0:\n                    user_name = emp_data['name']\n                    differences = emp_data['kerani_differences']\n                    verified = emp_data['kerani_verified']\n                    percentage = (differences / verified * 100) if verified > 0 else 0\n                    self.log_message(f'    {user_name}: {differences} perbedaan dari {verified} transaksi terverifikasi ({percentage:.1f}%)')\n        \n        return estate_results\n        \n    except Exception as e:\n        self.log_message(f'  Error analyzing estate {estate_name}: {e}')\n        return None",
+        "purpose": "Analisis lengkap estate dengan akumulasi data karyawan"
+      }
+    },
+
+    "data_extraction_methods": {
+      "employee_mapping_extraction": {
+        "function": "get_employee_mapping()",
+        "sql": "SELECT ID, NAME FROM EMP",
+        "python_code": "def get_employee_mapping(self, connector):\n    query = \"SELECT ID, NAME FROM EMP\"\n    try:\n        result = connector.execute_query(query)\n        df = connector.to_pandas(result)\n        mapping = {}\n        if not df.empty:\n            for _, row in df.iterrows():\n                emp_id = str(row.iloc[0]).strip()\n                emp_name = str(row.iloc[1]).strip()\n                mapping[emp_id] = emp_name\n        return mapping\n    except:\n        return {}",
+        "output": "Dictionary {emp_id: emp_name}",
+        "purpose": "Mapping ID karyawan ke nama"
+      },
+
+      "division_mapping_extraction": {
+        "function": "get_divisions()",
+        "sql_template": "SELECT DISTINCT b.DIVID, c.DIVNAME FROM {table_name} a JOIN OCFIELD b ON a.FIELDID = b.ID LEFT JOIN CRDIVISION c ON b.DIVID = c.ID WHERE b.DIVID IS NOT NULL AND c.DIVNAME IS NOT NULL",
+        "python_code": "def get_divisions(self, connector, start_date, end_date):\n    # Generate all month tables within the date range\n    month_tables = []\n    current_date = start_date\n    while current_date <= end_date:\n        month_tables.append(f'FFBSCANNERDATA{current_date.month:02d}')\n        # Move to the next month\n        if current_date.month == 12:\n            current_date = current_date.replace(year=current_date.year + 1, month=1, day=1)\n        else:\n            current_date = current_date.replace(month=current_date.month + 1, day=1)\n    \n    month_tables = list(set(month_tables)) # Remove duplicates\n    self.log_message(f'  Tabel yang akan di-query: {\\', '.join(month_tables)}')\n\n    all_divisions = {}\n    for ffb_table in month_tables:\n        query = f'''SELECT DISTINCT b.DIVID, c.DIVNAME\n        FROM {ffb_table} a\n        JOIN OCFIELD b ON a.FIELDID = b.ID\n        LEFT JOIN CRDIVISION c ON b.DIVID = c.ID\n        WHERE b.DIVID IS NOT NULL AND c.DIVNAME IS NOT NULL'''\n        \n        try:\n            result = connector.execute_query(query)\n            df = connector.to_pandas(result)\n            if not df.empty:\n                for _, row in df.iterrows():\n                    div_id = str(row.iloc[0]).strip()\n                    div_name = str(row.iloc[1]).strip()\n                    if div_id not in all_divisions:\n                        all_divisions[div_id] = div_name\n        except Exception as e:\n            self.log_message(f'  Peringatan saat mengambil divisi dari {ffb_table}: {e}')\n            continue\n    \n    return all_divisions, month_tables",
+        "dynamic_tables": ["FFBSCANNERDATA01", "FFBSCANNERDATA02", ..., "FFBSCANNERDATA12"],
+        "output": "Tuple (divisions_dict, month_tables_list)",
+        "purpose": "Generate list of monthly tables and extract divisions"
+      },
+
+      "ffb_data_extraction": {
+        "function": "analyze_division() - Data Extraction Part",
+        "sql": "SELECT a.ID, a.SCANUSERID, a.OCID, a.WORKERID, a.CARRIERID, a.FIELDID, a.TASKNO, a.RIPEBCH, a.UNRIPEBCH, a.BLACKBCH, a.ROTTENBCH, a.LONGSTALKBCH, a.RATDMGBCH, a.LOOSEFRUIT, a.TRANSNO, a.TRANSDATE, a.TRANSTIME, a.UPLOADDATETIME, a.RECORDTAG, a.TRANSSTATUS, a.TRANSTYPE, a.LASTUSER, a.LASTUPDATED, a.OVERRIPEBCH, a.UNDERRIPEBCH, a.ABNORMALBCH, a.LOOSEFRUIT2 FROM {table_name} a JOIN OCFIELD b ON a.FIELDID = b.ID WHERE b.DIVID = '{div_id}' AND a.TRANSDATE >= '{start_str}' AND a.TRANSDATE <= '{end_str}'",
+        "python_code": "def analyze_division(self, connector, estate_name, div_id, div_name, start_date, end_date, employee_mapping, use_status_704_filter, month_tables):\n    start_str = start_date.strftime('%Y-%m-%d')\n    end_str = end_date.strftime('%Y-%m-%d')\n    \n    all_data_df = pd.DataFrame()\n    \n    for ffb_table in month_tables:\n        # Query untuk mendapatkan data granular untuk analisis duplikat\n        query = f'''SELECT a.ID, a.SCANUSERID, a.OCID, a.WORKERID, a.CARRIERID, a.FIELDID, a.TASKNO,\n               a.RIPEBCH, a.UNRIPEBCH, a.BLACKBCH, a.ROTTENBCH, a.LONGSTALKBCH, a.RATDMGBCH,\n               a.LOOSEFRUIT, a.TRANSNO, a.TRANSDATE, a.TRANSTIME, a.UPLOADDATETIME,\n               a.RECORDTAG, a.TRANSSTATUS, a.TRANSTYPE, a.LASTUSER, a.LASTUPDATED,\n               a.OVERRIPEBCH, a.UNDERRIPEBCH, a.ABNORMALBCH, a.LOOSEFRUIT2\n        FROM {ffb_table} a\n        JOIN OCFIELD b ON a.FIELDID = b.ID\n        WHERE b.DIVID = '{div_id}'\n            AND a.TRANSDATE >= '{start_str}' \n            AND a.TRANSDATE <= '{end_str}'\n        '''\n        try:\n            result = connector.execute_query(query)\n            df_monthly = connector.to_pandas(result)\n            if not df_monthly.empty:\n                all_data_df = pd.concat([all_data_df, df_monthly], ignore_index=True)\n        except Exception as e:\n            self.log_message(f'  Peringatan saat mengambil data dari {ffb_table}: {e}')\n            continue\n\n    df = all_data_df\n    if df.empty:\n        return None\n    \n    # Hapus duplikat jika ada data yang tumpang tindih\n    df.drop_duplicates(subset=['ID'], inplace=True)",
+        "data_source": "All FFBSCANNERDATA{month} tables",
+        "filtering": ["DIVID = '{div_id}'", "TRANSDATE >= start_date", "TRANSDATE <= end_date"],
+        "output": "Pandas DataFrame with all transaction data",
+        "purpose": "Extract all FFB scanner data for specific division"
+      }
+    },
+
+    "data_processing_algorithms": {
+      "duplicate_detection": {
+        "code": "# Logika dari analisis_perbedaan_panen.py: cari duplikat berdasarkan TRANSNO\nduplicated_rows = df[df.duplicated(subset=['TRANSNO'], keep=False)]\nverified_transnos = set(duplicated_rows['TRANSNO'].tolist())",
+        "logic": "Find transactions with duplicate TRANSNO = verified transactions",
+        "purpose": "Identify transactions that have been verified by other roles"
+      },
+
+      "employee_structure_initialization": {
+        "code": "employee_details = {}\n\n# Inisialisasi struktur detail karyawan\nall_user_ids = df['SCANUSERID'].unique()\nfor user_id in all_user_ids:\n    user_id_str = str(user_id).strip()\n    employee_details[user_id_str] = {\n        'name': employee_mapping.get(user_id_str, f'EMP-{user_id_str}'),\n        'kerani': 0,\n        'kerani_verified': 0,\n        'kerani_differences': 0,\n        'mandor': 0,\n        'asisten': 0\n    }",
+        "structure": "Dictionary employee_details[emp_id] = {name, kerani, kerani_verified, kerani_differences, mandor, asisten}",
+        "purpose": "Initialize data structure for each employee"
+      },
+
+      "kerani_transaction_analysis": {
+        "code": "# Hitung data Kerani berdasarkan duplikat dan perbedaan input\nkerani_df = df[df['RECORDTAG'] == 'PM']\nif not kerani_df.empty:\n    for user_id, group in kerani_df.groupby('SCANUSERID'):\n        user_id_str = str(user_id).strip()\n        total_created = len(group)\n        \n        # Hitung jumlah perbedaan input untuk transaksi yang terverifikasi\n        differences_count = 0\n        for _, kerani_row in group.iterrows():\n            if kerani_row['TRANSNO'] in verified_transnos:\n                # Cari transaksi dengan TRANSNO yang sama tapi RECORDTAG berbeda\n                matching_transactions = df[(df['TRANSNO'] == kerani_row['TRANSNO']) & \n                                          (df['RECORDTAG'] != 'PM')]\n                \n                # FILTER KHUSUS: Untuk bulan Mei, hanya hitung perbedaan jika \n                # Mandor/Asisten memiliki TRANSSTATUS = 704\n                if use_status_704_filter:\n                    matching_transactions = matching_transactions[matching_transactions['TRANSSTATUS'] == '704']\n                \n                if not matching_transactions.empty:\n                    # Prioritaskan P1 (Asisten) jika ada, jika tidak gunakan P5 (Mandor)\n                    p1_records = matching_transactions[matching_transactions['RECORDTAG'] == 'P1']\n                    p5_records = matching_transactions[matching_transactions['RECORDTAG'] == 'P5']\n                    \n                    if not p1_records.empty:\n                        other_row = p1_records.iloc[0]\n                    elif not p5_records.empty:\n                        other_row = p5_records.iloc[0]\n                    else:\n                        continue\n                    \n                    # Hitung perbedaan untuk setiap field\n                    fields_to_compare = ['RIPEBCH', 'UNRIPEBCH', 'BLACKBCH', 'ROTTENBCH', \n                                       'LONGSTALKBCH', 'RATDMGBCH', 'LOOSEFRUIT']\n                    \n                    # Count as 1 transaction difference if ANY field differs\n                    has_difference = False\n                    for field in fields_to_compare:\n                        try:\n                            kerani_val = float(kerani_row[field]) if kerani_row[field] else 0\n                            other_val = float(other_row[field]) if other_row[field] else 0\n                            if kerani_val != other_val:\n                                has_difference = True\n                                break\n                        except (ValueError, TypeError) as e:\n                            continue\n                    \n                    # Count as 1 transaction difference if any field differs\n                    if has_difference:\n                        differences_count += 1\n        \n        # Hitung persentase terverifikasi\n        verified_count = len(group[group['TRANSNO'].isin(verified_transnos)])\n        percentage = (verified_count / total_created * 100) if total_created > 0 else 0\n        \n        if user_id_str in employee_details:\n            employee_details[user_id_str]['kerani'] = total_created\n            employee_details[user_id_str]['kerani_verified'] = verified_count\n            employee_details[user_id_str]['kerani_differences'] = differences_count",
+        "filters": ["RECORDTAG = 'PM'", "TRANSNO in verified_transnos"],
+        "special_filter": "May: TRANSSTATUS = '704'",
+        "priority": "P1 > P5",
+        "comparison_fields": ["RIPEBCH", "UNRIPEBCH", "BLACKBCH", "ROTTENBCH", "LONGSTALKBCH", "RATDMGBCH", "LOOSEFRUIT"],
+        "difference_logic": "ANY field different = 1 transaction difference",
+        "purpose": "Analyze Kerani transactions with verification and difference detection"
+      },
+
+      "mandor_asisten_analysis": {
+        "mandor_code": "# Hitung data Mandor\nmandor_df = df[df['RECORDTAG'] == 'P1']\nif not mandor_df.empty:\n    mandor_counts = mandor_df.groupby('SCANUSERID').size()\n    for user_id, count in mandor_counts.items():\n        user_id_str = str(user_id).strip()\n        if user_id_str in employee_details:\n            employee_details[user_id_str]['mandor'] = count",
+        "asisten_code": "# Hitung data Asisten\nasisten_df = df[df['RECORDTAG'] == 'P5']\nif not asisten_df.empty:\n    asisten_counts = asisten_df.groupby('SCANUSERID').size()\n    for user_id, count in asisten_counts.items():\n        user_id_str = str(user_id).strip()\n        if user_id_str in employee_details:\n            employee_details[user_id_str]['asisten'] = count",
+        "mandor_filter": "RECORDTAG = 'P1'",
+        "asisten_filter": "RECORDTAG = 'P5'",
+        "purpose": "Count total Mandor and Asisten transactions per employee"
+      },
+
+      "final_calculation": {
+        "code": "# Hitung total divisi\nkerani_total = sum(d['kerani'] for d in employee_details.values())\nmandor_total = sum(d['mandor'] for d in employee_details.values())\nasisten_total = sum(d['asisten'] for d in employee_details.values())\n\n# Verifikasi keseluruhan berdasarkan logika duplikat\ndiv_kerani_verified_total = sum(d['kerani_verified'] for d in employee_details.values())\nverification_rate = (div_kerani_verified_total / kerani_total * 100) if kerani_total > 0 else 0\n\nreturn {\n    'estate': estate_name,\n    'division': div_name,\n    'kerani_total': kerani_total,\n    'mandor_total': mandor_total,\n    'asisten_total': asisten_total,\n    'verifikasi_total': div_kerani_verified_total,\n    'verification_rate': verification_rate,\n    'employee_details': employee_details\n}",
+        "calculations": [
+          "kerani_total = Σ(kerani)",
+          "mandor_total = Σ(mandor)",
+          "asisten_total = Σ(asisten)",
+          "verification_rate = (verified / total_kerani) * 100"
+        ],
+        "output_structure": {
+          "estate": "string",
+          "division": "string",
+          "kerani_total": "integer",
+          "mandor_total": "integer",
+          "asisten_total": "integer",
+          "verifikasi_total": "integer",
+          "verification_rate": "float",
+          "employee_details": "dict"
+        },
+        "purpose": "Calculate final metrics and return division analysis results"
+      }
+    },
+
+    "data_flow": {
+      "sequence": [
+        "main() → MultiEstateFFBAnalysisGUI.__init__()",
+        "start_analysis() → run_analysis() [threaded]",
+        "run_analysis() → analyze_estate() [for each estate]",
+        "analyze_estate() → get_employee_mapping() + get_divisions() + analyze_division()",
+        "get_divisions() → Generate month tables → Query divisions",
+        "analyze_division() → Query FFB data → Process duplicates → Calculate metrics",
+        "run_analysis() → create_pdf_report() [after all estates]",
+        "create_pdf_report() → Generate PDF report"
+      ],
+
+      "key_transitions": {
+        "estate_to_division": "analyze_estate() calls analyze_division() for each division",
+        "division_to_employees": "analyze_division() processes all SCANUSERIDs in division data",
+        "duplicate_to_verification": "duplicated TRANSNO values indicate verification occurred",
+        "differences_to_performance": "field differences = performance metrics"
+      }
+    }
+  }
+}
