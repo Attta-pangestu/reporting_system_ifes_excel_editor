@@ -1,12 +1,12 @@
 {
   "template_info": {
-    "name": "FFB Scanner Data 04 Report",
-    "description": "Laporan transaksi FFB dari tabel FFBSCANNERDATA04",
-    "version": "1.0",
+    "name": "FFB Scanner Data Report",
+    "description": "Laporan transaksi FFB dari tabel FFBSCANNERDATA{MM}",
+    "version": "1.1",
     "author": "Claude AI Assistant",
     "created_date": "2025-11-01",
-    "database_table": "FFBSCANNERDATA04",
-    "template_file": "FFB_ScannerData04_Template_20251101_114530.xlsx"
+    "database_table": "{table_name}",
+    "template_file": "FFB_ScannerData_Template_20251101_114530.xlsx"
   },
   "database_config": {
     "connection_string": "D:\\Gawean Rebinmas\\Monitoring Database\\Database Ifess\\IFESS_2B_24-10-2025\\PTRJ_P2B.FDB",
@@ -31,26 +31,26 @@
   "queries": {
     "main_data": {
       "type": "sql",
-      "description": "Query utama untuk mengambil data FFBSCANNERDATA04",
-      "sql": "SELECT \n    a.ID,\n    a.SCANUSERID,\n    a.OCID,\n    a.WORKERID,\n    a.CARRIERID,\n    a.FIELDID,\n    a.TASKNO,\n    a.RIPEBCH,\n    a.UNRIPEBCH,\n    a.BLACKBCH,\n    a.ROTTENBCH,\n    a.LONGSTALKBCH,\n    a.RATDMGBCH,\n    a.LOOSEFRUIT,\n    a.TRANSNO,\n    a.TRANSDATE,\n    a.TRANSTIME,\n    a.UPLOADDATETIME,\n    a.RECORDTAG,\n    a.TRANSSTATUS,\n    a.TRANSTYPE,\n    a.LASTUSER,\n    a.LASTUPDATED,\n    a.UNDERRIPEBCH,\n    a.OVERRIPEBCH,\n    a.ABNORMALBCH,\n    a.LOOSEFRUIT2\nFROM FFBSCANNERDATA04 a\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}\nORDER BY a.TRANSDATE, a.TRANSTIME, a.ID",
+      "description": "Query utama untuk mengambil data {table_name}",
+      "sql": "SELECT \n    a.ID,\n    a.SCANUSERID,\n    a.OCID,\n    a.WORKERID,\n    a.CARRIERID,\n    a.FIELDID,\n    a.TASKNO,\n    a.RIPEBCH,\n    a.UNRIPEBCH,\n    a.BLACKBCH,\n    a.ROTTENBCH,\n    a.LONGSTALKBCH,\n    a.RATDMGBCH,\n    a.LOOSEFRUIT,\n    a.TRANSNO,\n    a.TRANSDATE,\n    a.TRANSTIME,\n    a.UPLOADDATETIME,\n    a.RECORDTAG,\n    a.TRANSSTATUS,\n    a.TRANSTYPE,\n    a.LASTUSER,\n    a.LASTUPDATED,\n    a.UNDERRIPEBCH,\n    a.OVERRIPEBCH,\n    a.ABNORMALBCH,\n    a.LOOSEFRUIT2\nFROM {table_name} a\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}\nORDER BY a.TRANSDATE, a.TRANSTIME, a.ID",
       "return_format": "dict"
     },
     "summary_stats": {
       "type": "sql",
       "description": "Query untuk statistik ringkasan",
-      "sql": "SELECT \n    COUNT(*) as total_records,\n    COALESCE(SUM(a.RIPEBCH), 0) as total_ripe_bunch,\n    COALESCE(SUM(a.UNRIPEBCH), 0) as total_unripe_bunch,\n    COALESCE(SUM(a.BLACKBCH), 0) as total_black_bunch,\n    COALESCE(SUM(a.ROTTENBCH), 0) as total_rotten_bunch,\n    COALESCE(SUM(a.LONGSTALKBCH), 0) as total_long_stalk_bunch,\n    COALESCE(SUM(a.RATDMGBCH), 0) as total_rat_damage_bunch,\n    COALESCE(SUM(a.LOOSEFRUIT), 0) as total_loose_fruit,\n    COALESCE(SUM(a.LOOSEFRUIT2), 0) as total_loose_fruit_2,\n    COALESCE(SUM(a.UNDERRIPEBCH), 0) as total_underripe_bunch,\n    COALESCE(SUM(a.OVERRIPEBCH), 0) as total_overripe_bunch,\n    COALESCE(SUM(a.ABNORMALBCH), 0) as total_abnormal_bunch,\n    MIN(a.TRANSDATE) as min_date,\n    MAX(a.TRANSDATE) as max_date,\n    COUNT(DISTINCT a.WORKERID) as unique_workers,\n    COUNT(DISTINCT a.FIELDID) as unique_fields\nFROM FFBSCANNERDATA04 a\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}",
+      "sql": "SELECT \n    COUNT(*) as total_records,\n    COALESCE(SUM(a.RIPEBCH), 0) as total_ripe_bunch,\n    COALESCE(SUM(a.UNRIPEBCH), 0) as total_unripe_bunch,\n    COALESCE(SUM(a.BLACKBCH), 0) as total_black_bunch,\n    COALESCE(SUM(a.ROTTENBCH), 0) as total_rotten_bunch,\n    COALESCE(SUM(a.LONGSTALKBCH), 0) as total_long_stalk_bunch,\n    COALESCE(SUM(a.RATDMGBCH), 0) as total_rat_damage_bunch,\n    COALESCE(SUM(a.LOOSEFRUIT), 0) as total_loose_fruit,\n    COALESCE(SUM(a.LOOSEFRUIT2), 0) as total_loose_fruit_2,\n    COALESCE(SUM(a.UNDERRIPEBCH), 0) as total_underripe_bunch,\n    COALESCE(SUM(a.OVERRIPEBCH), 0) as total_overripe_bunch,\n    COALESCE(SUM(a.ABNORMALBCH), 0) as total_abnormal_bunch,\n    MIN(a.TRANSDATE) as min_date,\n    MAX(a.TRANSDATE) as max_date,\n    COUNT(DISTINCT a.WORKERID) as unique_workers,\n    COUNT(DISTINCT a.FIELDID) as unique_fields\nFROM {table_name} a\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}",
       "return_format": "dict"
     },
     "field_info": {
       "type": "sql",
       "description": "Query untuk mendapatkan informasi field/lokasi",
-      "sql": "SELECT DISTINCT \n    a.FIELDID,\n    f.BLOCKNAME as FIELD_NAME,\n    f.DIVISIONID,\n    d.DIVNAME as DIVISION_NAME\nFROM FFBSCANNERDATA04 a\nLEFT JOIN OCFIELD f ON a.FIELDID = f.FIELDID\nLEFT JOIN CRDIVISION d ON f.DIVISIONID = d.DIVISIONID\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}\nORDER BY a.FIELDID",
+      "sql": "SELECT DISTINCT \n    a.FIELDID,\n    f.BLOCKNAME as FIELD_NAME,\n    f.DIVISIONID,\n    d.DIVNAME as DIVISION_NAME\nFROM {table_name} a\nLEFT JOIN OCFIELD f ON a.FIELDID = f.FIELDID\nLEFT JOIN CRDIVISION d ON f.DIVISIONID = d.DIVISIONID\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}\nORDER BY a.FIELDID",
       "return_format": "dict"
     },
     "worker_info": {
       "type": "sql",
       "description": "Query untuk mendapatkan informasi pekerja",
-      "sql": "SELECT DISTINCT \n    a.WORKERID,\n    e.EMPNAME as WORKER_NAME,\n    e.EMPPOSITION as POSITION,\n    COUNT(*) as transaction_count\nFROM FFBSCANNERDATA04 a\nLEFT JOIN EMP e ON a.WORKERID = e.EMPID\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}\nGROUP BY a.WORKERID, e.EMPNAME, e.EMPPOSITION\nORDER BY transaction_count DESC",
+      "sql": "SELECT DISTINCT \n    a.WORKERID,\n    e.EMPNAME as WORKER_NAME,\n    e.EMPPOSITION as POSITION,\n    COUNT(*) as transaction_count\nFROM {table_name} a\nLEFT JOIN EMP e ON a.WORKERID = e.EMPID\nWHERE a.TRANSDATE BETWEEN {start_date} AND {end_date}\nGROUP BY a.WORKERID, e.EMPNAME, e.EMPPOSITION\nORDER BY transaction_count DESC",
       "return_format": "dict"
     }
   },

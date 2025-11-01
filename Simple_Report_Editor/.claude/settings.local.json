@@ -3,7 +3,11 @@
     "allow": [
       "Bash(python:*)",
       "mcp__obsidian-mcp-tools__show_file_in_obsidian",
-      "mcp__obsidian-mcp-tools__create_vault_file"
+      "mcp__obsidian-mcp-tools__create_vault_file",
+      "Bash(mkdir:*)",
+      "Bash(copy:*)",
+      "Bash(find:*)",
+      "Bash(timeout 5 python:*)"
     ],
     "deny": [],
     "ask": []
